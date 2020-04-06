@@ -21,10 +21,10 @@ export class ChatHubComponent {
     }
 
     ngOnInit() {
-        this.hub = this.signalRService.startConnection(this.apiUrl + "chatHub");
-        this.signalRService.addTransferDataListener('ReceiveMessage', (user, message) => {
-            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            var encodedMsg = user + " says " + msg;
+        this.hub = this.signalRService.startConnection(this.apiUrl + "MultiHub");
+        this.signalRService.addTransferDataListener('ReceiveMessage', (response) => {
+            var msg = response.message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var encodedMsg = response.user + " says " + msg;
             var li = document.createElement("li");
             li.textContent = encodedMsg;
             document.getElementById("messagesList").appendChild(li);
@@ -34,7 +34,7 @@ export class ChatHubComponent {
             var user = (<HTMLInputElement>document.getElementById("userInput")).value;
             var message = (<HTMLInputElement>document.getElementById("messageInput")).value;
 
-            this.signalRService.transferData("SendMessage", user, message)
+            this.signalRService.transferData("BroadcastChatMessage", user, message)
             event.preventDefault();
         });
     }

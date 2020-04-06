@@ -20,7 +20,7 @@ export class SignalRService {
         if (this.hubConnection.state === 0) {
             this.hubConnection
                 .start()
-                .then(() => console.log('Connection started'))
+                .then((res) => console.log('Connection started', res))
                 .catch(err => console.log('Error while starting connection: ' + err))
         }
 

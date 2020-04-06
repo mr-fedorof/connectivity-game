@@ -32,9 +32,16 @@ export class CanvasHubComponent {
 
     ngOnInit() {
 
-        this.hub = this.signalRService.startConnection(this.apiUrl + "canvasHub");
-        this.signalRService.addTransferDataListener('Drawing', (res, clientX, clientY) => {
-            this.findxy(res, { clientX, clientY });
+        this.hub = this.signalRService.startConnection(this.apiUrl + "MultiHub");
+        this.signalRService.addTransferDataListener('ClearCanvas', () => {
+            this.canvasContext.clearRect(0, 0, this.w, this.h);
+        });
+
+        this.signalRService.addTransferDataListener('Draw', (response) => {
+
+            var clientX = response.x + this.canvas.offsetLeft;
+            var clientY = response.y + this.canvas.offsetTop;
+            this.findxy(response.eventName, { clientX, clientY });
         });
 
         this.canvas = document.getElementById('canvas');
@@ -47,13 +54,13 @@ export class CanvasHubComponent {
             let res = 'move';
             this.handleUserDraw(res, e)
         }, false);
-        this.canvas.addEventListener("mousedown", (e) =>  {
+        this.canvas.addEventListener("mousedown", (e) => {
             this.handleUserDraw('down', e)
         }, false);
-        this.canvas.addEventListener("mouseup", (e) =>  {
+        this.canvas.addEventListener("mouseup", (e) => {
             this.handleUserDraw('up', e)
         }, false);
-        this.canvas.addEventListener("mouseout", (e) =>  {
+        this.canvas.addEventListener("mouseout", (e) => {
             this.handleUserDraw('out', e)
         }, false);
     }
@@ -69,16 +76,19 @@ export class CanvasHubComponent {
     }
 
     erase() {
+        this.signalRService.transferData("BroadcastClearCanvas");
         this.canvasContext.clearRect(0, 0, this.w, this.h);
     }
 
-    handleUserDraw(res, e) {
-        this.signalRService.transferData("SendMessage", res, e.clientX, e.clientY);
-        this.findxy(res, e);
+    handleUserDraw(eventName, e) {
+        var x = e.clientX - this.canvas.offsetLeft;
+        var y = e.clientY - this.canvas.offsetTop;
+        this.signalRService.transferData("BroadcastDrawing", eventName, x, y);
+        this.findxy(eventName, e);
     }
 
-    findxy(res, e) {
-        if (res == 'down') {
+    findxy(eventName, e) {
+        if (eventName == 'down') {
             this.prevX = this.currX;
             this.prevY = this.currY;
             this.currX = e.clientX - this.canvas.offsetLeft;
@@ -94,10 +104,10 @@ export class CanvasHubComponent {
                 this.dot_flag = false;
             }
         }
-        if (res == 'up' || res == "out") {
+        if (eventName == 'up' || eventName == "out") {
             this.flag = false;
         }
-        if (res == 'move') {
+        if (eventName == 'move') {
             if (this.flag) {
                 this.prevX = this.currX;
                 this.prevY = this.currY;
