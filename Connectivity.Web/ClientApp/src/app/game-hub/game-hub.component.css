@@ -17,6 +17,7 @@ canvas {
 }
 
 .float-child {
+  margin: -1px;
   width: 50%;
   float: left;
   padding: 20px;
