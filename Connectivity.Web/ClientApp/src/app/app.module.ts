@@ -8,8 +8,7 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
-import { ChatHubComponent } from './chat-hub/chat-hub.component';
-import { CanvasHubComponent } from './canvas-hub/canvas-hub.component';
+import { GameHubComponent } from './game-hub/game-hub.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +16,7 @@ import { CanvasHubComponent } from './canvas-hub/canvas-hub.component';
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-        ChatHubComponent,
-        CanvasHubComponent,
+    GameHubComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -27,11 +25,10 @@ import { CanvasHubComponent } from './canvas-hub/canvas-hub.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
-        { path: 'chat-hub', component: ChatHubComponent },
-        { path: 'canvas-hub', component: CanvasHubComponent }
+      { path: 'game-hub', component: GameHubComponent },
     ])
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -7,9 +7,12 @@ import { ChatModel } from '../models/chat';
 })
 export class SignalRService {
     public data;
+    private subs = [];
+    private hubConnection: signalR.HubConnection;
 
-    private hubConnection: signalR.HubConnection
-
+    public isConnected = () => {
+        return this.hubConnection && this.hubConnection.state === 1;
+    }
     public startConnection = (url) => {
         if (!this.hubConnection) {
             this.hubConnection = new signalR.HubConnectionBuilder()
@@ -18,22 +21,30 @@ export class SignalRService {
         }
 
         if (this.hubConnection.state === 0) {
-            this.hubConnection
+            return this.hubConnection
                 .start()
                 .then((res) => console.log('Connection started', res))
-                .catch(err => console.log('Error while starting connection: ' + err))
+                .catch(err => console.log('Error while starting connection: ' + err));
         }
+    }
 
-        return this.hubConnection;
+    public closeConnection = () => {
+        if (this.hubConnection && this.hubConnection.state === 1) {
+          this.subs.forEach((sub) => {
+              this.hubConnection.off(sub);
+          });
+            this.hubConnection.stop();
+
+        }
     }
 
     public addTransferDataListener = (eventName, callback) => {
         this.hubConnection.on(eventName, callback);
+        this.subs.push(eventName);
     }
 
-
     public transferData = (eventName, ...args) => {
-        this.hubConnection.invoke(eventName, ...args).catch(function (err) {
+        this.hubConnection.invoke(eventName, ...args).catch((err) => {
             return console.error(err.toString());
         });
     }

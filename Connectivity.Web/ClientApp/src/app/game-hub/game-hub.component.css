@@ -4,10 +4,21 @@ body {
 }
 
 canvas {
-
   background: #f8f8f8;
   padding: 0;
   margin: 0 auto;
   margin-bottom: 1rem;
   display: block;
 }
+
+.float-container {
+  border: 3px solid #fff;
+  padding: 20px;
+}
+
+.float-child {
+  width: 50%;
+  float: left;
+  padding: 20px;
+  border: 2px solid;
+}  

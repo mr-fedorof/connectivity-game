@@ -5,9 +5,24 @@ namespace Connectivity.Web.Api.Hubs
 {
     public class MultiHub : Hub
     {
-        public async Task BroadcastDrawing(string eventName, int x, int y)
+        public async Task JoinRoom(string roomId, string userName)
         {
-            await Clients.All.SendAsync("Draw", new
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
+
+            await Clients.Group(roomId).SendAsync("ReceiveServiceMessage", $"{Context.ConnectionId} AKA {userName} has joined the room {roomId}.");
+        }
+
+        public async Task LeaveRoom(string roomId, string userName)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+
+            await Clients.Group(roomId).SendAsync("ReceiveServiceMessage", $"{Context.ConnectionId} has left the group {roomId}.");
+        }
+
+
+        public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)
+        {
+            await Clients.OthersInGroup(roomId).SendAsync("Draw", new
             {
                 Context.ConnectionId,
                 eventName,
@@ -16,16 +31,16 @@ namespace Connectivity.Web.Api.Hubs
             });
         }        
         
-        public async Task BroadcastClearCanvas()
+        public async Task BroadcastClearCanvas(string roomId)
         {
-            await Clients.All.SendAsync("ClearCanvas");
+            await Clients.Group(roomId).SendAsync("ClearCanvas");
         }
 
-        public async Task BroadcastChatMessage(string user, string message)
+        public async Task BroadcastChatMessage(string roomId, string userName, string message)
         {
-            await Clients.AllExcept(Context.ConnectionId).SendAsync("ReceiveMessage", new {
+            await Clients.Group(roomId).SendAsync("ReceiveMessage", new {
                 Context.ConnectionId,
-                user,
+                userName,
                 message
             });
         }
