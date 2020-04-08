@@ -1,24 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameRoutingModule } from './game-routing.module';
-import { GameEngineModule } from '../game-engine/game-engine.module';
-import { GameFieldComponent } from './game-field/game-field.component';
-import { GameService } from './services';
-import { GAME_SERVICE_TOKEN } from '@modules/game-engine/services';
 import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { GameEngineFeatureName, gameEngineFeatureReducers } from './game-engine.feature';
+import { LobbyEffects } from './effects/lobby.effects';
+import { LobbyService } from './services';
+import { GameFieldComponent } from './components/game-field/game-field.component';
+import { LobbyComponent } from './components/lobby/lobby.component';
+import { LobbySetupComponent } from './components/lobby-setup/lobby-setup.component';
+import { MasterComponent } from './components/master/master.component';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         GameRoutingModule,
-        GameEngineModule,
+        StoreModule.forFeature(GameEngineFeatureName, gameEngineFeatureReducers),
+        EffectsModule.forFeature([
+            LobbyEffects,
+        ]),
     ],
     declarations: [
-        GameFieldComponent
+        GameFieldComponent,
+        LobbyComponent,
+        LobbySetupComponent,
+        MasterComponent
     ],
     providers: [
-        { provide: GAME_SERVICE_TOKEN, useClass: GameService },
+        LobbyService,
     ]
 })
 export class GameModule { }

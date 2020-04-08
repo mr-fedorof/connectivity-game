@@ -11,12 +11,16 @@ import { GameHubComponent } from './game-hub/game-hub.component';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({
+      router: routerReducer,
+    }),
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot(),
     AppRoutingModule,
 
     // TODO: move to shared

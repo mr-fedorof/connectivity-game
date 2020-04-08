@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'counter', component: CounterComponent },
   { path: 'game-hub', component: GameHubComponent },
   {
-    path: 'game',
+    path: '',
     loadChildren: () => import('@modules/game/game.module').then(m => m.GameModule)
   },
 ];
