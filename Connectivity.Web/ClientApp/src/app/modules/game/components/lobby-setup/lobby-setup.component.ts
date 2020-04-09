@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { newLobby } from '@modules/game/actions/lobby.actions';
 import { DestroyableComponent } from '@shared/destroyable';
 import { LobbySetupForm } from './lobby-setup-form';
-import { validateForm } from '@modules/co-form/helpers';
+import { validateForm } from '@modules/app-form/helpers';
 import { Lobby, Team } from '@modules/game/models';
 
 @Component({

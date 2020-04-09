@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { AppAbstractControl } from '@modules/co-form/models/app-abstract-control.interface';
+import { AppAbstractControl } from '@modules/app-form/models/app-abstract-control.interface';
 
 @Component({
     selector: 'app-control-validation',

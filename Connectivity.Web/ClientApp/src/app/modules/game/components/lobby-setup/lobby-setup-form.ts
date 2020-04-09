@@ -1,6 +1,5 @@
-import { AppFormGroup, AppFormControl, AppFormArray } from '@modules/co-form/models';
+import { AppFormGroup, AppFormControl, AppFormArray } from '@modules/app-form/models';
 import { takeUntil } from 'rxjs/operators';
-import { Lobby } from '@modules/game/models';
 
 export class LobbySetupForm extends AppFormGroup {
     public get name(): AppFormControl {
