@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectivity.Web.Api", "Connectivity.API\Connectivity.Web.Api.csproj", "{F533DF61-0F7F-40E0-92E2-14F088D0D901}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Web.Api", "Connectivity.API\Connectivity.Web.Api.csproj", "{F533DF61-0F7F-40E0-92E2-14F088D0D901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectivity.Web", "Connectivity.Web\Connectivity.Web.csproj", "{2E88032B-1589-40A4-8EA4-3533D8269660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Web", "Connectivity.Web\Connectivity.Web.csproj", "{2E88032B-1589-40A4-8EA4-3533D8269660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connectivity.Models", "Connectivity.Models\Connectivity.Models.csproj", "{F9CD6865-255D-4960-B335-092F3BF098A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Models", "Connectivity.Models\Connectivity.Models.csproj", "{F9CD6865-255D-4960-B335-092F3BF098A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

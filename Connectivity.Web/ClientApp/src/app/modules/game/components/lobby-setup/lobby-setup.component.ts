@@ -38,7 +38,12 @@ export class LobbySetupComponent extends DestroyableComponent implements OnInit 
     }
 
     public onTeamCountChange(): void {
-        this.lobby.teams = [...Array(this.teamCount).keys()].map(i => this.lobby.teams[i] || new Team());
+        const originTeams = this.lobby.teams;
+
+        this.lobby.teams = [];
+        for (let i = 0; i < this.teamCount; i++) {
+            this.lobby.teams.push(originTeams[i] || new Team());
+        }
     }
 
     public onFormSubmit(): void {

@@ -120,7 +120,7 @@ export class GameHubComponent {
         this.canvasContext.closePath();
     }
 
-    erase() {
+    erase(e) {
         this.signalRService.transferData("BroadcastClearCanvas", this.roomId);
         this.canvasContext.clearRect(0, 0, this.w, this.h);
     }
@@ -163,7 +163,7 @@ export class GameHubComponent {
         }
     }
 
-    sendMessage() {
+    sendMessage(e) {
         let message = (<HTMLInputElement>document.getElementById("messageInput")).value;
         this.signalRService.transferData("BroadcastChatMessage", this.roomId, this.userName, message);
         (<HTMLInputElement>document.getElementById("messageInput")).value = '';
