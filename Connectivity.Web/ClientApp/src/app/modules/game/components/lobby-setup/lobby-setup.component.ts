@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Lobby, Team } from '@modules/game/models';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { newLobby, newLobbySuccess } from '@modules/game/actions/lobby.actions';
-import { DestroyableComponent } from '@shared/helpers';
-import { Actions, ofType } from '@ngrx/effects';
-import { Router } from '@angular/router';
+import { newLobby } from '@modules/game/actions/lobby.actions';
+import { DestroyableComponent } from '@shared/destroyable';
+import { LobbySetupForm } from './lobby-setup-form';
+import { validateForm } from '@modules/co-form/helpers';
+import { Lobby, Team } from '@modules/game/models';
 
 @Component({
     selector: 'app-lobby-setup',
@@ -12,41 +12,40 @@ import { Router } from '@angular/router';
     styleUrls: ['./lobby-setup.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LobbySetupComponent extends DestroyableComponent implements OnInit {
-    public lobby: Lobby;
-    public teamCount = 2;
+export class LobbySetupComponent extends DestroyableComponent implements OnInit, OnDestroy {
+    public lobbyForm: LobbySetupForm;
 
     constructor(
         private readonly store: Store,
-        private readonly actions: Actions,
-        private readonly router: Router,
     ) {
         super();
     }
 
     public ngOnInit(): void {
-        this.lobby = new Lobby({
-            teams: [
-                new Team(),
-                new Team(),
-            ]
-        });
-
-        this.actions
-            .pipe(ofType(newLobbySuccess))
-            .subscribe(() => this.router.navigate(['/lobby']));
+        this.lobbyForm = new LobbySetupForm();
     }
 
-    public onTeamCountChange(): void {
-        const originTeams = this.lobby.teams;
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        this.lobbyForm.destroy();
+    }
 
-        this.lobby.teams = [];
-        for (let i = 0; i < this.teamCount; i++) {
-            this.lobby.teams.push(originTeams[i] || new Team());
+    public onCreateLobbyClick(): void {
+        if (validateForm(this.lobbyForm)) {
+            this.store.dispatch(newLobby(this.createLobbyRequest()));
         }
     }
 
-    public onFormSubmit(): void {
-        this.store.dispatch(newLobby(this.lobby));
+    private createLobbyRequest(): Lobby {
+        const lobbyFormValue = this.lobbyForm.value;
+
+        const lobby = new Lobby({
+            name: lobbyFormValue.name,
+            teams: lobbyFormValue.teams.map(name => new Team({
+                name: name
+            })),
+        });
+
+        return lobby;
     }
 }

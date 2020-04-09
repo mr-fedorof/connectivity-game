@@ -6,11 +6,12 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { GameEngineFeatureName, gameEngineFeatureReducers } from './game-engine.feature';
 import { LobbyEffects } from './effects/lobby.effects';
-import { LobbyService } from './services';
+import { LobbyService, GameNavigationService } from './services';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { LobbySetupComponent } from './components/lobby-setup/lobby-setup.component';
 import { MasterComponent } from './components/master/master.component';
+import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { MasterComponent } from './components/master/master.component';
         EffectsModule.forFeature([
             LobbyEffects,
         ]),
+        SharedModule,
     ],
     declarations: [
         GameFieldComponent,
@@ -30,6 +32,7 @@ import { MasterComponent } from './components/master/master.component';
     ],
     providers: [
         LobbyService,
+        GameNavigationService,
     ]
 })
 export class GameModule { }

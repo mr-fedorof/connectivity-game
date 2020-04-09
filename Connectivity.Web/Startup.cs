@@ -77,7 +77,7 @@ namespace Connectivity.Web
 
                 if (Environment.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }

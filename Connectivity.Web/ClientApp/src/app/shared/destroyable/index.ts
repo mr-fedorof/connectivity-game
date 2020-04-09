@@ -1,3 +1,3 @@
 export * from './destroyable.interface';
-export * from './destroyable';
+export * from './destroyable.model';
 export * from './destroyable.component';
