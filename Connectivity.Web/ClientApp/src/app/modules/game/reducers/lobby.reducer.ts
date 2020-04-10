@@ -1,4 +1,4 @@
-import { createReducer, on, Action, ActionReducer } from '@ngrx/store';
+import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 
 import * as LobbyActions from '../actions/lobby.actions';
 
@@ -9,8 +9,8 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
 
     on(LobbyActions.newLobbySuccess, (state: Lobby, { payload }: LobbyActions.NewLobbySuccess): Lobby => ({
         ...state,
-        ...payload.lobby,
-    })),
+        ...payload.lobby
+    }))
 );
 
 export function lobbyReducer(state: Lobby, action: Action): Lobby {

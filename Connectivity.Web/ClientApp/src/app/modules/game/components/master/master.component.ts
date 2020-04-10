@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GameHubService } from '@modules/game/services';
 
 @Component({
@@ -8,14 +8,14 @@ import { GameHubService } from '@modules/game/services';
 })
 export class MasterComponent implements OnInit, OnDestroy {
   constructor(
-    private readonly gameHubService: GameHubService,
+    private readonly gameHubService: GameHubService
   ) { }
 
-  ngOnInit(): void {
-    this.gameHubService.start();
+  public ngOnDestroy(): void {
+    this.gameHubService.stop();
   }
 
-  ngOnDestroy(): void {
-    this.gameHubService.stop();
+  public ngOnInit(): void {
+    this.gameHubService.start();
   }
 }

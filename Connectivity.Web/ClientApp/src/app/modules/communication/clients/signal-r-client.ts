@@ -1,17 +1,17 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@aspnet/signalr';
-import { bindCallback, Observable, from } from 'rxjs';
+import { bindCallback, EMPTY, from, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 export class SignalRClient {
-    private _url: string;
-    private _hubConnection: HubConnection;
-
-    public get url(): string {
-        return this._url;
-    }
+    private readonly _hubConnection: HubConnection;
+    private readonly _url: string;
 
     public get connected(): boolean {
         return this._hubConnection && this._hubConnection.state === HubConnectionState.Connected;
+    }
+
+    public get url(): string {
+        return this._url;
     }
 
     constructor(url: string) {
@@ -21,24 +21,28 @@ export class SignalRClient {
             .build();
     }
 
-    public connect(): Observable<void> {
-        const request = this._hubConnection.start();
-
-        return from(request).pipe(take(1));
-    }
-
     public close(): Observable<void> {
         if (!this.connected) {
-            return;
+            return EMPTY;
         }
 
         const request = this._hubConnection.stop();
 
-        return from(request).pipe(take(1));
+        return from(request)
+            .pipe(take(1));
+    }
+
+    public connect(): Observable<void> {
+        const request = this._hubConnection.start();
+
+        return from(request)
+            .pipe(take(1));
     }
 
     public listen(eventName): Observable<any[]> {
-        const handler = bindCallback((e, c) => this._hubConnection.on(e, c));
+        const handler = bindCallback((e, c) => {
+            this._hubConnection.on(e, c);
+        });
 
         return handler(eventName);
     }

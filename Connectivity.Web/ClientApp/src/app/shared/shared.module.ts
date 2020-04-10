@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AppFormModule } from '@modules/app-form/app-form.module';
 import { CommunicationModule } from '@modules/communication/communication.module';
 
@@ -11,13 +11,13 @@ import { CommunicationModule } from '@modules/communication/communication.module
         RouterModule,
         ReactiveFormsModule,
         AppFormModule,
-        CommunicationModule,
+        CommunicationModule
     ],
     exports: [
         CommonModule,
         RouterModule,
         ReactiveFormsModule,
-        AppFormModule,
+        AppFormModule
     ]
 })
 export class SharedModule {

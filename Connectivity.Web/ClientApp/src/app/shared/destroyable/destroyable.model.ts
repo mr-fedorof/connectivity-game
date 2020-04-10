@@ -4,7 +4,7 @@ import { IDestroyable } from './destroyable.interface';
 export abstract class Destroyable implements IDestroyable {
     protected onDestroy = new Subject();
 
-    destroy() {
+    public destroy(): void {
         this.onDestroy.next();
         this.onDestroy.complete();
     }

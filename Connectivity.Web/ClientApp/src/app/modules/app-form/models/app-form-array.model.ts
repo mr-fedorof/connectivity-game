@@ -1,10 +1,10 @@
 import { AsyncValidatorFn, FormArray, ValidatorFn } from '@angular/forms';
 import { IDestroyable } from '@shared/destroyable';
-import { AppAbstractControl } from './app-abstract-control.interface';
-import { ErrorMessages } from '../types';
 import { Subject } from 'rxjs';
+import { IErrorMessages } from '../types';
+import { IAppAbstractControl } from './app-abstract-control.interface';
 
-export class AppFormArray extends FormArray implements AppAbstractControl, IDestroyable {
+export class AppFormArray extends FormArray implements IAppAbstractControl, IDestroyable {
     protected onDestroy = new Subject();
 
     public errorMessages: { [key: string]: string };
@@ -14,15 +14,19 @@ export class AppFormArray extends FormArray implements AppAbstractControl, IDest
         formState?: any,
         validator?: ValidatorFn | ValidatorFn[],
         asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[],
-        errorMessages?: ErrorMessages
+        errorMessages?: IErrorMessages
     ) {
         super(formState, validator, asyncValidator);
         this.errorMessages = errorMessages || {};
     }
 
-    destroy() {
+    public destroy(): void {
         Object.values(this.controls)
-            .forEach((control: any) => control.destroy && (<IDestroyable>control).destroy());
+            .forEach((control: any) => {
+                if (control.destroy) {
+                    control.destroy();
+                }
+            });
 
         this.onDestroy.next();
         this.onDestroy.complete();

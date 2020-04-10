@@ -1,8 +1,8 @@
-import * as _ from 'lodash';
-import { FormGroup, AbstractControl } from '@angular/forms';
-import { Subject, Observable } from 'rxjs';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { IDestroyable } from '@shared/destroyable';
-import { takeUntil, startWith, distinctUntilChanged, skip } from 'rxjs/operators';
+import * as _ from 'lodash';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, skip, startWith, takeUntil } from 'rxjs/operators';
 
 export class AppFormGroup extends FormGroup implements IDestroyable {
     protected onDestroy = new Subject();
@@ -12,7 +12,7 @@ export class AppFormGroup extends FormGroup implements IDestroyable {
             .pipe(
                 takeUntil(this.onDestroy),
                 startWith(this.value),
-                distinctUntilChanged(),
+                distinctUntilChanged()
             );
     }
 
@@ -22,19 +22,23 @@ export class AppFormGroup extends FormGroup implements IDestroyable {
                 takeUntil(this.onDestroy),
                 startWith(this.value),
                 distinctUntilChanged(),
-                skip(1),
+                skip(1)
             );
     }
 
-    public addControls(controls: {[key: string]: AbstractControl}) {
+    public addControls(controls: {[key: string]: AbstractControl}): void {
         _.each(controls, (value, key) => {
             this.addControl(key, value);
         });
     }
 
-    destroy() {
+    public destroy(): void {
         Object.values(this.controls)
-            .forEach((control: any) => control.destroy && (<IDestroyable>control).destroy());
+            .forEach((control: any) => {
+                if (control.destroy) {
+                    control.destroy();
+                }
+            });
 
         this.onDestroy.next();
         this.onDestroy.complete();

@@ -1,5 +1,5 @@
-import { Team } from './team.model';
 import { Game } from './game.model';
+import { Team } from './team.model';
 
 export interface ILobby {
     id: string;

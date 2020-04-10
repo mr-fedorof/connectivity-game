@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SignalRClient } from '../clients';
 import { environment } from '@env';
+import { SignalRClient } from '../clients';
 
 @Injectable()
 export class SignalRService {

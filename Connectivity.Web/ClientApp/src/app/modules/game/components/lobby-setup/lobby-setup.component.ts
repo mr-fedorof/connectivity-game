@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { validateForm } from '@modules/app-form/helpers';
 import { newLobby } from '@modules/game/actions/lobby.actions';
+import { Lobby, Team } from '@modules/game/models';
+import { Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { LobbySetupForm } from './lobby-setup-form';
-import { validateForm } from '@modules/app-form/helpers';
-import { Lobby, Team } from '@modules/game/models';
 
 @Component({
     selector: 'app-lobby-setup',
@@ -16,18 +16,18 @@ export class LobbySetupComponent extends DestroyableComponent implements OnInit,
     public lobbyForm: LobbySetupForm;
 
     constructor(
-        private readonly store: Store,
+        private readonly store: Store
     ) {
         super();
     }
 
-    public ngOnInit(): void {
-        this.lobbyForm = new LobbySetupForm();
-    }
-
-    ngOnDestroy() {
+    public ngOnDestroy(): void {
         super.ngOnDestroy();
         this.lobbyForm.destroy();
+    }
+
+    public ngOnInit(): void {
+        this.lobbyForm = new LobbySetupForm();
     }
 
     public onCreateLobbyClick(): void {
@@ -42,8 +42,8 @@ export class LobbySetupComponent extends DestroyableComponent implements OnInit,
         const lobby = new Lobby({
             name: lobbyFormValue.name,
             teams: lobbyFormValue.teams.map(name => new Team({
-                name: name
-            })),
+                name
+            }))
         });
 
         return lobby;

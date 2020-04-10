@@ -1,5 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { AppAbstractControl } from '@modules/app-form/models/app-abstract-control.interface';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { IAppAbstractControl } from '@modules/app-form/models/app-abstract-control.interface';
 
 @Component({
     selector: 'app-control-validation',
@@ -7,21 +7,21 @@ import { AppAbstractControl } from '@modules/app-form/models/app-abstract-contro
     changeDetection: ChangeDetectionStrategy.Default
 })
 export class ControlValidationComponent implements OnInit {
-    @Input() controlNameKey: string;
-    @Input() control: AppAbstractControl;
+    @Input() public control: IAppAbstractControl;
+    @Input() public controlNameKey: string;
 
-    get isErrorsVisible() {
-        return this.control.touched && this.control.errors;
-    }
-
-    get customErrorKeys() {
+    public get customErrorKeys(): string[] {
         return Object.keys(this.control.errors || {})
             .filter(key => key.startsWith('custom') && this.control.hasError(key));
     }
 
+    public get isErrorsVisible(): boolean {
+        return !!this.control.touched && !!this.control.errors;
+    }
+
     constructor(private readonly cdr: ChangeDetectorRef) {}
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         if (!this.controlNameKey) {
             this.controlNameKey = this.control.nameKey;
         }

@@ -1,7 +1,7 @@
 import { AbstractControl } from '@angular/forms';
-import { ErrorMessages } from '../types';
+import { IErrorMessages } from '../types';
 
-export interface AppAbstractControl extends AbstractControl {
-    errorMessages: ErrorMessages;
+export interface IAppAbstractControl extends AbstractControl {
+    errorMessages: IErrorMessages;
     nameKey: string;
 }

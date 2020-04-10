@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { ControlValidationComponent } from './components/control-validation/control-validation.component';
@@ -7,14 +7,14 @@ import { ControlValidationComponent } from './components/control-validation/cont
 @NgModule({
     imports: [
         CommonModule,
-        ReactiveFormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
-        ControlValidationComponent,
+        ControlValidationComponent
     ],
     exports: [
         ReactiveFormsModule,
-        ControlValidationComponent,
+        ControlValidationComponent
     ]
 })
 export class AppFormModule {

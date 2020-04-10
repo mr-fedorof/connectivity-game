@@ -1,3 +1,5 @@
+
+// tslint:disable: no-console no-void-expression
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

@@ -1,17 +1,17 @@
-import { AppFormGroup, AppFormControl, AppFormArray } from '@modules/app-form/models';
+import { AppFormArray, AppFormControl, AppFormGroup } from '@modules/app-form/models';
 import { takeUntil } from 'rxjs/operators';
 
 export class LobbySetupForm extends AppFormGroup {
     public get name(): AppFormControl {
-        return <AppFormControl>this.controls.name;
+        return this.controls.name as AppFormControl;
     }
 
     public get teamCount(): AppFormControl {
-        return <AppFormControl>this.controls.teamCount;
+        return this.controls.teamCount as AppFormControl;
     }
 
     public get teams(): AppFormArray {
-        return <AppFormArray>this.controls.teams;
+        return this.controls.teams as AppFormArray;
     }
 
     constructor() {
@@ -34,7 +34,7 @@ export class LobbySetupForm extends AppFormGroup {
                 '',
                 [
                     this.createTeamControl(1),
-                    this.createTeamControl(2),
+                    this.createTeamControl(2)
                 ]
             )
         });

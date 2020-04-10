@@ -1,12 +1,12 @@
-import { Injectable, Inject } from '@angular/core';
-import { Action } from '@ngrx/store';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { EMPTY, Observable } from 'rxjs';
-import { map, catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import * as LobbyActions from '../actions/lobby.actions';
-import { LobbyService, GameNavigationService } from '../services';
 import { Lobby } from '../models';
+import { GameNavigationService, LobbyService } from '../services';
 
 @Injectable()
 export class LobbyEffects {
@@ -21,7 +21,7 @@ export class LobbyEffects {
     ));
 
     constructor(
-        private actions$: Actions,
+        private readonly actions$: Actions,
         private readonly lobbyService: LobbyService,
         private readonly gameNavigationService: GameNavigationService
     ) { }

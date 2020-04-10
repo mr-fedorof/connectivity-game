@@ -1,14 +1,17 @@
-import { FormGroup, AbstractControl, FormArray } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 
-export function forEachControl(form: FormGroup, action: (child: AbstractControl) => void) {
+export function forEachControl(form: FormGroup, action: (child: AbstractControl) => void): void {
     action(form);
 
     if (!form.controls) {
         return;
     }
 
-    Object.values(form.controls).forEach(control => forEachControl(control as FormGroup, action));
+    Object.values(form.controls)
+        .forEach(control => {
+            forEachControl(control as FormGroup, action);
+        });
 }
 
 export function everyControl(form: FormArray | FormGroup | AbstractControl, action: (child: AbstractControl) => boolean): boolean {
@@ -39,7 +42,7 @@ function getControls(form: FormArray | FormGroup | AbstractControl): AbstractCon
     return [];
 }
 
-export function validateForm(form: FormGroup, onlySelf: boolean = false) {
+export function validateForm(form: FormGroup, onlySelf = false): boolean {
     if (isValid(form)) {
         return true;
     }
@@ -49,7 +52,7 @@ export function validateForm(form: FormGroup, onlySelf: boolean = false) {
     return false;
 }
 
-export function highlightErrors(form: FormGroup, onlySelf: boolean = false) {
+export function highlightErrors(form: FormGroup, onlySelf = false): void {
     forEachControl(form, control => {
         if (control.disabled) {
             return;
@@ -62,7 +65,7 @@ export function highlightErrors(form: FormGroup, onlySelf: boolean = false) {
     });
 }
 
-export function isValid(form: FormArray | FormGroup | AbstractControl) {
+export function isValid(form: FormArray | FormGroup | AbstractControl): boolean {
     // TODO: Parent form stays valid though it has invalid children. Investigate and try to figure out a better option.
     // https://github.com/angular/angular/issues/12812
     return everyControl(form, control => !control.enabled || control.valid);

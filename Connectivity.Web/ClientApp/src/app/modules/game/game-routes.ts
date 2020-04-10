@@ -10,7 +10,7 @@ export const routes: Routes = [
         component: MasterComponent,
         children: [
             { path: 'lobby/setup', component: LobbySetupComponent },
-            { path: 'lobby/:id', component: LobbyComponent },
+            { path: 'lobby/:id', component: LobbyComponent }
         ]
-    },
+    }
 ];

@@ -1,16 +1,15 @@
 import { AsyncValidatorFn, FormControl, ValidatorFn, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { startWith, distinctUntilChanged, skip, takeUntil } from 'rxjs/operators';
 import { IDestroyable } from '@shared/destroyable';
-import { ErrorMessages } from '../types';
-import { AppAbstractControl } from './app-abstract-control.interface';
-import { AppControlOptions } from './app-control-options.interface';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, skip, startWith, takeUntil } from 'rxjs/operators';
+import { IErrorMessages } from '../types';
+import { IAppAbstractControl } from './app-abstract-control.interface';
+import { IAppControlOptions } from './app-control-options.interface';
 
-export class AppFormControl extends FormControl implements AppAbstractControl, IDestroyable {
+export class AppFormControl extends FormControl implements IAppAbstractControl, IDestroyable {
     protected onDestroy = new Subject();
 
-    public errorMessages: ErrorMessages;
-
+    public errorMessages: IErrorMessages;
     public maxLength?: number;
     public required?: boolean;
 
@@ -19,7 +18,7 @@ export class AppFormControl extends FormControl implements AppAbstractControl, I
             .pipe(
                 takeUntil(this.onDestroy),
                 startWith(this.value),
-                distinctUntilChanged(),
+                distinctUntilChanged()
             );
     }
 
@@ -29,7 +28,7 @@ export class AppFormControl extends FormControl implements AppAbstractControl, I
                 takeUntil(this.onDestroy),
                 startWith(this.value),
                 distinctUntilChanged(),
-                skip(1),
+                skip(1)
             );
     }
 
@@ -38,8 +37,8 @@ export class AppFormControl extends FormControl implements AppAbstractControl, I
         formState?: any,
         validators?: ValidatorFn[],
         asyncValidators?: AsyncValidatorFn[],
-        errorMessages?: ErrorMessages,
-        public options?: AppControlOptions
+        errorMessages?: IErrorMessages,
+        public options?: IAppControlOptions
     ) {
         super(formState, null, asyncValidators);
 
@@ -60,7 +59,7 @@ export class AppFormControl extends FormControl implements AppAbstractControl, I
         this.setValidators(validators);
     }
 
-    public destroy() {
+    public destroy(): void {
         this.onDestroy.next();
         this.onDestroy.complete();
     }

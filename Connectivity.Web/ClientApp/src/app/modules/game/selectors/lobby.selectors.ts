@@ -1,9 +1,9 @@
-import { MemoizedSelector, createSelector } from '@ngrx/store';
+import { createSelector, MemoizedSelector } from '@ngrx/store';
+import { IGameEngineFeature } from '../game-engine.feature';
 import { Lobby } from '../models';
-import { GameEngineFeature } from '../game-engine.feature';
 import { gameEngineFeatureSelector } from './game-engine.selectors';
 
-export const lobbySelector: MemoizedSelector<GameEngineFeature, Lobby> = createSelector(
+export const lobbySelector: MemoizedSelector<IGameEngineFeature, Lobby> = createSelector(
     gameEngineFeatureSelector,
-    (featureState: GameEngineFeature) => featureState.lobby
+    (featureState: IGameEngineFeature) => featureState.lobby
 );

@@ -3,12 +3,12 @@ import { ActionReducerMap } from '@ngrx/store';
 import { Lobby } from './models';
 import { lobbyReducer } from './reducers/lobby.reducer';
 
-export interface GameEngineFeature {
+export interface IGameEngineFeature {
     lobby: Lobby;
-};
+}
 
-export const GameEngineFeatureName = 'GAME_ENGINE';
+export const GAME_ENGINE_FEATURE_NAME = 'GAME_ENGINE';
 
-export const gameEngineFeatureReducers: ActionReducerMap<GameEngineFeature> = {
+export const gameEngineFeatureReducers: ActionReducerMap<IGameEngineFeature> = {
     lobby: lobbyReducer
 };
