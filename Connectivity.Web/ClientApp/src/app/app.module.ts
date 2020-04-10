@@ -6,8 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { GameHubComponent } from './game-hub/game-hub.component';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -32,8 +30,6 @@ import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    GameHubComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

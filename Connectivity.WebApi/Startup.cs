@@ -25,11 +25,13 @@ namespace Connectivity.WebApi
         {
             services.AddCors(options =>
             {
-                // TODO: Restrict policy
                 options.AddPolicy(
                     "CorsPolicy",
                     builder => builder
-                        .AllowAnyOrigin()
+                        .WithOrigins(Configuration.GetSection("AllowedCorsOrigins").Get<string[]>())
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
                 );
             });
 
@@ -52,7 +54,7 @@ namespace Connectivity.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<MultiHub>("/MultiHub");
+                endpoints.MapHub<GameHub>("hub/game");
             });
         }
     }

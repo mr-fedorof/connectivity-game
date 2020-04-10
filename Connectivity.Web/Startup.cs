@@ -22,16 +22,6 @@ namespace Connectivity.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                // TODO: Restrict policy
-                options.AddPolicy(
-                    "CorsPolicy",
-                    builder => builder
-                        .AllowAnyOrigin()
-                );
-            });
-
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>
@@ -59,8 +49,6 @@ namespace Connectivity.Web
             {
                 app.UseSpaStaticFiles();
             }
-
-            app.UseCors("CorsPolicy");
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>
