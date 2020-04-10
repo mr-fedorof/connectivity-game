@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Connectivity.Web.Api.Hubs
+namespace Connectivity.WebApi.Hubs
 {
     public class MultiHub : Hub
     {
