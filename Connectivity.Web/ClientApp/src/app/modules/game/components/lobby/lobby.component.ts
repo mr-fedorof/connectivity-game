@@ -3,6 +3,7 @@ import { Lobby } from '@modules/game/models';
 import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import * as PlayerActions from '../../actions/player.actions';
 
 @Component({
     selector: 'app-lobby',
@@ -19,5 +20,12 @@ export class LobbyComponent implements OnInit {
 
     public ngOnInit(): void {
         this.lobby$ = this.store.pipe(select(lobbySelector));
+    }
+
+    public sendAction(): void {
+        const cardId: string = Math.random()
+            .toString();
+
+        this.store.dispatch(PlayerActions.takeCardPlayer('1', cardId));
     }
 }

@@ -1,6 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -19,11 +18,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
     AppRoutingModule,
-
-    // TODO: move to shared
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule
+    HttpClientModule
   ],
   declarations: [
     AppComponent,

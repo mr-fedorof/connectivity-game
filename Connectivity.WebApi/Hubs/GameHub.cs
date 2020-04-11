@@ -7,14 +7,18 @@ namespace Connectivity.WebApi.Hubs
 {
     public class GameHub : Hub
     {
-        public async override Task OnConnectedAsync()
+        public async Task<bool> ConnectToLobby(string lobbyId)
         {
-            Debug.WriteLine("Connected");
+            await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
+
+            return true;
         }
 
-        public async override Task OnDisconnectedAsync(Exception exception)
+        public async Task GameAction(string lobbyId, object payload)
         {
-            Debug.WriteLine("Disconnected");
+            await Clients
+                .GroupExcept(lobbyId, Context.ConnectionId)
+                .SendCoreAsync(nameof(GameAction), new []{ payload });
         }
 
         // public async Task JoinRoom(string roomId, string userName)

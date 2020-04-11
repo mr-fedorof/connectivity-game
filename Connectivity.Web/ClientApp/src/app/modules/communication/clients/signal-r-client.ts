@@ -39,7 +39,7 @@ export class SignalRClient {
             .pipe(take(1));
     }
 
-    public listen(eventName): Observable<any[]> {
+    public listen(eventName: string): Observable<any[]> {
         const handler = bindCallback((e, c) => {
             this._hubConnection.on(e, c);
         });
@@ -47,7 +47,13 @@ export class SignalRClient {
         return handler(eventName);
     }
 
-    public sendAsync(eventName, ...args): Observable<void> {
+    public send(eventName: string, ...args: any[]): Observable<void> {
+        const request = this._hubConnection.send(eventName, ...args);
+
+        return from(request);
+    }
+
+    public invoke(eventName: string, ...args: any[]): Observable<any> {
         const request = this._hubConnection.invoke(eventName, ...args);
 
         return from(request);

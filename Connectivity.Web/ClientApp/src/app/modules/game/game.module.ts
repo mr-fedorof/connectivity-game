@@ -7,10 +7,10 @@ import { SharedModule } from '@shared/shared.module';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { LobbySetupComponent } from './components/lobby-setup/lobby-setup.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
-import { MasterComponent } from './components/master/master.component';
 import { LobbyEffects } from './effects/lobby.effects';
 import { gameEngineFeatureReducers, GAME_ENGINE_FEATURE_NAME } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
+import { GameStateGuard } from './guards';
 import { GameHubService, GameNavigationService, LobbyService } from './services';
 
 @NgModule({
@@ -27,13 +27,13 @@ import { GameHubService, GameNavigationService, LobbyService } from './services'
     declarations: [
         GameFieldComponent,
         LobbyComponent,
-        LobbySetupComponent,
-        MasterComponent
+        LobbySetupComponent
     ],
     providers: [
         LobbyService,
         GameNavigationService,
-        GameHubService
+        GameHubService,
+        GameStateGuard
     ]
 })
 export class GameModule { }
