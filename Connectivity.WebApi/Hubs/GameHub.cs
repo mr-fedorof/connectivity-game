@@ -21,21 +21,6 @@ namespace Connectivity.WebApi.Hubs
                 .SendCoreAsync(nameof(GameAction), new []{ payload });
         }
 
-        // public async Task JoinRoom(string roomId, string userName)
-        // {
-        //     await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-        //
-        //     await Clients.Group(roomId).SendAsync("ReceiveServiceMessage", $"{Context.ConnectionId} AKA {userName} has joined the room {roomId}.");
-        // }
-        //
-        // public async Task LeaveRoom(string roomId, string userName)
-        // {
-        //     await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
-        //
-        //     await Clients.Group(roomId).SendAsync("ReceiveServiceMessage", $"{Context.ConnectionId} has left the group {roomId}.");
-        // }
-        //
-        //
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)
         // {
         //     await Clients.OthersInGroup(roomId).SendAsync("Draw", new

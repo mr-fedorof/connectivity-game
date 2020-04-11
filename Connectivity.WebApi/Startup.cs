@@ -1,4 +1,5 @@
 using Connectivity.WebApi.Hubs;
+using Connectivity.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +38,10 @@ namespace Connectivity.WebApi
 
             services.AddControllers();
             services.AddSignalR();
+
+            services.AddMemoryCache();
+
+            services.AddScoped<ILobbyService, LobbyService>();
         }
 
         public void Configure(IApplicationBuilder app)
