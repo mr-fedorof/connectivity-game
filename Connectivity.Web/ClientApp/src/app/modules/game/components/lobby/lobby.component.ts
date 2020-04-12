@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Lobby } from '@modules/game/models';
-import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
+import { takeCardPlayerAction } from '@modules/game/actions';
+import { GameSession, Lobby, Player } from '@modules/game/models';
+import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
+import { lobbySelector, playersSelector } from '@modules/game/selectors/lobby.selectors';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import * as PlayerActions from '../../actions/player.actions';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby',
@@ -12,6 +14,7 @@ import * as PlayerActions from '../../actions/player.actions';
 })
 export class LobbyComponent implements OnInit {
     public lobby$: Observable<Lobby>;
+    public gameSession$: Observable<GameSession>;
 
     constructor(
         private readonly store: Store
@@ -20,12 +23,16 @@ export class LobbyComponent implements OnInit {
 
     public ngOnInit(): void {
         this.lobby$ = this.store.pipe(select(lobbySelector));
+        this.gameSession$ = this.store.pipe(select(gameSessionSelector));
     }
 
     public sendAction(): void {
-        const cardId: string = Math.random()
-            .toString();
+        const cardType: number = Math.random();
 
-        this.store.dispatch(PlayerActions.takeCardPlayer('1', cardId));
+        this.gameSession$
+            .pipe(take(1))
+            .subscribe(gameSession => {
+                this.store.dispatch(takeCardPlayerAction(gameSession.playerId, cardType));
+            });
     }
 }

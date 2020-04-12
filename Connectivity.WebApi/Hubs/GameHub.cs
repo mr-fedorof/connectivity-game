@@ -1,24 +1,39 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Connectivity.WebApi.Models;
+using Connectivity.WebApi.Services;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Connectivity.WebApi.Hubs
 {
     public class GameHub : Hub
     {
-        public async Task<bool> ConnectToLobby(string lobbyId)
-        {
-            await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
+        private readonly ILobbyService _lobbyService;
 
-            return true;
+        public GameHub(ILobbyService lobbyService)
+        {
+            _lobbyService = lobbyService;
         }
 
-        public async Task GameAction(string lobbyId, object payload)
+        public async Task<Lobby> ConnectToLobby(string lobbyId)
+        {
+            var lobby = await _lobbyService.GetLobbyAsync(lobbyId);
+            if (lobby == null)
+            {
+                return null;
+            }
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
+
+            return lobby;
+        }
+
+        public async Task GameAction(string lobbyId, object action)
         {
             await Clients
                 .GroupExcept(lobbyId, Context.ConnectionId)
-                .SendCoreAsync(nameof(GameAction), new []{ payload });
+                .SendCoreAsync(nameof(GameAction), new []{ action });
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

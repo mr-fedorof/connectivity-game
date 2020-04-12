@@ -51,6 +51,7 @@
       "check-accessor",
       "check-parameter-property"
     ],
-    "no-unused-css": false
+    "no-unused-css": false,
+    "no-unnecessary-callback-wrapper": false
   }
 }

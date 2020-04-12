@@ -5,13 +5,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 import { GameFieldComponent } from './components/game-field/game-field.component';
+import { GameSyncComponent } from './components/game-sync/game-sync.component';
 import { LobbySetupComponent } from './components/lobby-setup/lobby-setup.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
+import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
 import { LobbyEffects } from './effects/lobby.effects';
 import { gameEngineFeatureReducers, GAME_ENGINE_FEATURE_NAME } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
-import { GameStateGuard } from './guards';
-import { GameHubService, GameNavigationService, LobbyService } from './services';
+import { GameSessionAuthorizedGuard, GameSessionNotAuthorizedGuard, GameSessionRestoredGuard } from './guards';
+import { GameHubService, GameNavigationService, GameSessionService, LobbyService } from './services';
 
 @NgModule({
     imports: [
@@ -27,13 +29,18 @@ import { GameHubService, GameNavigationService, LobbyService } from './services'
     declarations: [
         GameFieldComponent,
         LobbyComponent,
-        LobbySetupComponent
+        LobbySetupComponent,
+        PlayerIdentificationComponent,
+        GameSyncComponent
     ],
     providers: [
         LobbyService,
         GameNavigationService,
         GameHubService,
-        GameStateGuard
+        GameSessionAuthorizedGuard,
+        GameSessionNotAuthorizedGuard,
+        GameSessionRestoredGuard,
+        GameSessionService
     ]
 })
 export class GameModule { }

@@ -10,7 +10,15 @@ export class GameNavigationService {
     ) {
     }
 
+    public goToHome(): void {
+        this.router.navigate(['']);
+    }
+
     public goToLobby(id: string): void {
         this.router.navigate([`/lobby/${id}`]);
+    }
+
+    public goToPlayerIdentification(id: string): void {
+        this.router.navigate([`/lobby/${id}/player-identification`]);
     }
 }

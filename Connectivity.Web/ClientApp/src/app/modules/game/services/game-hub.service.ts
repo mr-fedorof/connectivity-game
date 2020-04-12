@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SignalRClient, SignalRService } from '@modules/communication';
-import { Observable } from 'rxjs';
-import { GameHubEvent } from '../enums';
 import { Action } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { GameHubEvent } from '../enums';
+import { Lobby } from '../models';
 
 @Injectable()
 export class GameHubService {
@@ -20,17 +21,21 @@ export class GameHubService {
     }
 
     public start(): Observable<void> {
+        if (this.isActive) {
+            return of(false) as any as Observable<void>;
+        }
+
         return this.client.connect();
     }
 
-    public connectToLobby(lobbyId: string): Observable<boolean> {
+    public connectToLobby(lobbyId: string): Observable<Lobby> {
         return this.client.invoke('ConnectToLobby', lobbyId);
     }
 
     public listenToActions(): Observable<Action> {
         return this.client.listen(GameHubEvent.gameAction)
             .pipe(
-                map(action => action as any as Action)
+                map(([action]) => action as Action)
             );
     }
 
@@ -39,6 +44,10 @@ export class GameHubService {
     }
 
     public stop(): Observable<void> {
+        if (!this.isActive) {
+            return of(false) as any as Observable<void>;
+        }
+
         return this.client.close();
     }
 }

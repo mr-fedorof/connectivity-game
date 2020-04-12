@@ -1,5 +1,5 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@aspnet/signalr';
-import { bindCallback, EMPTY, from, Observable } from 'rxjs';
+import { bindCallback, EMPTY, from, Observable, of, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 export class SignalRClient {
@@ -7,7 +7,7 @@ export class SignalRClient {
     private readonly _url: string;
 
     public get connected(): boolean {
-        return this._hubConnection && this._hubConnection.state === HubConnectionState.Connected;
+        return this._hubConnection?.state === HubConnectionState.Connected;
     }
 
     public get url(): string {
@@ -40,11 +40,13 @@ export class SignalRClient {
     }
 
     public listen(eventName: string): Observable<any[]> {
-        const handler = bindCallback((e, c) => {
-            this._hubConnection.on(e, c);
+        const subject = new Subject<any[]>();
+
+        this._hubConnection.on(eventName, (...args) => {
+            subject.next(args);
         });
 
-        return handler(eventName);
+        return subject.asObservable();
     }
 
     public send(eventName: string, ...args: any[]): Observable<void> {

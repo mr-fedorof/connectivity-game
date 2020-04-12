@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
-import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { routerReducer } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +16,6 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
       router: routerReducer
     }),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot(),
     AppRoutingModule,
     HttpClientModule
   ],

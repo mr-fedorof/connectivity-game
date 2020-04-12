@@ -1,21 +1,36 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-
-import * as LobbyActions from '../actions/lobby.actions';
-import * as PlayerActions from '../actions/player.actions';
-
+import {
+    createLobbySuccessAction,
+    CreateLobbySuccessAction,
+    newPlayerAction,
+    NewPlayerAction,
+    RestoreLobbyAction,
+    restoreLobbyAction,
+    takeCardPlayerAction,
+    TakeCardPlayerAction
+} from '../actions';
 import { initialLobby, Lobby } from '../models';
 
 const _lobbyReducer: ActionReducer<Lobby> = createReducer(
     initialLobby,
 
-    on(LobbyActions.newLobbySuccess, (state: Lobby, { payload }: LobbyActions.NewLobbySuccess): Lobby => ({
+    on(createLobbySuccessAction, (state: Lobby, { payload }: CreateLobbySuccessAction): Lobby => ({
         ...state,
         ...payload.lobby
     })),
 
-    on(PlayerActions.takeCardPlayer, (state: Lobby, { payload }: PlayerActions.TakeCardPlayer): Lobby => ({
+    on(restoreLobbyAction, (state: Lobby, { payload }: RestoreLobbyAction): Lobby => ({
+        ...payload.lobby
+    })),
+
+    on(newPlayerAction, (state: Lobby, { payload }: NewPlayerAction): Lobby => ({
         ...state,
-        name: `${state.name} - ${payload.cardId}`
+        players: [...state.players || [], payload.player]
+    })),
+
+    on(takeCardPlayerAction, (state: Lobby, { payload }: TakeCardPlayerAction): Lobby => ({
+        ...state,
+        name: `${state.name} - ${payload.cardType}`
     }))
 );
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { validateForm } from '@modules/app-form/helpers';
-import { newLobby } from '@modules/game/actions/lobby.actions';
+import { createLobbyAction } from '@modules/game/actions/lobby.actions';
 import { Lobby, Team } from '@modules/game/models';
 import { Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -32,7 +32,7 @@ export class LobbySetupComponent extends DestroyableComponent implements OnInit,
 
     public onCreateLobbyClick(): void {
         if (validateForm(this.lobbyForm)) {
-            this.store.dispatch(newLobby(this.createLobbyRequest()));
+            this.store.dispatch(createLobbyAction(this.createLobbyRequest()));
         }
     }
 

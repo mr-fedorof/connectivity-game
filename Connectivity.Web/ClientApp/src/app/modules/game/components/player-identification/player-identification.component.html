@@ -1,0 +1,11 @@
+<h3>Player</h3>
+
+<form autocomplete="off" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <div class="form-group">
+        <label for="player-name">Name</label>
+        <input type="text" class="form-control" id="player-name" name="name" [formControl]="form.name" />
+        <app-control-validation [control]="form.name"></app-control-validation>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Go</button>
+</form>
