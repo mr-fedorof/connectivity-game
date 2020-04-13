@@ -1,7 +1,7 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import {
-    createLobbySuccessAction,
-    CreateLobbySuccessAction,
+    createLobbyAction,
+    CreateLobbyAction,
     newPlayerAction,
     NewPlayerAction,
     RestoreLobbyAction,
@@ -14,8 +14,7 @@ import { initialLobby, Lobby } from '../models';
 const _lobbyReducer: ActionReducer<Lobby> = createReducer(
     initialLobby,
 
-    on(createLobbySuccessAction, (state: Lobby, { payload }: CreateLobbySuccessAction): Lobby => ({
-        ...state,
+    on(createLobbyAction, (state: Lobby, { payload }: CreateLobbyAction): Lobby => ({
         ...payload.lobby
     })),
 

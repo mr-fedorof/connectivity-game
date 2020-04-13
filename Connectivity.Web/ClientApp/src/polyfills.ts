@@ -60,3 +60,6 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// tslint:disable-next-line: no-import-side-effect
+import '@modules/spinner/extensions/wrap-with-spinner.extension';

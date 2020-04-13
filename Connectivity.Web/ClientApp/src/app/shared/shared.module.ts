@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppFormModule } from '@modules/app-form/app-form.module';
 import { CommunicationModule } from '@modules/communication/communication.module';
+import { SpinnerModule } from '@modules/spinner';
 
 @NgModule({
     imports: [
@@ -11,7 +12,8 @@ import { CommunicationModule } from '@modules/communication/communication.module
         RouterModule,
         ReactiveFormsModule,
         AppFormModule,
-        CommunicationModule
+        CommunicationModule,
+        SpinnerModule
     ],
     exports: [
         CommonModule,

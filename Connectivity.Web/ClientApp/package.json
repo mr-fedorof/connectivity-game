@@ -1,11 +1,11 @@
 {
-  "name": "connectivity.web",
+  "name": "connectivity-web",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng run Connectivity.Web:server:dev",
+    "build:ssr": "ng run connectivity-web:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -54,11 +54,11 @@
     "karma-coverage-istanbul-reporter": "~2.0.5",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "node-sass": "^4.13.1",
     "tslint": "^6.1.1",
     "typescript": "3.8.3"
   },
   "optionalDependencies": {
-    "node-sass": "^4.9.3",
     "protractor": "~5.4.0",
     "ts-node": "~5.0.1"
   }

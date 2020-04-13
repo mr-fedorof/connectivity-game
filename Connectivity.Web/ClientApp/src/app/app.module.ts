@@ -1,6 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SpinnerModule } from '@modules/spinner';
 import { EffectsModule } from '@ngrx/effects';
 import { routerReducer } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
@@ -12,12 +14,14 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 @NgModule({
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserAnimationsModule,
     StoreModule.forRoot({
       router: routerReducer
     }),
     EffectsModule.forRoot([]),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    SpinnerModule.forRoot()
   ],
   declarations: [
     AppComponent,

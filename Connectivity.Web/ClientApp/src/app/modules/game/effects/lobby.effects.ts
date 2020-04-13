@@ -6,8 +6,6 @@ import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators'
 import {
     createLobbyAction,
     CreateLobbyAction,
-    createLobbySuccessAction,
-    CreateLobbySuccessAction,
     joinPlayerAction,
     JoinPlayerAction,
     newPlayerAction,
@@ -21,14 +19,7 @@ import { GameNavigationService, GameSessionService, LobbyService } from '../serv
 export class LobbyEffects {
     public createLobby$: Observable<Action> = createEffect(() => this.actions$.pipe(
         ofType(createLobbyAction),
-        switchMap(({ payload }: CreateLobbyAction) => this.lobbyService.createLobby(payload.lobby)),
-        map((lobby: Lobby) => createLobbySuccessAction(lobby)),
-        catchError(() => EMPTY)
-    ));
-
-    public createLobbySuccess$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(createLobbySuccessAction),
-        tap(({ payload }: CreateLobbySuccessAction) => {
+        tap(({ payload }: CreateLobbyAction) => {
             this.gameNavigationService.goToLobby(payload.lobby.id);
         }),
         switchMap(() => EMPTY),

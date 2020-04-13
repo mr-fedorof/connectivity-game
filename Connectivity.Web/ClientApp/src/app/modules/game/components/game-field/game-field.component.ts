@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-game-field',
-    templateUrl: './game-field.component.html',
-    styleUrls: ['./game-field.component.css']
+    templateUrl: './game-field.component.html'
 })
 export class GameFieldComponent {
     // public readonly gameId$: Observable<string>;

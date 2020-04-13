@@ -9,8 +9,7 @@ import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby',
-    templateUrl: './lobby.component.html',
-    styleUrls: ['./lobby.component.css']
+    templateUrl: './lobby.component.html'
 })
 export class LobbyComponent implements OnInit {
     public lobby$: Observable<Lobby>;
