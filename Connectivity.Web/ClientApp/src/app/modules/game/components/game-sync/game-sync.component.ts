@@ -56,7 +56,7 @@ export class GameSyncComponent extends DestroyableComponent implements OnInit {
             )
             .subscribe((action: Action) => {
                 // tslint:disable-next-line: no-console
-                console.log(action);
+                console.log('in:', action);
                 this.store.dispatch(action);
             });
     }
@@ -71,12 +71,13 @@ export class GameSyncComponent extends DestroyableComponent implements OnInit {
                         return false;
                     }
 
-                    // tslint:disable-next-line: no-console
-                    console.log(action);
                     return action.type.includes('[S]') && !(action as any).playerId;
                 })
             )
             .subscribe(([action, gameSession]) => {
+                // tslint:disable-next-line: no-console
+                console.log('out:', action);
+
                 const extendedAction = {
                     ...action,
                     playerId: gameSession.playerId
