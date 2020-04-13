@@ -1,7 +1,9 @@
+using Connectivity.Application.Services;
+using Connectivity.Persistence;
 using Connectivity.WebApi.Hubs;
-using Connectivity.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,16 @@ namespace Connectivity.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddDbContext<ConnectivityDbContext>(builder =>
+                {
+                    var accountEndpoint = Configuration["CosmosDB:AccountEndpoint"];
+                    var accountKey = Configuration["CosmosDB:AccountKey"];
+                    var databaseName = Configuration["CosmosDB:DatabaseName"];
+                    
+                    builder.UseCosmos(accountEndpoint, accountKey, databaseName);
+                });
+
             services.AddCors(options =>
             {
                 options.AddPolicy(

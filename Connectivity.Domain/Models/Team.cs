@@ -1,6 +1,6 @@
-﻿namespace Connectivity.WebApi.Models
+﻿namespace Connectivity.Domain.Models
 {
-    public class Player
+    public class Team
     {
         public string Id { get; set; }
 

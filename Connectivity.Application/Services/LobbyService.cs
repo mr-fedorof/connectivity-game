@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Connectivity.WebApi.Models;
+using Connectivity.Domain.Models;
+using Connectivity.Persistence;
 using Microsoft.Extensions.Caching.Memory;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace Connectivity.WebApi.Services
+namespace Connectivity.Application.Services
 {
     public class LobbyService : ILobbyService
     {
-        private readonly IMemoryCache _memoryCache;
+        private readonly ConnectivityDbContext _context;
 
-        public LobbyService(IMemoryCache memoryCache)
+        public LobbyService(ConnectivityDbContext context)
         {
-            _memoryCache = memoryCache;
+            _context = context;
         }
 
         public async Task<Lobby> GetLobbyAsync(string lobbyId)
         {
-            var lobby = _memoryCache.Get<Lobby>(lobbyId);
+            var lobby = await _context.Lobbies.FirstOrDefaultAsync(o => o.Id == lobbyId);
             if (lobby == null)
             {
                 return null;
@@ -27,6 +29,9 @@ namespace Connectivity.WebApi.Services
 
         public async Task<Lobby> CreateLobbyAsync(Lobby lobby)
         {
+            // TODO: Move to any other place
+            _context.Database.EnsureCreated();
+
             lobby.Id = Guid.NewGuid().ToString();
 
             foreach (var team in lobby.Teams)
@@ -34,7 +39,8 @@ namespace Connectivity.WebApi.Services
                 team.Id = Guid.NewGuid().ToString();
             }
 
-            _memoryCache.Set<Lobby>(lobby.Id, lobby);
+            _context.Lobbies.Add(lobby);
+            await _context.SaveChangesAsync();
 
             return lobby;
         }

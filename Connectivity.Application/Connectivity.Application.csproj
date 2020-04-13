@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Connectivity.Application\Connectivity.Application.csproj" />
     <ProjectReference Include="..\Connectivity.Domain\Connectivity.Domain.csproj" />
     <ProjectReference Include="..\Connectivity.Persistence\Connectivity.Persistence.csproj" />
   </ItemGroup>

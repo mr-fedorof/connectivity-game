@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Connectivity.WebApi.Models;
-using Connectivity.WebApi.Services;
+using Connectivity.Application.Services;
+using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Connectivity.WebApi.Hubs
