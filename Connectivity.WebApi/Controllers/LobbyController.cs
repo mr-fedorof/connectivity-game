@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Connectivity.Application.Interfaces;
 using Connectivity.Application.Services;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.Mvc;

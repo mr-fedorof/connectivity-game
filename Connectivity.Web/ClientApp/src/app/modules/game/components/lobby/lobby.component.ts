@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { takeCardPlayerAction } from '@modules/game/actions';
+import { takeCardPlayerAction, hiThanksAction } from '@modules/game/actions';
 import { GameSession, Lobby, Player } from '@modules/game/models';
 import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
 import { lobbySelector, playersSelector } from '@modules/game/selectors/lobby.selectors';
@@ -32,6 +32,17 @@ export class LobbyComponent implements OnInit {
             .pipe(take(1))
             .subscribe(gameSession => {
                 this.store.dispatch(takeCardPlayerAction(gameSession.playerId, cardType));
+            });
+    }
+
+    // TODO: for testing purposes, can be removed
+    public hiThanks(): void {
+        const cardType: number = Math.random();
+
+        this.gameSession$
+            .pipe(take(1))
+            .subscribe(gameSession => {
+                this.store.dispatch(hiThanksAction('V', 'Vendetta'));
             });
     }
 }
