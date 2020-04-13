@@ -1,2 +1,2 @@
-<div class="vs-spinner-overlay" [@hideTransparent]="!(isShown$ | async)"></div>
-<i class="vs-spinner" [@hideTransparent]="!(isShown$ | async)"></i>
+<div class="vs-spinner-overlay" [@hideTransparent]="(isShown$ | async) === false"></div>
+<i class="vs-spinner" [@hideTransparent]="(isShown$ | async) === false"></i>
