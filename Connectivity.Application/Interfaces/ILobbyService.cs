@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Connectivity.Domain.Models;
 
-namespace Connectivity.Application.Services
+namespace Connectivity.Application.Interfaces
 {
     public interface ILobbyService
     {

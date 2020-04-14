@@ -4,6 +4,7 @@ using Connectivity.Persistence;
 using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Connectivity.Application.Interfaces;
 
 namespace Connectivity.Application.Services
 {

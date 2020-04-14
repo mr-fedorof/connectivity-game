@@ -1,7 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Connectivity.Application.Services;
+﻿using System.Threading.Tasks;
+using Connectivity.Application.Interfaces;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
@@ -10,10 +8,12 @@ namespace Connectivity.WebApi.Hubs
     public class GameHub : Hub
     {
         private readonly ILobbyService _lobbyService;
+        private readonly IGameActionDispatcher _gameDispatcher;
 
-        public GameHub(ILobbyService lobbyService)
+        public GameHub(ILobbyService lobbyService, IGameActionDispatcher gameDispatcher)
         {
             _lobbyService = lobbyService;
+            _gameDispatcher = gameDispatcher;
         }
 
         public async Task<Lobby> ConnectToLobby(string lobbyId)
@@ -29,11 +29,14 @@ namespace Connectivity.WebApi.Hubs
             return lobby;
         }
 
-        public async Task GameAction(string lobbyId, object action)
+        public async Task GameAction(string lobbyId, GameAction request)
         {
-            await Clients
-                .GroupExcept(lobbyId, Context.ConnectionId)
-                .SendCoreAsync(nameof(GameAction), new []{ action });
+            var result = await _gameDispatcher.Invoke(request);
+
+            // TODO: commented for testing purposes
+            // await Clients.OthersInGroup(lobbyId).SendAsync(nameof(result.ActionType), result.Payload);
+
+            await Clients.Group(lobbyId).SendAsync(result.ActionType.ToString(), result.Payload);
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

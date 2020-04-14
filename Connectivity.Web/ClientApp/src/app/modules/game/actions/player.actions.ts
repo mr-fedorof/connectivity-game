@@ -21,3 +21,13 @@ export const takeCardPlayerAction = createAction('[Player] [S] Take Card', (play
     }
 }));
 export type TakeCardPlayerAction = ReturnType<typeof takeCardPlayerAction>;
+
+// TODO: for testing purposes, can be removed
+export const hiThanksAction = createAction('HiThanks', (hi: string, thanks: string) => ({
+    payload: {
+        hi,
+        thanks,
+    }
+}));
+export type HiThanksAction = ReturnType<typeof hiThanksAction>;
+
