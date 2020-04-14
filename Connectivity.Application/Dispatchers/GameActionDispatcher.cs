@@ -21,18 +21,22 @@ namespace Connectivity.Application.Dispatchers
             switch (action.Type)
             {
                 case GameActionType.HiThanks:
-                    var concreteArgs = JsonConvert.DeserializeObject<HiThanksParameters>(action.Payload.ToString());
-                    var newPayload = await _hiThanksService.HiThanksAsync(concreteArgs);
-
-                    return new GameActionResponse
-                    {
-                        ActionType = GameActionType.HiThanks,
-                        Payload = newPayload
-                    };
+                    return await ActionProxyAsync<HiThanksParameters>(action, _hiThanksService.HiThanksAsync);
                 default:
                     throw new NotSupportedException();
-
             }
+        }
+
+        public async Task<GameActionResponse> ActionProxyAsync<T>(GameAction action, Func<T, Task<object>> func)
+        {
+            var concreteArgs = JsonConvert.DeserializeObject<T>(action.Payload.ToString());
+            var newPayload = await func(concreteArgs);
+
+            return new GameActionResponse
+            {
+                ActionType = GameActionType.HiThanks,
+                Payload = newPayload
+            };
         }
     }
 }

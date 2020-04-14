@@ -6,7 +6,7 @@ namespace Connectivity.Application.Services
 {
     public class HiThanksService: IHiThanksService
     {
-        public async Task<string> HiThanksAsync(HiThanksParameters parameters)
+        public async Task<object> HiThanksAsync(HiThanksParameters parameters)
         {
             return $"Hi means {parameters.Hi}. Thanks for {parameters.Thanks}";
         }

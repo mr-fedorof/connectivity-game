@@ -5,6 +5,6 @@ namespace Connectivity.Application.Interfaces
 {
     public interface IHiThanksService
     {
-        Task<string> HiThanksAsync(HiThanksParameters parameters);
+        Task<object> HiThanksAsync(HiThanksParameters parameters);
     }
 }
