@@ -1,0 +1,10 @@
+<body>
+    <app-global-spinner></app-global-spinner>
+
+    <div *ngIf="isReady$ | async">
+        <app-header></app-header>
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</body>

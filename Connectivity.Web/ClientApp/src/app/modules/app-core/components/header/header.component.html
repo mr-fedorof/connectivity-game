@@ -1,0 +1,99 @@
+<header class="app-header">
+    <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a
+                class="navbar-brand"
+                [routerLink]="['/']"
+            >Connectivity</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target=".navbar-collapse"
+                aria-label="Toggle navigation"
+                [attr.aria-expanded]="isExpanded"
+                (click)="toggle()"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+                class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse"
+                [ngClass]="{ show: isExpanded }"
+            >
+                <ul class="navbar-nav flex-grow">
+                    <li
+                        class="nav-item"
+                        [routerLinkActive]="['link-active']"
+                    >
+                        <a
+                            class="nav-link text-dark"
+                            [routerLink]="['/rules']"
+                            translate
+                        >HEADER.RULES</a>
+                    </li>
+                    <li
+                        class="nav-item"
+                        [routerLinkActive]="['link-active']"
+                    >
+                        <a
+                            class="nav-link text-dark"
+                            [routerLink]="['/about']"
+                            translate
+                        >HEADER.ABOUT</a>
+                    </li>
+                    <li
+                        class="nav-item"
+                        [routerLinkActive]="['link-active']"
+                    >
+                        <a
+                            class="nav-link text-dark"
+                            [routerLink]="['/feedback']"
+                            translate
+                        >HEADER.FEEDBACK</a>
+                    </li>
+                    <li
+                        class="nav-item"
+                        [routerLinkActive]="['link-active']"
+                    >
+                        <a
+                            class="nav-link text-dark"
+                            [routerLink]="['/contact']"
+                            translate
+                        >HEADER.CONTACT</a>
+                    </li>
+                    <li
+                        class="nav-item"
+                        [routerLinkActive]="['link-active']"
+                    >
+                        <a
+                            class="nav-link text-dark"
+                            [routerLink]="['/donate']"
+                            translate
+                        >HEADER.DONATE</a>
+                    </li>
+                    <li
+                        class="nav-item"
+                        *ngIf="lang$ | async as lang"
+                    >
+                        <div class="btn-group">
+                            <button
+                                type="button"
+                                class="app-header__btn-lang"
+                                [ngClass]="{ 'app-header__btn-lang--active': lang === 'en' }"
+                                (click)="onLangClick('en')"
+                                translate
+                            >HEADER.EN</button>
+                            <button
+                                type="button"
+                                class="app-header__btn-lang"
+                                [ngClass]="{ 'app-header__btn-lang--active': lang === 'ru' }"
+                                (click)="onLangClick('ru')"
+                                translate
+                            >HEADER.RU</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -26,6 +26,8 @@
     "@ngrx/router-store": "^9.1.0",
     "@ngrx/store": "9.1.0",
     "@nguniversal/module-map-ngfactory-loader": "8.0.0-rc.1",
+    "@ngx-translate/core": "^12.1.2",
+    "@ngx-translate/http-loader": "^4.0.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",

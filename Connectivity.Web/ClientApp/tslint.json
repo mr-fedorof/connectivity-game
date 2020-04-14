@@ -1,57 +1,58 @@
 {
-  "rulesDirectory": [
-    "node_modules/codelyzer"
-  ],
-  "extends": [
-    "angular-tslint-rules"
-  ],
-  "rules": {
-    "no-implicit-dependencies": false,
-    "no-null-keyword": false,
-    "member-ordering": [
-      true,
-      {
-        "order": [
-          "private-static-field",
-          "protected-static-field",
-          "public-static-field",
-          "private-instance-field",
-          "protected-instance-field",
-          "public-instance-field",
-          "public-constructor",
-          "protected-constructor",
-          "private-constructor",
-          "public-instance-method",
-          "public-static-method",
-          "protected-instance-method",
-          "protected-static-method",
-          "private-instance-method",
-          "private-static-method"
-        ]
-      }
+    "rulesDirectory": [
+        "node_modules/codelyzer"
     ],
-    "template-i18n": false,
-    "array-type": false,
-    "prefer-function-over-method": false,
-    "interface-name": [
-      true,
-      "always-prefix"
+    "extends": [
+        "angular-tslint-rules"
     ],
-    "only-arrow-functions": [
-      true,
-      "allow-declarations",
-      "allow-named-functions"
-    ],
-    "no-parameter-reassignment": false,
-    "template-no-call-expression": false,
-    "template-use-track-by-function": false,
-    "no-floating-promises": false,
-    "member-access": [
-      true,
-      "check-accessor",
-      "check-parameter-property"
-    ],
-    "no-unused-css": false,
-    "no-unnecessary-callback-wrapper": false
-  }
+    "rules": {
+        "no-implicit-dependencies": false,
+        "no-null-keyword": false,
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "private-static-field",
+                    "protected-static-field",
+                    "public-static-field",
+                    "private-instance-field",
+                    "protected-instance-field",
+                    "public-instance-field",
+                    "public-constructor",
+                    "protected-constructor",
+                    "private-constructor",
+                    "public-instance-method",
+                    "public-static-method",
+                    "protected-instance-method",
+                    "protected-static-method",
+                    "private-instance-method",
+                    "private-static-method"
+                ]
+            }
+        ],
+        "template-i18n": false,
+        "array-type": false,
+        "prefer-function-over-method": false,
+        "interface-name": [
+            true,
+            "always-prefix"
+        ],
+        "only-arrow-functions": [
+            true,
+            "allow-declarations",
+            "allow-named-functions"
+        ],
+        "no-parameter-reassignment": false,
+        "template-no-call-expression": false,
+        "template-use-track-by-function": false,
+        "no-floating-promises": false,
+        "member-access": [
+            true,
+            "check-accessor",
+            "check-parameter-property"
+        ],
+        "no-unused-css": false,
+        "no-unnecessary-callback-wrapper": false,
+        "no-empty-interface": false
+    }
 }

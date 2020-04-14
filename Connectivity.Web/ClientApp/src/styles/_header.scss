@@ -1,0 +1,22 @@
+.app-header {
+    .navbar-brand {
+        font-size: 24px;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+    }
+
+    &__btn-lang {
+        @extend .btn;
+        @extend .btn-sm;
+        @extend .btn-light;
+
+        &#{&}--active {
+            @extend .btn-primary;
+
+            pointer-events: none;
+        }
+    }
+}
