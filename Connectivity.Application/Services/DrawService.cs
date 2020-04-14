@@ -5,11 +5,13 @@ using Connectivity.Domain.Models.Game;
 
 namespace Connectivity.Application.Services
 {
-    public class HiThanksService: IHiThanksService
+    public class DrawService: IDrawService
     {
-        public async Task<object> HiThanksAsync(HiThanksParameters parameters)
+        public async Task<object> LogDrawActionAsync(DrawParams parameters)
         {
-            return $"Hi means {parameters.Hi}. Thanks for {parameters.Thanks}";
+            // TODO: call some log state object here might be called as 
+
+            return parameters;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Connectivity.Application
 
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IHiThanksService, HiThanksService>();
+            services.AddScoped<IDrawService, DrawService>();
         }
     }
 }

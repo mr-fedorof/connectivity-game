@@ -6,10 +6,13 @@ namespace Connectivity.Domain.Enums
     [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum GameActionType
     {
-        HiThanks = 0,
+        HiThanks,
 
         [EnumMember(Value = "[Player] [S] Take Card")]
-        TakeCard = 1,
+        TakeCard,
+
+        [EnumMember(Value = "[Player] [S] Draw")]
+        Draw,
 
         Unknown
     }
