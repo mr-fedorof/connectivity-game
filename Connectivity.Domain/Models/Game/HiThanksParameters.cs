@@ -1,4 +1,4 @@
-﻿namespace Connectivity.Domain.Models
+﻿namespace Connectivity.Domain.Models.Game
 {
     public class HiThanksParameters
     {

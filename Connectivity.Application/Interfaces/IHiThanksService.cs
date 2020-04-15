@@ -1,10 +1,11 @@
 ﻿using Connectivity.Domain.Models;
 using System.Threading.Tasks;
+using Connectivity.Domain.Models.Game;
 
 namespace Connectivity.Application.Interfaces
 {
-    public interface IHiThanksService
+    public interface IHiThanksService : IBaseActionService
     {
-        Task<string> HiThanksAsync(HiThanksParameters parameters);
+        Task<object> HiThanksAsync(HiThanksParameters parameters);
     }
 }
