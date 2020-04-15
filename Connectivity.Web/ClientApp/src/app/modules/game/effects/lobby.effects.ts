@@ -1,31 +1,17 @@
 import { Injectable } from '@angular/core';
+import { NavigationService } from '@modules/app-core/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import {
-    createLobbyAction,
-    CreateLobbyAction,
-    joinPlayerAction,
-    JoinPlayerAction,
-    newPlayerAction,
-    restoreGameSessionAction
-} from '../actions';
-import { GameSession, Lobby } from '../models';
+
+import { JoinPlayerAction, joinPlayerAction, newPlayerAction, restoreGameSessionAction } from '../actions';
+import { GameSession } from '../models';
 import { lobbySelector } from '../selectors/lobby.selectors';
-import { GameNavigationService, GameSessionService, LobbyService } from '../services';
+import { GameSessionService, LobbyService } from '../services';
 
 @Injectable()
 export class LobbyEffects {
-    public createLobby$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(createLobbyAction),
-        tap(({ payload }: CreateLobbyAction) => {
-            this.gameNavigationService.goToLobby(payload.lobby.id);
-        }),
-        switchMap(() => EMPTY),
-        catchError(() => EMPTY)
-    ));
-
     public joinPlayer$: Observable<Action> = createEffect(() => this.actions$.pipe(
         ofType(joinPlayerAction),
         switchMap(({ payload }: JoinPlayerAction) => this.lobbyService.createPlayer(payload.name)),
@@ -39,7 +25,7 @@ export class LobbyEffects {
             this.gameSessionService.saveGameSession(gameSession);
             this.store.dispatch(restoreGameSessionAction(gameSession));
 
-            this.gameNavigationService.goToLobby(lobby.id);
+            this.navigationService.goToLobby(lobby.id);
         }),
         map(([player]) => newPlayerAction(player)),
         catchError(() => EMPTY)
@@ -50,6 +36,6 @@ export class LobbyEffects {
         private readonly actions$: Actions,
         private readonly lobbyService: LobbyService,
         private readonly gameSessionService: GameSessionService,
-        private readonly gameNavigationService: GameNavigationService
+        private readonly navigationService: NavigationService
     ) { }
 }

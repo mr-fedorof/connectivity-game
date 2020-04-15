@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 @Injectable()
-export class GameNavigationService {
+export class NavigationService {
     constructor(
         private readonly router: Router
     ) {

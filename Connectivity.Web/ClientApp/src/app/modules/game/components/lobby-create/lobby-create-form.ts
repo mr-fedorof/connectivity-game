@@ -1,7 +1,7 @@
 import { AppFormArray, AppFormControl, AppFormGroup } from '@modules/app-form/models';
 import { takeUntil } from 'rxjs/operators';
 
-export class LobbySetupForm extends AppFormGroup {
+export class LobbyCreateForm extends AppFormGroup {
     public get name(): AppFormControl {
         return this.controls.name as AppFormControl;
     }
@@ -23,7 +23,9 @@ export class LobbySetupForm extends AppFormGroup {
                 '',
                 null,
                 null,
-                null,
+                {
+                    required: 'LOBBY_CREATE.NAME_LABEL_REQUIRED'
+                },
                 {
                     required: true,
                     maxLength: 25
@@ -61,7 +63,9 @@ export class LobbySetupForm extends AppFormGroup {
             '',
             null,
             null,
-            null,
+            {
+                required: 'LOBBY_CREATE.TEAM_NAME_LABEL_REQUIRED'
+            },
             {
                 required: true,
                 maxLength: 25

@@ -1,24 +1,24 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationService } from '@modules/app-core/services';
 import { validateForm } from '@modules/app-form/helpers';
-import { createLobbyAction } from '@modules/game/actions/lobby.actions';
 import { Lobby, Team } from '@modules/game/models';
 import { LobbyService } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
-import { Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
-import { LobbySetupForm } from './lobby-setup-form';
+
+import { LobbyCreateForm } from './lobby-create-form';
 
 @Component({
-    selector: 'app-lobby-setup',
-    templateUrl: './lobby-setup.component.html',
+    selector: 'app-lobby-create',
+    templateUrl: './lobby-create.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LobbySetupComponent extends DestroyableComponent implements OnInit, OnDestroy {
-    public lobbyForm: LobbySetupForm;
+export class LobbyCreateComponent extends DestroyableComponent implements OnInit, OnDestroy {
+    public form: LobbyCreateForm;
 
     constructor(
-        private readonly store: Store,
         private readonly lobbyService: LobbyService,
+        private readonly navigationService: NavigationService,
         private readonly spinnerService: GlobalSpinnerService
     ) {
         super();
@@ -26,19 +26,19 @@ export class LobbySetupComponent extends DestroyableComponent implements OnInit,
 
     public ngOnDestroy(): void {
         super.ngOnDestroy();
-        this.lobbyForm.destroy();
+        this.form.destroy();
     }
 
     public ngOnInit(): void {
-        this.lobbyForm = new LobbySetupForm();
+        this.form = new LobbyCreateForm();
     }
 
     public onCreateLobbyClick(): void {
-        if (!validateForm(this.lobbyForm)) {
+        if (!validateForm(this.form)) {
             return;
         }
 
-        const lobbyFormValue = this.lobbyForm.value;
+        const lobbyFormValue = this.form.value;
         const lobby = new Lobby({
             name: lobbyFormValue.name,
             teams: lobbyFormValue.teams.map(name => new Team({
@@ -49,7 +49,11 @@ export class LobbySetupComponent extends DestroyableComponent implements OnInit,
         this.lobbyService.createLobby(lobby)
             .wrapWithSpinner(this.spinnerService)
             .subscribe(createdLobby => {
-                this.store.dispatch(createLobbyAction(createdLobby));
+                this.navigationService.goToLobby(createdLobby.id);
             });
+    }
+
+    public onCancelClick(): void {
+        this.navigationService.goToHome();
     }
 }

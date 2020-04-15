@@ -9,6 +9,7 @@ import { IAppAbstractControl } from '@modules/app-form/models/app-abstract-contr
 export class ControlValidationComponent implements OnInit {
     @Input() public control: IAppAbstractControl;
     @Input() public controlNameKey: string;
+    @Input() public translateParams: object;
 
     public get customErrorKeys(): string[] {
         return Object.keys(this.control.errors || {})
@@ -19,7 +20,7 @@ export class ControlValidationComponent implements OnInit {
         return !!this.control.touched && !!this.control.errors;
     }
 
-    constructor(private readonly cdr: ChangeDetectorRef) {}
+    constructor(private readonly cdr: ChangeDetectorRef) { }
 
     public ngOnInit(): void {
         if (!this.controlNameKey) {

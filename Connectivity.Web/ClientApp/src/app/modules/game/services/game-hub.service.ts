@@ -3,6 +3,7 @@ import { SignalRClient, SignalRService } from '@modules/communication';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { GameHubEvent } from '../enums';
 import { Lobby } from '../models';
 
@@ -22,6 +23,7 @@ export class GameHubService {
 
     public start(): Observable<void> {
         if (this.isActive) {
+            // TODO: return observable of connection
             return of(false) as any as Observable<void>;
         }
 
@@ -51,12 +53,12 @@ export class GameHubService {
         return this.client.invoke(GameHubEvent.gameAction, lobbyId, action);
     }
 
-
     public stop(): Observable<void> {
         if (!this.isActive) {
             return of(false) as any as Observable<void>;
         }
 
+        // TODO: call .off for each event
         return this.client.close();
     }
 }

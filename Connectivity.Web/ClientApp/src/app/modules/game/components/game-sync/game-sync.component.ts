@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { restoreLobbyAction } from '@modules/game/actions';
+import { NavigationService } from '@modules/app-core/services';
+import { restoreGameSessionAction, restoreLobbyAction } from '@modules/game/actions';
 import { Lobby } from '@modules/game/models';
 import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
-import { GameHubService, GameNavigationService } from '@modules/game/services';
+import { GameHubService, GameSessionService } from '@modules/game/services';
 import { Actions } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
-import { filter, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 @Component({
     selector: 'app-game-sync',
@@ -19,7 +20,8 @@ export class GameSyncComponent extends DestroyableComponent implements OnInit {
         private readonly store: Store,
         private readonly action$: Actions,
         private readonly gameHubService: GameHubService,
-        private readonly gameNavigationService: GameNavigationService,
+        private readonly gameSessionService: GameSessionService,
+        private readonly navigationService: NavigationService,
         private readonly activatedRoute: ActivatedRoute
     ) {
         super();
@@ -28,9 +30,14 @@ export class GameSyncComponent extends DestroyableComponent implements OnInit {
     public ngOnInit(): void {
         const lobbyId = getRouteParam(this.activatedRoute.snapshot, 'lobbyId');
         if (!lobbyId) {
-            this.gameNavigationService.goToHome();
+            this.navigationService.goToHome();
 
             return;
+        }
+
+        const gameSession = this.gameSessionService.getGameSession(lobbyId);
+        if (gameSession) {
+            this.store.dispatch(restoreGameSessionAction(gameSession));
         }
 
         this.gameHubService.start()

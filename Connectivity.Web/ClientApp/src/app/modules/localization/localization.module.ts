@@ -3,6 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { ILocalizationModuleConfig } from './localization-module-config.interface';
+import { LocalizationService } from './localization.service';
 import { translateHttpLoaderFactory } from './translate-http-loader.factory';
 
 @NgModule({
@@ -26,7 +27,8 @@ export class LocalizationModule {
                         deps: [HttpClient]
                     },
                     ...config || {}
-                }).providers
+                }).providers,
+                LocalizationService
             ]
         };
     }

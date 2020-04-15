@@ -1,7 +1,9 @@
-<div class="co-control-validation-errors" *ngIf="isErrorsVisible">
+<div
+    class="co-control-validation-errors"
+    *ngIf="isErrorsVisible"
+>
     <!--Built-in errors-->
-    <p *ngIf="control.hasError('required')">{{ control.errorMessages.required || ('Please enter the ' + controlNameKey + '.') }}</p>
-    <p *ngIf="control.hasError('maxlength')">{{ control.errorMessages.maxlength || ('The ' + controlNameKey + ' must be not greater than ' + control.maxLength + '.') }}</p>
+    <p *ngIf="control.hasError('required')">{{ control.errorMessages.required | translate: translateParams }}</p>
 
     <!--Custom errors-->
     <p *ngFor="let customErrorKey of customErrorKeys">

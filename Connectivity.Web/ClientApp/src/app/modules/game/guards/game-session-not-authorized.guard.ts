@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { NavigationService } from '@modules/app-core/services';
 import { Store } from '@ngrx/store';
 import { getRouteParam } from '@shared/utils/route.utils';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+
 import { gameSessionSelector } from '../selectors/game-session.selectors';
-import { GameNavigationService } from '../services';
 
 @Injectable()
 export class GameSessionNotAuthorizedGuard implements CanActivate {
     constructor(
         private readonly store: Store,
-        private readonly gameNavigationService: GameNavigationService
+        private readonly navigationService: NavigationService
     ) {
     }
 
@@ -21,7 +22,7 @@ export class GameSessionNotAuthorizedGuard implements CanActivate {
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         const lobbyId = getRouteParam(route, 'lobbyId');
         if (!lobbyId) {
-            this.gameNavigationService.goToHome();
+            this.navigationService.goToHome();
 
             return false;
         }
@@ -35,9 +36,9 @@ export class GameSessionNotAuthorizedGuard implements CanActivate {
                     }
 
                     if (lobbyId) {
-                        this.gameNavigationService.goToLobby(lobbyId);
+                        this.navigationService.goToLobby(lobbyId);
                     } else {
-                        this.gameNavigationService.goToHome();
+                        this.navigationService.goToHome();
                     }
 
                     return false;

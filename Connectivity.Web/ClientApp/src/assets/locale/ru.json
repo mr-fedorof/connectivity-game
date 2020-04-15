@@ -1,4 +1,8 @@
 {
+    "HOME": {
+        "JOIN_LOBBY": "Войти в Комнату",
+        "CREATE_LOBBY": "Создать Комнату"
+    },
     "HEADER": {
         "RULES": "Правила",
         "ABOUT": "Об игре",
@@ -7,5 +11,15 @@
         "DONATE": "Донат",
         "EN": "En",
         "RU": "Ру"
+    },
+    "LOBBY_CREATE": {
+        "TITLE": "Создать комнату",
+        "NAME_LABEL": "Название комнаты",
+        "NAME_LABEL_REQUIRED": "Введите название комнаты.",
+        "TEAM_COUNT_LABEL": "Число команд",
+        "TEAM_NAME_LABEL": "Название команды №{{ index }}",
+        "TEAM_NAME_LABEL_REQUIRED": "Введите название команды №{{ index }}",
+        "CREATE_LOBBY_BTN": "Создать комнату",
+        "CANCEL_BTN": "Отмена"
     }
 }
