@@ -10,7 +10,7 @@ export class GameSessionService {
         const rawGameSessions = localStorage.getItem('game-sessions');
         const gameSessions: GameSession[] = JSON.parse(rawGameSessions) || [];
 
-        const gameSession = gameSessions.find(s => s.lobbyId = lobbyId);
+        const gameSession = gameSessions.find(s => s.lobbyId == lobbyId);
         if (!gameSession) {
             return null;
         }
@@ -23,6 +23,18 @@ export class GameSessionService {
         const gameSessions: GameSession[] = JSON.parse(rawGameSessions) || [];
 
         gameSessions.push(user);
+
+        localStorage.setItem('game-sessions', JSON.stringify(gameSessions));
+    }
+
+    public removeGameSession(lobbyId: string): void {
+        const rawGameSessions = localStorage.getItem('game-sessions');
+        const gameSessions: GameSession[] = JSON.parse(rawGameSessions) || [];
+
+        const index = gameSessions.findIndex(s => s.lobbyId === lobbyId);
+        if (index >= 0) {
+            gameSessions.splice(index, 1);
+        }
 
         localStorage.setItem('game-sessions', JSON.stringify(gameSessions));
     }

@@ -6,14 +6,14 @@ import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
 import { GameFieldComponent } from './components/game-field/game-field.component';
-import { GameSyncComponent } from './components/game-sync/game-sync.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
+import { LobbySyncComponent } from './components/lobby-sync/lobby-sync.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
 import { LobbyEffects } from './effects/lobby.effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
-import { GameSessionAuthorizedGuard, GameSessionNotAuthorizedGuard } from './guards';
+import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { GameHubService, GameSessionService, LobbyService } from './services';
 
 @NgModule({
@@ -32,14 +32,14 @@ import { GameHubService, GameSessionService, LobbyService } from './services';
         LobbyCreateComponent,
         LobbyComponent,
         PlayerIdentificationComponent,
-        GameSyncComponent
+        LobbySyncComponent
     ],
     providers: [
         LobbyService,
         GameHubService,
-        GameSessionAuthorizedGuard,
-        GameSessionNotAuthorizedGuard,
-        GameSessionService
+        GameSessionService,
+        LobbyExistsGuard,
+        GameSessionExistsGuard
     ]
 })
 export class GameModule { }

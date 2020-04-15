@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '@modules/app-core/services';
-import { restoreGameSessionAction, restoreLobbyAction } from '@modules/game/actions';
+import { initLobbyAction, restoreGameSessionAction } from '@modules/game/actions';
 import { Lobby } from '@modules/game/models';
 import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
 import { GameHubService, GameSessionService } from '@modules/game/services';
@@ -12,10 +12,10 @@ import { getRouteParam } from '@shared/utils/route.utils';
 import { filter, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-game-sync',
+    selector: 'app-lobby-sync',
     template: '<router-outlet></router-outlet>'
 })
-export class GameSyncComponent extends DestroyableComponent implements OnInit {
+export class LobbySyncComponent extends DestroyableComponent implements OnInit {
     constructor(
         private readonly store: Store,
         private readonly action$: Actions,
@@ -42,14 +42,17 @@ export class GameSyncComponent extends DestroyableComponent implements OnInit {
 
         this.gameHubService.start()
             .pipe(
+                takeUntil(this.onDestroy),
                 switchMap(() => this.gameHubService.connectToLobby(lobbyId))
             )
             .subscribe((lobby: Lobby) => {
                 if (!lobby) {
+                    this.navigationService.goToHome();
+
                     return;
                 }
 
-                this.store.dispatch(restoreLobbyAction(lobby));
+                this.store.dispatch(initLobbyAction(lobby));
 
                 this.syncInAction();
                 this.syncOutAction();

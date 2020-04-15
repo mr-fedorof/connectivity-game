@@ -1,36 +1,71 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NavigationService } from '@modules/app-core/services';
 import { validateForm } from '@modules/app-form/helpers';
-import { joinPlayerAction } from '@modules/game/actions/player.actions';
-import { Store } from '@ngrx/store';
+import { GameSession, Player } from '@modules/game/models';
+import { GameSessionService, LobbyService } from '@modules/game/services';
+import { GlobalSpinnerService } from '@modules/spinner';
 import { DestroyableComponent } from '@shared/destroyable';
+import { getRouteParam } from '@shared/utils/route.utils';
+
 import { PlayerIdentificationForm } from './player-identification-form';
 
 @Component({
-  selector: 'app-player-identification',
-  templateUrl: './player-identification.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-player-identification',
+    templateUrl: './player-identification.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerIdentificationComponent extends DestroyableComponent implements OnInit, OnDestroy {
-  public form: PlayerIdentificationForm;
+    public lobbyId: string;
+    public form: PlayerIdentificationForm;
 
-  constructor(
-      private readonly store: Store
-  ) {
-      super();
-  }
+    constructor(
+        private readonly lobbyService: LobbyService,
+        private readonly gameSessionService: GameSessionService,
+        private readonly navigationService: NavigationService,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly spinner: GlobalSpinnerService
+    ) {
+        super();
+    }
 
-  public ngOnInit(): void {
-      this.form = new PlayerIdentificationForm();
-  }
+    public ngOnInit(): void {
+        const lobbyId = getRouteParam(this.activatedRoute.snapshot, 'lobbyId');
+        if (!lobbyId) {
+            this.navigationService.goToHome();
 
-  public ngOnDestroy(): void {
-      super.ngOnDestroy();
-      this.form.destroy();
-  }
+            return;
+        }
 
-  public onFormSubmit(): void {
-      if (validateForm(this.form)) {
-          this.store.dispatch(joinPlayerAction(this.form.name.value));
-      }
-  }
+        this.lobbyId = lobbyId;
+        this.form = new PlayerIdentificationForm();
+    }
+
+    public ngOnDestroy(): void {
+        super.ngOnDestroy();
+        this.form.destroy();
+    }
+
+    public onFormSubmit(): void {
+        if (!validateForm(this.form)) {
+            return;
+        }
+
+        debugger;
+        const player = new Player({
+            name: this.form.value.name
+        });
+
+        this.lobbyService.joinLobby(this.lobbyId, player)
+            .wrapWithSpinner(this.spinner)
+            .subscribe(newPlayer => {
+                const gameSession = new GameSession({
+                    playerId: newPlayer.id,
+                    lobbyId: this.lobbyId
+                });
+
+                this.gameSessionService.saveGameSession(gameSession);
+                this.navigationService.goToLobby(this.lobbyId);
+            });
+    }
 }

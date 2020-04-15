@@ -1,29 +1,39 @@
 import { Routes } from '@angular/router';
 
-import { GameSyncComponent } from './components/game-sync/game-sync.component';
+import { GameFieldComponent } from './components/game-field/game-field.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
+import { LobbySyncComponent } from './components/lobby-sync/lobby-sync.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
-import { GameSessionAuthorizedGuard, GameSessionNotAuthorizedGuard } from './guards';
+import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 
 export const routes: Routes = [
-    { path: 'lobby', component: LobbyCreateComponent },
+    { path: 'lobby/new', component: LobbyCreateComponent, pathMatch: 'full' },
     {
         path: 'lobby/:lobbyId',
-        component: GameSyncComponent,
+        canActivate: [
+            LobbyExistsGuard
+        ],
         children: [
             {
-                path: '',
-                component: LobbyComponent,
-                canActivate: [
-                    GameSessionAuthorizedGuard
-                ]
+                path: 'player-identification',
+                component: PlayerIdentificationComponent
             },
             {
-                path: 'player-identification',
-                component: PlayerIdentificationComponent,
+                path: '',
+                component: LobbySyncComponent,
                 canActivate: [
-                    GameSessionNotAuthorizedGuard
+                    GameSessionExistsGuard
+                ],
+                children: [
+                    {
+                        path: '',
+                        component: LobbyComponent
+                    },
+                    {
+                        path: 'game',
+                        component: GameFieldComponent
+                    }
                 ]
             }
         ]

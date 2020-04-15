@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { takeCardPlayerAction, hiThanksAction } from '@modules/game/actions';
-import { GameSession, Lobby, Player } from '@modules/game/models';
+import { hiThanksAction, takeCardPlayerAction } from '@modules/game/actions';
+import { GameSession, Lobby } from '@modules/game/models';
 import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
-import { lobbySelector, playersSelector } from '@modules/game/selectors/lobby.selectors';
+import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
