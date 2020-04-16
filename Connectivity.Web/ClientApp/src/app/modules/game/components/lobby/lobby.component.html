@@ -1,10 +1,28 @@
-<h3>Lobby</h3>
-
-<button
-    type="button"
-    (click)="sendAction()"
->Throw</button>
-
-<pre>{{ gameSession$ | async | json }}</pre>
-
-<pre>{{ lobby$ | async | json }}</pre>
+<ng-container *ngIf="lobby$ | async as lobby">
+    <h3>Lobby - {{ lobby.name }}</h3>
+    <br />
+    <div class="row">
+        <div class="col">
+            <h4>Free players</h4>
+            <p *ngFor="let player of lobby.players | freePlayers">{{ player.name }}</p>
+        </div>
+        <div
+            class="col"
+            *ngFor="let team of lobby.teams"
+        >
+            <h4>{{ team.name }}</h4>
+            <p *ngFor="let player of lobby.players | teamPlayers: team.id">{{ player.name }}</p>
+            <button
+                type="button"
+                class="btn btn-sm btn-secondary"
+                (click)="onJoinTeamClick(playerId, team.id)"
+            >Join team</button>
+        </div>
+    </div>
+    <hr />
+    <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="onLeaveLobbyClick()"
+    >Leave Lobby</button>
+</ng-container>

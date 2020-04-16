@@ -14,6 +14,8 @@ import { LobbyEffects } from './effects/lobby.effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
+import { FreePlayersPipe } from './pipes/free-players.pipe';
+import { TeamPlayersPipe } from './pipes/team-players.pipe';
 import { GameHubService, GameSessionService, LobbyService } from './services';
 
 @NgModule({
@@ -32,7 +34,9 @@ import { GameHubService, GameSessionService, LobbyService } from './services';
         LobbyCreateComponent,
         LobbyComponent,
         PlayerIdentificationComponent,
-        LobbySyncComponent
+        LobbySyncComponent,
+        TeamPlayersPipe,
+        FreePlayersPipe
     ],
     providers: [
         LobbyService,

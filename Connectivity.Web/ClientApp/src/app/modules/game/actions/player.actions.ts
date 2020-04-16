@@ -9,9 +9,17 @@ export const newPlayerAction = createAction('[Player] New', (player: Player) => 
 }));
 export type NewPlayerAction = ReturnType<typeof newPlayerAction>;
 
-export const takeCardPlayerAction = createAction('[Player] [S] Take Card', (playerId: string, cardType: number) => ({
+export const leavePlayerAction = createAction('[Player] Leave', (playerId: string) => ({
     payload: {
-        cardType
+        playerId
     }
 }));
-export type TakeCardPlayerAction = ReturnType<typeof takeCardPlayerAction>;
+export type LeavePlayerAction = ReturnType<typeof leavePlayerAction>;
+
+export const joinTeamPlayerAction = createAction('[Player] [S] Join Team', (playerId: string, teamId: string) => ({
+    payload: {
+        playerId,
+        teamId
+    }
+}));
+export type JoinTeamPlayerAction = ReturnType<typeof joinTeamPlayerAction>;

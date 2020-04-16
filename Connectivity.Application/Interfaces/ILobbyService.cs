@@ -9,6 +9,10 @@ namespace Connectivity.Application.Interfaces
 
         Task<Lobby> CreateLobbyAsync(Lobby lobby);
 
+        Task<Lobby> UpdateLobbyAsync(Lobby lobby);
+
         Task<Player> JoinLobbyAsync(string lobbyId, Player player);
+
+        Task LeaveLobbyAsync(string lobbyId, string playerId);
     }
 }

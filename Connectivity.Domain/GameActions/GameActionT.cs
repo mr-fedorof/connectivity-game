@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Connectivity.Domain.Enums;
+﻿using Connectivity.Domain.Enums;
 
 namespace Connectivity.Domain.GameActions
 {
@@ -9,21 +8,19 @@ namespace Connectivity.Domain.GameActions
         {
         }
 
-        public GameAction(GameAction gameAction)
-            : this(gameAction.Type, gameAction.Payload, gameAction.PlayerId)
-        {
-        }
-
-        public GameAction(GameActionType type, object payload, string playerId)
+        public GameAction(GameActionType type, TPayload payload, string lobbyId, string playerId)
         {
             Type = type;
-            Payload = JsonSerializer.Deserialize<TPayload>(JsonSerializer.Serialize(payload));
+            Payload = payload;
+            LobbyId = lobbyId;
             PlayerId = playerId;
         }
 
         public GameActionType Type { get; set; }
 
         public TPayload Payload { get; set; }
+
+        public string LobbyId { get; set; }
 
         public string PlayerId { get; set; }
     }

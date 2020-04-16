@@ -90,5 +90,24 @@ namespace Connectivity.WebApi.Controllers
 
             return Ok(createdPlayer);
         }
+
+        [HttpPost("{lobbyId}/player/{playerId}/leave")]
+        public async Task<IActionResult> LeaveLobby(string lobbyId, string playerId)
+        {
+            await _lobbyService.LeaveLobbyAsync(lobbyId, playerId);
+
+            // TODO: Move to service
+            await _gameHubContext.Clients.Group(lobbyId).SendAsync("GameAction", new GameAction<LeavePlayerPayload>
+            {
+                Type = GameActionType.LeavePlayer,
+                Payload = new LeavePlayerPayload
+                {
+                    PlayerId = playerId
+                },
+                PlayerId = playerId
+            });
+
+            return Ok();
+        }
     }
 }

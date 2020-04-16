@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Connectivity.Application;
 using Connectivity.Application.Interfaces;
 using Connectivity.Application.Services;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
+using Connectivity.Domain.Converters;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Serialization;
 
@@ -32,6 +34,8 @@ namespace Connectivity.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JsonSerializerOptions>(ConfigureJsonSerializerOptions);
+
             services.AddSingleton<IServiceCollection>(services);
 
             services.AddApplicationInsightsTelemetry();
@@ -50,8 +54,16 @@ namespace Connectivity.WebApi
                 );
             });
 
-            services.AddControllers();
-            services.AddSignalR();
+            services.AddControllers()
+                .AddJsonOptions(opts =>
+                {
+                    ConfigureJsonSerializerOptions(opts.JsonSerializerOptions);
+                });
+            services.AddSignalR()
+                .AddJsonProtocol(opts =>
+                {
+                    ConfigureJsonSerializerOptions(opts.PayloadSerializerOptions);
+                });
 
             services.AddMemoryCache();
         }
@@ -73,6 +85,13 @@ namespace Connectivity.WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<GameHub>("hub/game");
             });
+        }
+
+        private void ConfigureJsonSerializerOptions(JsonSerializerOptions options)
+        {
+            options.PropertyNameCaseInsensitive = true;
+            options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.Converters.Add(new JsonConverterJsonDocument());
         }
     }
 }

@@ -7,20 +7,21 @@ using Connectivity.Application.GameActions.Attributes;
 using Connectivity.Application.GameActions.Interfaces;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Connectivity.Application.GameActions
 {
     public class GameActionDispatcher : IGameActionDispatcher
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Dictionary<GameActionType, Type> _gameActionHandlerTypes;
 
         public GameActionDispatcher(
             IServiceCollection serviceCollection,
-            IServiceProvider serviceProvider)
+            IHttpContextAccessor httpContextAccessor)
         {
-            _serviceProvider = serviceProvider;
+            _httpContextAccessor = httpContextAccessor;
             _gameActionHandlerTypes = serviceCollection
                 .Where(t => typeof(IGameActionHandler).IsAssignableFrom(t.ServiceType))
                 .Select(t => t.ImplementationType)
@@ -45,7 +46,10 @@ namespace Connectivity.Application.GameActions
                 return null;
             }
 
-            return (IGameActionHandler)_serviceProvider.GetService(_gameActionHandlerTypes[type]);
+            return (IGameActionHandler)_httpContextAccessor
+                .HttpContext
+                .RequestServices
+                .GetService(_gameActionHandlerTypes[type]);
         }
     }
 }

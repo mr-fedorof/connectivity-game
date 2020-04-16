@@ -90,6 +90,7 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
 
                 const extendedAction = {
                     ...action,
+                    lobbyId: gameSession.lobbyId,
                     playerId: gameSession.playerId
                 };
 

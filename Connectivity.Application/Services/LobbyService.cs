@@ -46,6 +46,15 @@ namespace Connectivity.Application.Services
             return lobby;
         }
 
+        public async Task<Lobby> UpdateLobbyAsync(Lobby lobby)
+        {
+            _context.Lobbies.Update(lobby);
+            
+            await _context.SaveChangesAsync();
+
+            return lobby;
+        }
+
         public async Task<Player> JoinLobbyAsync(string lobbyId, Player player)
         {
             var lobby = await GetLobbyAsync(lobbyId);
@@ -66,6 +75,24 @@ namespace Connectivity.Application.Services
             await _context.SaveChangesAsync();
 
             return player;
+        }
+
+        public async Task LeaveLobbyAsync(string lobbyId, string playerId)
+        {
+            var lobby = await GetLobbyAsync(lobbyId);
+
+            var playerInLobby = lobby.Players.FirstOrDefault(p =>
+                string.Equals(p.Id, playerId, StringComparison.InvariantCultureIgnoreCase));
+
+            if (playerInLobby == null)
+            {
+                return;
+            }
+
+            lobby.Players.Remove(playerInLobby);
+
+            _context.Lobbies.Update(lobby);
+            await _context.SaveChangesAsync();
         }
     }
 }

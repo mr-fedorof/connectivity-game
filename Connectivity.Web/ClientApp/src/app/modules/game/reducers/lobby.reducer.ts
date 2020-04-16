@@ -1,12 +1,15 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import { addElement, removeElement, replaceElement } from '@shared/utils/array.utils';
 
 import {
     InitLobbyAction,
     initLobbyAction,
+    JoinTeamPlayerAction,
+    joinTeamPlayerAction,
+    LeavePlayerAction,
+    leavePlayerAction,
     NewPlayerAction,
     newPlayerAction,
-    TakeCardPlayerAction,
-    takeCardPlayerAction,
 } from '../actions';
 import { initialLobby, Lobby } from '../models';
 
@@ -19,12 +22,20 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
 
     on(newPlayerAction, (state: Lobby, { payload }: NewPlayerAction): Lobby => ({
         ...state,
-        players: [...state.players || [], payload.player]
+        players: addElement(state.players, payload.player)
     })),
 
-    on(takeCardPlayerAction, (state: Lobby, { payload }: TakeCardPlayerAction): Lobby => ({
+    on(leavePlayerAction, (state: Lobby, { payload }: LeavePlayerAction): Lobby => ({
         ...state,
-        name: `${state.name} - ${payload.cardType}`
+        players: removeElement(state.players, p => p.id === payload.playerId)
+    })),
+
+    on(joinTeamPlayerAction, (state: Lobby, { payload }: JoinTeamPlayerAction): Lobby => ({
+        ...state,
+        players: replaceElement(state.players, p => p.id === payload.playerId, p => ({
+            ...p,
+            teamId: payload.teamId
+        }))
     }))
 );
 

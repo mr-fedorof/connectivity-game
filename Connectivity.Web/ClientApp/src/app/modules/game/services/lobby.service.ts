@@ -31,4 +31,8 @@ export class LobbyService {
     public joinLobby(lobbyId: string, player: Player): Observable<Player> {
         return this.httpClient.post<Player>(`${environment.apiUrl}api/lobby/${lobbyId}/join`, player);
     }
+
+    public leaveLobby(lobbyId: string, playerId: string): Observable<void> {
+        return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/player/${playerId}/leave`, null);
+    }
 }

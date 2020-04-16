@@ -53,6 +53,7 @@
         ],
         "no-unused-css": false,
         "no-unnecessary-callback-wrapper": false,
-        "no-empty-interface": false
+        "no-empty-interface": false,
+        "invalid-void": false
     }
 }
