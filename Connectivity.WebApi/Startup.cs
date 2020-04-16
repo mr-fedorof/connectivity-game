@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
 
 namespace Connectivity.WebApi
 {
@@ -30,6 +32,9 @@ namespace Connectivity.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IServiceCollection>(services);
+
+            services.AddApplicationInsightsTelemetry();
             services.AddCosmosDB(Configuration);
             services.AddApplicationServices(Configuration);
 
@@ -46,11 +51,7 @@ namespace Connectivity.WebApi
             });
 
             services.AddControllers();
-            services.AddSignalR()
-                .AddJsonProtocol(options =>
-                {
-                    options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());
-                });
+            services.AddSignalR();
 
             services.AddMemoryCache();
         }

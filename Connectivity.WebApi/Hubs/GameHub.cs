@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Connectivity.Application.GameActions.Interfaces;
 using Connectivity.Application.Interfaces;
+using Connectivity.Domain.GameActions;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
@@ -29,14 +31,12 @@ namespace Connectivity.WebApi.Hubs
             return lobby;
         }
 
-        public async Task GameAction(string lobbyId, GameAction request)
+        public async Task GameAction(string lobbyId, GameAction gameAction)
         {
-            var result = await _gameDispatcher.Invoke(request);
+            var gameActionResponse = await _gameDispatcher.DispatchAsync(gameAction);
 
-            // TODO: commented for testing purposes
-            // await Clients.OthersInGroup(lobbyId).SendAsync(nameof(result.ActionType), result.Payload);
-
-            await Clients.Group(lobbyId).SendAsync(result.ActionType.ToString(), result.Payload);
+            await Clients.OthersInGroup(lobbyId)
+                .SendAsync(nameof(GameAction), gameActionResponse);
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

@@ -51,7 +51,6 @@ export class PlayerIdentificationComponent extends DestroyableComponent implemen
             return;
         }
 
-        debugger;
         const player = new Player({
             name: this.form.value.name
         });

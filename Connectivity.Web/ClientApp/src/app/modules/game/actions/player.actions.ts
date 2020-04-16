@@ -1,14 +1,8 @@
 import { createAction } from '@ngrx/store';
+
 import { Player } from '../models';
 
-export const joinPlayerAction = createAction('[Player] Join', (name: string) => ({
-    payload: {
-        name
-    }
-}));
-export type JoinPlayerAction = ReturnType<typeof joinPlayerAction>;
-
-export const newPlayerAction = createAction('[Player] [S] New', (player: Player) => ({
+export const newPlayerAction = createAction('[Player] New', (player: Player) => ({
     payload: {
         player
     }
@@ -21,13 +15,3 @@ export const takeCardPlayerAction = createAction('[Player] [S] Take Card', (play
     }
 }));
 export type TakeCardPlayerAction = ReturnType<typeof takeCardPlayerAction>;
-
-// TODO: for testing purposes, can be removed
-export const hiThanksAction = createAction('HiThanks', (hi: string, thanks: string) => ({
-    payload: {
-        hi,
-        thanks,
-    }
-}));
-export type HiThanksAction = ReturnType<typeof hiThanksAction>;
-

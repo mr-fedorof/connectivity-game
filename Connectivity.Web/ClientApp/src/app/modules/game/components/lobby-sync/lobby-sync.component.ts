@@ -81,11 +81,7 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
                         return false;
                     }
 
-                    // TODO: for testing purposes, can be removed
-                    return (action.type.includes('[S]') || action.type.includes('HiThanks')) && !(action as any).playerId;
-
-                    // return (action.type.includes('[S]')) && !(action as any).playerId;
-
+                    return (action.type.includes('[S]')) && !(action as any).playerId;
                 })
             )
             .subscribe(([action, gameSession]) => {

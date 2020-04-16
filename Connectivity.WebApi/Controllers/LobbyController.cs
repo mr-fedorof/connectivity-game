@@ -3,8 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Connectivity.Application.Interfaces;
 using Connectivity.Application.Services;
+using Connectivity.Domain.Enums;
+using Connectivity.Domain.GameActions;
+using Connectivity.Domain.GameActions.Payloads;
 using Connectivity.Domain.Models;
+using Connectivity.WebApi.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Connectivity.WebApi.Controllers
 {
@@ -13,10 +18,14 @@ namespace Connectivity.WebApi.Controllers
     public class LobbyController : ControllerBase
     {
         private readonly ILobbyService _lobbyService;
+        private readonly IHubContext<GameHub> _gameHubContext;
 
-        public LobbyController(ILobbyService lobbyService)
+        public LobbyController(
+            ILobbyService lobbyService,
+            IHubContext<GameHub> gameHubContext)
         {
             _lobbyService = lobbyService;
+            _gameHubContext = gameHubContext;
         }
 
         [HttpGet("{lobbyId}")]
@@ -67,6 +76,17 @@ namespace Connectivity.WebApi.Controllers
         public async Task<IActionResult> JoinLobby(string lobbyId, [FromBody] Player player)
         {
             var createdPlayer = await _lobbyService.JoinLobbyAsync(lobbyId, player);
+
+            // TODO: Move to service
+            await _gameHubContext.Clients.Group(lobbyId).SendAsync("GameAction", new GameAction<NewPlayerPayload>
+            {
+                Type = GameActionType.NewPlayer,
+                Payload = new NewPlayerPayload
+                {
+                    Player = player
+                },
+                PlayerId = player.Id
+            });
 
             return Ok(createdPlayer);
         }
