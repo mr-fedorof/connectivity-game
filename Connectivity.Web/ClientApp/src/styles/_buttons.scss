@@ -1,4 +1,4 @@
-.btn {
+@mixin btn() {
     display: inline-flex;
     padding: 10px 45px;
     border: 0;
@@ -8,6 +8,7 @@
     font-weight: bold;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     background-color: $app-color-1;
+    transition: $btn-transition;
 
     &:hover {
         text-decoration: none;
@@ -17,32 +18,48 @@
     &:active {
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
     }
+}
 
+.btn {
     &-primary {
+        @include btn;
+
         background-color: $app-color-primary;
     }
 
     &-secondary {
+        @include btn;
+
         background-color: $app-color-secondary;
     }
 
     &-c1 {
+        @include btn;
+
         background-color: $app-color-1;
     }
 
     &-c2 {
+        @include btn;
+
         background-color: $app-color-2;
     }
 
     &-c3 {
+        @include btn;
+
         background-color: $app-color-3;
     }
 
     &-c4 {
+        @include btn;
+
         background-color: $app-color-4;
     }
 
     &-c5 {
+        @include btn;
+
         background-color: $app-color-5;
     }
 }

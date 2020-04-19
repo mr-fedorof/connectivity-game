@@ -4,7 +4,11 @@ import { IAppAbstractControl } from '@modules/app-form/models/app-abstract-contr
 @Component({
     selector: 'app-control-validation',
     templateUrl: './control-validation.component.html',
-    changeDetection: ChangeDetectionStrategy.Default
+    changeDetection: ChangeDetectionStrategy.Default,
+    styleUrls: ['./control-validation.component.scss'],
+    host: {
+        class: 'app-control-validation'
+    }
 })
 export class ControlValidationComponent implements OnInit {
     @Input() public control: IAppAbstractControl;

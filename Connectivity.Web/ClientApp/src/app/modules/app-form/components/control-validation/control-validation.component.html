@@ -1,12 +1,15 @@
-<div
-    class="co-control-validation-errors"
-    *ngIf="isErrorsVisible"
->
+<ng-container *ngIf="isErrorsVisible">
     <!--Built-in errors-->
-    <p *ngIf="control.hasError('required')">{{ control.errorMessages.required | translate: translateParams }}</p>
+    <p
+        class="app-control-validation__error"
+        *ngIf="control.hasError('required')"
+    >{{ control.errorMessages.required | translate: translateParams }}</p>
 
     <!--Custom errors-->
-    <p *ngFor="let customErrorKey of customErrorKeys">
+    <p
+        class="app-control-validation__error"
+        *ngFor="let customErrorKey of customErrorKeys"
+    >
         {{control.errorMessages[customErrorKey] || control.getError(customErrorKey)}}
     </p>
-</div>
+</ng-container>

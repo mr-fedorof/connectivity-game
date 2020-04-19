@@ -1,10 +1,14 @@
-.app-home {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
+:host(.app-home) {
+    & {
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: center;
+    }
 
-    &__btn {
-        margin: 0 10px;
+    .app-home {
+        &__btn {
+            margin: 0 10px;
+        }
     }
 }

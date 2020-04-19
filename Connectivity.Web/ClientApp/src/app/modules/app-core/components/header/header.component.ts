@@ -7,6 +7,7 @@ import { shareReplay, startWith } from 'rxjs/operators';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         class: 'app-header'

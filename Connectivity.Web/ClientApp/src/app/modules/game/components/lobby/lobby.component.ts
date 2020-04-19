@@ -13,7 +13,11 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby',
-    templateUrl: './lobby.component.html'
+    templateUrl: './lobby.component.html',
+    styleUrls: ['./lobby.component.scss'],
+    host: {
+        class: 'app-lobby'
+    }
 })
 export class LobbyComponent extends DestroyableComponent implements OnInit {
     public playerId: string;

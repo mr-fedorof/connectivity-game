@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-home',
@@ -6,8 +6,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
     host: {
         class: 'app-home'
     },
-    styleUrls: ['./home.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
 }
