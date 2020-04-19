@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Connectivity.Application.GameActions.Interfaces;
 using Connectivity.Application.Interfaces;
+using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Connectivity.WebApi.Hubs
+namespace Connectivity.Application.Hubs
 {
     public class GameHub : Hub
     {
@@ -36,7 +37,7 @@ namespace Connectivity.WebApi.Hubs
             var gameActionResponse = await _gameDispatcher.DispatchAsync(gameAction);
 
             await Clients.OthersInGroup(lobbyId)
-                .SendAsync(nameof(GameAction), gameActionResponse);
+                .SendAsync(GameHubMethod.GameAction.ToString(), gameActionResponse);
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

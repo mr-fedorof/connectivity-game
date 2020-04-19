@@ -1,20 +1,42 @@
-<!-- <p>Game!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="game-field">
+                <div class="finish"></div>
+                <div class="field-cell">1</div>
+                <div class="field-cell">2</div>
+                <div class="start"></div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="interactive-block">
+                <div class="row cards">
+                    <div class="col-xs-4 card talk-card">talk</div>
+                    <div class="col-xs-4 card mine-card">mine</div>
+                    <div class="col-xs-4 card draw-card">draw</div>
+                </div>
+                <div class="central-block">
+                    <div class="dices">dices</div>
+                    <div class="hz">hz</div>
+                    <div class="timer">timer</div>
+                </div>
+                <div class="cards">
+                    <div class="crocodile-card">crocodile</div>
+                    <div class="agent-card">agent</div>
+                    <div class="joker-card">joker</div>
+                </div>
 
-<hr />
-
-<p>Id: {{ gameId$ | async }}</p>
-<p>Status: {{ gameStatus$ | async }}</p>
-
-<hr />
-
-<form (ngSubmit)="addPlayerClick()" autocomplete="off">
-    Name: <br />
-    <input type="text" name="name" [(ngModel)]="player.name" /><br />
-    <button type="submit" [disabled]="!player.name">Add</button>
-</form>
-
-<hr />
-
-<p *ngFor="let p of players$ | async">
-    {{ p.id }} - {{ p.name }}
-</p> -->
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="teams-block">
+                <div class="team team-a"><div class="team-icon icon-a"></div></div>
+                <div class="team team-b"><div class="team-icon icon-b"></div></div>
+                <div class="team team-c"><div class="team-icon icon-c"></div></div>
+                <div class="team team-d"><div class="team-icon icon-d"></div></div>
+            </div>
+            <div class="messages-block">
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,5 +14,8 @@ namespace Connectivity.Domain.Enums
         LeavePlayer,
         [EnumMember(Value = "[Player] [S] Join Team")]
         JoinTeamPlayer,
+
+        [EnumMember(Value = "[TBD] StartGame")]
+        StartGame,
     }
 }

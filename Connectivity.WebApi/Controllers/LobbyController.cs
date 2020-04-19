@@ -3,11 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Connectivity.Application.Interfaces;
 using Connectivity.Application.Services;
+using Connectivity.Application.Hubs;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.GameActions.Payloads;
 using Connectivity.Domain.Models;
-using Connectivity.WebApi.Hubs;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -78,7 +79,7 @@ namespace Connectivity.WebApi.Controllers
             var createdPlayer = await _lobbyService.JoinLobbyAsync(lobbyId, player);
 
             // TODO: Move to service
-            await _gameHubContext.Clients.Group(lobbyId).SendAsync("GameAction", new GameAction<NewPlayerPayload>
+            await _gameHubContext.Clients.Group(lobbyId).SendAsync(GameHubMethod.GameAction.ToString(), new GameAction<NewPlayerPayload>
             {
                 Type = GameActionType.NewPlayer,
                 Payload = new NewPlayerPayload
@@ -97,7 +98,7 @@ namespace Connectivity.WebApi.Controllers
             await _lobbyService.LeaveLobbyAsync(lobbyId, playerId);
 
             // TODO: Move to service
-            await _gameHubContext.Clients.Group(lobbyId).SendAsync("GameAction", new GameAction<LeavePlayerPayload>
+            await _gameHubContext.Clients.Group(lobbyId).SendAsync(GameHubMethod.GameAction.ToString(), new GameAction<LeavePlayerPayload>
             {
                 Type = GameActionType.LeavePlayer,
                 Payload = new LeavePlayerPayload
@@ -105,6 +106,25 @@ namespace Connectivity.WebApi.Controllers
                     PlayerId = playerId
                 },
                 PlayerId = playerId
+            });
+
+            return Ok();
+        }
+
+        [HttpPost("{lobbyId}/startGame")]
+        public async Task<IActionResult> StartGame(string lobbyId)
+        {
+            // TODO: Handle game start
+            // await _lobbyService.StartGameAsync(lobbyId, playerId);
+
+            // TODO: Move to service
+            await _gameHubContext.Clients.Group(lobbyId).SendAsync(GameHubMethod.GameAction.ToString(), new GameAction<object>
+            {
+                Type = GameActionType.StartGame,
+                Payload = new 
+                {
+                    LobbyId = lobbyId
+                }
             });
 
             return Ok();

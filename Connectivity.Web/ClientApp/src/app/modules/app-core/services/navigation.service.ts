@@ -19,4 +19,8 @@ export class NavigationService {
     public goToPlayerIdentification(id: string): void {
         this.router.navigate([`/lobby/${id}/player-identification`]);
     }
+
+    public goToGame(id: string): void {
+        this.router.navigate([`/game/${id}`]);
+    }
 }

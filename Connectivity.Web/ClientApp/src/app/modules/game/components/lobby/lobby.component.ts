@@ -60,4 +60,12 @@ export class LobbyComponent extends DestroyableComponent implements OnInit {
                 this.navigationService.goToHome();
             });
     }
+
+    public onGameStartClick(): void {
+        this.lobbyService.startGame(this.lobbyId)
+            .wrapWithSpinner(this.globalSpinnerService)
+            .subscribe(() => {
+                this.navigationService.goToGame(this.lobbyId);
+            });
+    }
 }

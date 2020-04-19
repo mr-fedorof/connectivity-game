@@ -37,9 +37,8 @@ export class GameHubService {
     public listenToActions(): Observable<Action> {
 
         // TODO: for testing purposes, can be removed
-        // HiThanks - hiThanksAction in lobby.component
-        this.client.listen('HiThanks')
-            .subscribe((response) => { alert(response) });
+        this.client.listen('PostProcessing')
+            .subscribe((response) => { console.log('PostProcessing says: ', response) });
 
         return this.client.listen(GameHubEvent.gameAction)
             .pipe(
@@ -48,8 +47,6 @@ export class GameHubService {
     }
 
     public sendAction(lobbyId: string, action: Action): Observable<void> {
-        // TODO: send doesnt work, we need a wrapper, definitely (at least to support 'unsubsribe').
-        // return this.client.send(GameHubEvent.gameAction, lobbyId, action);
         return this.client.invoke(GameHubEvent.gameAction, lobbyId, action);
     }
 

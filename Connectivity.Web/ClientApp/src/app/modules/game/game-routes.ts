@@ -37,5 +37,6 @@ export const routes: Routes = [
                 ]
             }
         ]
-    }
+    },
+    { path: 'game/:id', component: GameFieldComponent, pathMatch: 'full' },
 ];

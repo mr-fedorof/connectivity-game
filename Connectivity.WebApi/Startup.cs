@@ -1,20 +1,13 @@
 using System.Text.Json;
 using Connectivity.Application;
-using Connectivity.Application.Interfaces;
-using Connectivity.Application.Services;
 using Connectivity.Persistence;
-using Connectivity.WebApi.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Converters;
-using System.Text.Json.Serialization;
 using Connectivity.Domain.Converters;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Serialization;
+using Connectivity.Application.Hubs;
 
 namespace Connectivity.WebApi
 {

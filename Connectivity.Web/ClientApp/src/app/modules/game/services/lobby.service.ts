@@ -35,4 +35,9 @@ export class LobbyService {
     public leaveLobby(lobbyId: string, playerId: string): Observable<void> {
         return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/player/${playerId}/leave`, null);
     }
+
+
+    public startGame(lobbyId: string): Observable<void> {
+        return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/startGame`, null);
+    }
 }

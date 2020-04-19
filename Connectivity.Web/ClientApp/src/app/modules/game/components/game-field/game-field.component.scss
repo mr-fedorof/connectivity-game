@@ -1,0 +1,95 @@
+@import 'component-common.scss';
+
+.game-container {
+    padding: 10px;
+}
+
+.game-field {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /*width: 531px;
+    height: 820px;*/
+
+    .start {
+        width: 178px;
+        height: 86px;
+        background-image: url(/assets/images/start.svg);
+    }
+
+    .field-cell {
+        height: 86px;
+        width: 85.68px;
+        border-radius: 10px;
+        background-color: #CEE7FD;
+    }
+
+
+    .finish {
+        width: 173px;
+        height: 86px;
+        background-image: url(/assets/images/finish.svg);
+    }
+}
+
+.interactive-block {
+    /*width: 805px;
+    height: 863px;*/
+
+    .cards {
+        height: 286px;
+        display: block;
+    }
+
+    .central-block {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+.teams-block {
+    .team {
+        height: 151px;
+        width: 370px;
+        border-radius: 9px;
+        padding-bottom: 16px;
+    }
+
+    .team-icon {
+        float: right;
+        height: 157px;
+        width: 157px;
+        opacity: 0.2;
+    }
+
+    .team-a {
+        background-color: #00CEC9;
+    }
+
+    .team-b {
+        background-color: #0984E3;
+    }
+
+    .team-c {
+        background-color: #FF7675;
+    }
+
+    .team-d {
+        background-color: #FCBE4B;
+    }
+
+    .icon-a {
+        background-image: url(/assets/images/teamA.svg);
+    }
+
+    .icon-b {
+        background-image: url(/assets/images/teamB.svg);
+    }
+
+    .icon-c {
+        background-image: url(/assets/images/teamC.svg);
+    }
+
+    .icon-d {
+        background-image: url(/assets/images/teamD.svg);
+    }
+}
