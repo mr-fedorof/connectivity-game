@@ -7,7 +7,10 @@ import { shareReplay, startWith } from 'rxjs/operators';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        class: 'app-header'
+    }
 })
 export class HeaderComponent implements OnInit {
     public isExpanded = false;

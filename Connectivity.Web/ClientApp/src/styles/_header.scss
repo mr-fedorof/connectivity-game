@@ -1,22 +1,72 @@
 .app-header {
-    .navbar-brand {
-        font-size: 24px;
-    }
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    height: 90px;
+    background: $app-white;
 
-    .nav-item {
+    &__nav {
         display: flex;
-        align-items: center;
+        justify-content: space-between;
+        align-content: center;
+        flex-grow: 1;
+
+        &-brand {
+            color: $app-black;
+            font-size: 50px;
+            font-weight: 900;
+
+            &:hover {
+                text-decoration: none;
+                color: $app-black;
+            }
+        }
+
+        &-items {
+            display: flex;
+            align-items: center;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        &-item {
+            display: flex;
+            align-content: center;
+
+            &:not(:first-child) {
+                margin-left: 40px;
+            }
+
+            a {
+                color: $app-black;
+                font-size: 22px;
+                font-weight: bold;
+
+                &:hover {
+                    color: $app-black;
+
+                }
+            }
+        }
     }
 
-    &__btn-lang {
-        @extend .btn;
-        @extend .btn-sm;
-        @extend .btn-light;
+    &__lang-group {
+        display: flex;
+    }
 
-        &#{&}--active {
-            @extend .btn-primary;
+    &__lang-sep {
+        padding: 0 3px;
+    }
 
-            pointer-events: none;
+    &__lang-btn {
+        border: 0;
+        background: transparent;
+        font-weight: normal;
+        text-transform: uppercase;
+
+        &--active {
+            font-weight: bold;
         }
     }
 }

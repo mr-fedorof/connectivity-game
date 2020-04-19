@@ -1,0 +1,15 @@
+* {
+    outline: none !important;
+}
+
+html {
+    font-size: 16px;
+    height: 100%;
+    overflow: hidden;
+}
+
+html,
+body,
+app-root {
+    @extend .v-max;
+}

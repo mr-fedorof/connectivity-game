@@ -54,6 +54,8 @@
         "no-unused-css": false,
         "no-unnecessary-callback-wrapper": false,
         "no-empty-interface": false,
-        "invalid-void": false
+        "invalid-void": false,
+        "no-host-metadata-property": false,
+        "use-component-view-encapsulation": false
     }
 }
