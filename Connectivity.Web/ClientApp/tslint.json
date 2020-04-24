@@ -9,25 +9,9 @@
         "no-implicit-dependencies": false,
         "no-null-keyword": false,
         "member-ordering": [
-            true,
+            false,
             {
-                "order": [
-                    "private-static-field",
-                    "protected-static-field",
-                    "public-static-field",
-                    "private-instance-field",
-                    "protected-instance-field",
-                    "public-instance-field",
-                    "public-constructor",
-                    "protected-constructor",
-                    "private-constructor",
-                    "public-instance-method",
-                    "public-static-method",
-                    "protected-instance-method",
-                    "protected-static-method",
-                    "private-instance-method",
-                    "private-static-method"
-                ]
+                "order": "instance-sandwich"
             }
         ],
         "template-i18n": false,

@@ -1,7 +1,7 @@
 ﻿using System;
 using Connectivity.Domain.Enums;
 
-namespace Connectivity.Application.GameActions.Attributes
+namespace Connectivity.Domain.GameActions.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class GameActionTypeAttribute : Attribute

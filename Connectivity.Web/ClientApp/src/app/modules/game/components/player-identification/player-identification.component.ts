@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '@modules/app-core/services';
 import { validateForm } from '@modules/app-form/helpers';
-import { GameSession, Player } from '@modules/game/models';
-import { GameSessionService, LobbyService } from '@modules/game/services';
+import { Player } from '@modules/game/models';
+import { LobbyService } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
@@ -13,7 +13,11 @@ import { PlayerIdentificationForm } from './player-identification-form';
 @Component({
     selector: 'app-player-identification',
     templateUrl: './player-identification.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./player-identification.component.scss'],
+    host: {
+        class: 'app-player-identification'
+    }
 })
 export class PlayerIdentificationComponent extends DestroyableComponent implements OnInit, OnDestroy {
     public lobbyId: string;
@@ -21,7 +25,6 @@ export class PlayerIdentificationComponent extends DestroyableComponent implemen
 
     constructor(
         private readonly lobbyService: LobbyService,
-        private readonly gameSessionService: GameSessionService,
         private readonly navigationService: NavigationService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly spinner: GlobalSpinnerService
@@ -58,12 +61,6 @@ export class PlayerIdentificationComponent extends DestroyableComponent implemen
         this.lobbyService.joinLobby(this.lobbyId, player)
             .wrapWithSpinner(this.spinner)
             .subscribe(newPlayer => {
-                const gameSession = new GameSession({
-                    playerId: newPlayer.id,
-                    lobbyId: this.lobbyId
-                });
-
-                this.gameSessionService.saveGameSession(gameSession);
                 this.navigationService.goToLobby(this.lobbyId);
             });
     }

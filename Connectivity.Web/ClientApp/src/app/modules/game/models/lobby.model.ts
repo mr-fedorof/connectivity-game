@@ -8,6 +8,7 @@ export interface ILobby {
     teams: Team[];
     game: Game;
     players: Player[];
+    lastActionIndex: number;
 }
 
 export class Lobby implements ILobby {
@@ -16,6 +17,7 @@ export class Lobby implements ILobby {
     public teams: Team[];
     public game: Game;
     public players: Player[];
+    public lastActionIndex: number;
 
     constructor(model: Partial<Lobby> = {}) {
         Object.assign(this, model);
@@ -27,5 +29,6 @@ export const initialLobby: ILobby = {
     name: null,
     teams: [],
     game: null,
-    players: []
+    players: [],
+    lastActionIndex: null
 };

@@ -1,6 +1,5 @@
 {
     "HOME": {
-        "JOIN_LOBBY": "Войти в Комнату",
         "CREATE_LOBBY": "Создать Комнату"
     },
     "HEADER": {
@@ -21,5 +20,11 @@
         "TEAM_NAME_LABEL_REQUIRED": "Введите название команды №{{ index }}",
         "CREATE_LOBBY_BTN": "Создать комнату",
         "CANCEL_BTN": "Отмена"
+    },
+    "LOBBY": {
+        "TITLE": "Комната - {{ name }}",
+        "WAITING_TO_JOIN_LIST": "Неопределившиеся",
+        "JOIN_TEAM": "Присоединиться к команде",
+        "LEAVE_TEAM": "Покинуть команду"
     }
 }

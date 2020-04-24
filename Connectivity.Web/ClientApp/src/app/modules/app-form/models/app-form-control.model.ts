@@ -2,6 +2,7 @@ import { AsyncValidatorFn, FormControl, ValidatorFn, Validators } from '@angular
 import { IDestroyable } from '@shared/destroyable';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, skip, startWith, takeUntil } from 'rxjs/operators';
+
 import { IErrorMessages } from '../types';
 import { IAppAbstractControl } from './app-abstract-control.interface';
 import { IAppControlOptions } from './app-control-options.interface';
@@ -33,7 +34,6 @@ export class AppFormControl extends FormControl implements IAppAbstractControl, 
     }
 
     constructor(
-        public nameKey = null,
         formState?: any,
         validators?: ValidatorFn[],
         asyncValidators?: AsyncValidatorFn[],

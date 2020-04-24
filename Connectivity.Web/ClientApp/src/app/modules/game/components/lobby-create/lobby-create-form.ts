@@ -19,7 +19,6 @@ export class LobbyCreateForm extends AppFormGroup {
 
         this.addControls({
             name: new AppFormControl(
-                'Name',
                 '',
                 null,
                 null,
@@ -31,9 +30,8 @@ export class LobbyCreateForm extends AppFormGroup {
                     maxLength: 25
                 }
             ),
-            teamCount: new AppFormControl(null, 2),
+            teamCount: new AppFormControl(2),
             teams: new AppFormArray(
-                '',
                 [
                     this.createTeamControl(1),
                     this.createTeamControl(2)
@@ -59,7 +57,6 @@ export class LobbyCreateForm extends AppFormGroup {
 
     private createTeamControl(teamNumber: number): AppFormControl {
         const teamControl = new AppFormControl(
-            `Team ${teamNumber} name`,
             '',
             null,
             null,

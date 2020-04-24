@@ -1,6 +1,7 @@
 import { AsyncValidatorFn, FormArray, ValidatorFn } from '@angular/forms';
 import { IDestroyable } from '@shared/destroyable';
 import { Subject } from 'rxjs';
+
 import { IErrorMessages } from '../types';
 import { IAppAbstractControl } from './app-abstract-control.interface';
 
@@ -10,7 +11,6 @@ export class AppFormArray extends FormArray implements IAppAbstractControl, IDes
     public errorMessages: { [key: string]: string };
 
     constructor(
-        public nameKey = '',
         formState?: any,
         validator?: ValidatorFn | ValidatorFn[],
         asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[],

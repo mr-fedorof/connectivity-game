@@ -1,11 +1,12 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { RestoreGameSessionAction, restoreGameSessionAction } from '../actions';
+
+import { InitGameSessionAction, initGameSessionAction } from '../actions';
 import { GameSession, initialGameSession } from '../models';
 
 const _gameSessionReducer: ActionReducer<GameSession> = createReducer(
     initialGameSession,
 
-    on(restoreGameSessionAction, (state: GameSession, { payload }: RestoreGameSessionAction): GameSession => ({
+    on(initGameSessionAction, (state: GameSession, { payload }: InitGameSessionAction): GameSession => ({
         ...payload.gameSession
     }))
 );

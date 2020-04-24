@@ -2,13 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
 import { Observable } from 'rxjs/internal/Observable';
+import { tap } from 'rxjs/operators';
 
-import { Lobby, Player } from '../models';
+import { GameSession, Lobby, Player } from '../models';
+import { GameSessionService } from './game-session.service';
 
 @Injectable()
 export class LobbyService {
     constructor(
-        private readonly httpClient: HttpClient
+        private readonly httpClient: HttpClient,
+        private readonly gameSessionService: GameSessionService
     ) {
     }
 
@@ -29,13 +32,27 @@ export class LobbyService {
     }
 
     public joinLobby(lobbyId: string, player: Player): Observable<Player> {
-        return this.httpClient.post<Player>(`${environment.apiUrl}api/lobby/${lobbyId}/join`, player);
+        return this.httpClient.post<Player>(`${environment.apiUrl}api/lobby/${lobbyId}/join`, player)
+            .pipe(
+                tap(identifiedPlayer => {
+                    const gameSession = new GameSession({
+                        playerId: identifiedPlayer.id,
+                        lobbyId
+                    });
+
+                    this.gameSessionService.saveGameSession(gameSession);
+                })
+            );
     }
 
     public leaveLobby(lobbyId: string, playerId: string): Observable<void> {
-        return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/player/${playerId}/leave`, null);
+        return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/player/${playerId}/leave`, null)
+            .pipe(
+                tap(() => {
+                    this.gameSessionService.removeGameSession(lobbyId);
+                })
+            );
     }
-
 
     public startGame(lobbyId: string): Observable<void> {
         return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/startGame`, null);

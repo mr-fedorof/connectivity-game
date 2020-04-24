@@ -15,25 +15,27 @@ namespace Connectivity.Application.GameActions.Handlers
             _jsonOptions = jsonSerializerOptions.Value;
         }
 
-        public async Task<GameActionResponse> HandleAsync(GameAction gameAction)
+        public async Task<GameAction> HandleAsync(GameAction inGameAction)
         {
-            var gameActionT = new GameAction<TPayload>(
-                gameAction.Type,
-                JsonSerializer.Deserialize<TPayload>(gameAction.Payload.RootElement.ToString(), _jsonOptions),
-                gameAction.LobbyId,
-                gameAction.PlayerId);
+            var inGameActionT = new GameAction<TPayload>(
+                inGameAction.Type,
+                JsonSerializer.Deserialize<TPayload>(inGameAction.Payload.RootElement.ToString(), _jsonOptions),
+                inGameAction.LobbyId,
+                inGameAction.PlayerId,
+                inGameAction.Long);
 
-            var gameActionResponseT = await HandleAsync(gameActionT);
+            var outGameActionT = await HandleAsync(inGameActionT);
             
-            var gameActionResponse = new GameActionResponse(
-                gameActionResponseT.Type,
-                JsonDocument.Parse(JsonSerializer.SerializeToUtf8Bytes(gameActionResponseT.Payload, _jsonOptions)),
-                gameActionResponseT.LobbyId,
-                gameActionResponseT.PlayerId);
+            var outGameAction = new GameAction(
+                outGameActionT.Type,
+                JsonDocument.Parse(JsonSerializer.SerializeToUtf8Bytes(outGameActionT.Payload, _jsonOptions)),
+                outGameActionT.LobbyId,
+                outGameActionT.PlayerId,
+                outGameActionT.Long);
 
-            return gameActionResponse;
+            return outGameAction;
         }
 
-        protected abstract Task<GameActionResponse<TPayload>> HandleAsync(GameAction<TPayload> gameAction);
+        protected abstract Task<GameAction<TPayload>> HandleAsync(GameAction<TPayload> gameAction);
     }
 }

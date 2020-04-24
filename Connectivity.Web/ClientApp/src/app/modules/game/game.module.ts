@@ -10,13 +10,15 @@ import { LobbyCreateComponent } from './components/lobby-create/lobby-create.com
 import { LobbySyncComponent } from './components/lobby-sync/lobby-sync.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
+import { ActionStateEffects } from './effects/action-state.effects';
 import { LobbyEffects } from './effects/lobby.effects';
+import { PlayerEffects } from './effects/player.effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
-import { GameHubService, GameSessionService, LobbyService } from './services';
+import { ActionService, GameHubService, GameService, GameSessionService, LobbyService } from './services';
 
 @NgModule({
     imports: [
@@ -25,7 +27,9 @@ import { GameHubService, GameSessionService, LobbyService } from './services';
         GameRoutingModule,
         StoreModule.forFeature(GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers),
         EffectsModule.forFeature([
-            LobbyEffects
+            ActionStateEffects,
+            LobbyEffects,
+            PlayerEffects
         ]),
         SharedModule
     ],
@@ -43,7 +47,9 @@ import { GameHubService, GameSessionService, LobbyService } from './services';
         GameHubService,
         GameSessionService,
         LobbyExistsGuard,
-        GameSessionExistsGuard
+        GameSessionExistsGuard,
+        GameService,
+        ActionService
     ]
 })
 export class GameModule { }

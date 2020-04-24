@@ -8,12 +8,13 @@ namespace Connectivity.Domain.GameActions
         {
         }
 
-        public GameAction(GameActionType type, TPayload payload, string lobbyId, string playerId)
+        public GameAction(GameActionType type, TPayload payload, string lobbyId, string playerId, bool @long)
         {
             Type = type;
             Payload = payload;
             LobbyId = lobbyId;
             PlayerId = playerId;
+            Long = @long;
         }
 
         public GameActionType Type { get; set; }
@@ -23,5 +24,9 @@ namespace Connectivity.Domain.GameActions
         public string LobbyId { get; set; }
 
         public string PlayerId { get; set; }
+
+        public bool Long { get; set; }
+
+        public int? Index { get; set; }
     }
 }

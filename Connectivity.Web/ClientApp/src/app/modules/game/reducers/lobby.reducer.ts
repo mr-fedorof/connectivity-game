@@ -8,8 +8,14 @@ import {
     joinTeamPlayerAction,
     LeavePlayerAction,
     leavePlayerAction,
+    LeaveTeamPlayerAction,
+    leaveTeamPlayerAction,
     NewPlayerAction,
     newPlayerAction,
+    ShareLobbyResponseAction,
+    shareLobbyResponseAction,
+    UpdateLastActionIndexLobbyAction,
+    updateLastActionIndexLobbyAction,
 } from '../actions';
 import { initialLobby, Lobby } from '../models';
 
@@ -18,6 +24,18 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
 
     on(initLobbyAction, (state: Lobby, { payload }: InitLobbyAction): Lobby => ({
         ...payload.lobby
+    })),
+
+    on(shareLobbyResponseAction, (state: Lobby, { payload }: ShareLobbyResponseAction): Lobby => ({
+        ...state,
+        lastActionIndex: payload.lobby.lastActionIndex,
+        players: payload.lobby.players,
+        game: payload.lobby.game
+    })),
+
+    on(updateLastActionIndexLobbyAction, (state: Lobby, { payload }: UpdateLastActionIndexLobbyAction): Lobby => ({
+        ...state,
+        lastActionIndex: payload.lastActionIndex
     })),
 
     on(newPlayerAction, (state: Lobby, { payload }: NewPlayerAction): Lobby => ({
@@ -35,6 +53,14 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         players: replaceElement(state.players, p => p.id === payload.playerId, p => ({
             ...p,
             teamId: payload.teamId
+        }))
+    })),
+
+    on(leaveTeamPlayerAction, (state: Lobby, { payload }: LeaveTeamPlayerAction): Lobby => ({
+        ...state,
+        players: replaceElement(state.players, p => p.id === payload.playerId, p => ({
+            ...p,
+            teamId: null
         }))
     }))
 );

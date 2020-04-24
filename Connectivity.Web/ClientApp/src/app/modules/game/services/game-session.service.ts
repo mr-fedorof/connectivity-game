@@ -10,7 +10,7 @@ export class GameSessionService {
         const rawGameSessions = localStorage.getItem('game-sessions');
         const gameSessions: GameSession[] = JSON.parse(rawGameSessions) || [];
 
-        const gameSession = gameSessions.find(s => s.lobbyId == lobbyId);
+        const gameSession = gameSessions.find(s => s.lobbyId === lobbyId);
         if (!gameSession) {
             return null;
         }

@@ -13,6 +13,7 @@ namespace Connectivity.Application
     {
         public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IGameActionIndexer, GameActionIndexer>();
             services.AddSingleton<IGameActionDispatcher, GameActionDispatcher>();
             services.AddGameActionHandlers(typeof(IGameActionHandler).Assembly);
 

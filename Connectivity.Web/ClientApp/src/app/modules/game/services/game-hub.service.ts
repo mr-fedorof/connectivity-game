@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { GameHubEvent } from '../enums';
-import { Lobby } from '../models';
+import { LobbyConnectResult } from '../models';
 
 @Injectable()
 export class GameHubService {
@@ -30,24 +30,19 @@ export class GameHubService {
         return this.client.connect();
     }
 
-    public connectToLobby(lobbyId: string): Observable<Lobby> {
+    public connectToLobby(lobbyId: string): Observable<LobbyConnectResult> {
         return this.client.invoke('ConnectToLobby', lobbyId);
     }
 
     public listenToActions(): Observable<Action> {
-
-        // TODO: for testing purposes, can be removed
-        this.client.listen('PostProcessing')
-            .subscribe((response) => { console.log('PostProcessing says: ', response) });
-
         return this.client.listen(GameHubEvent.gameAction)
             .pipe(
                 map(([action]) => action as Action)
             );
     }
 
-    public sendAction(lobbyId: string, action: Action): Observable<void> {
-        return this.client.invoke(GameHubEvent.gameAction, lobbyId, action);
+    public sendAction(action: Action): Observable<Action> {
+        return this.client.invoke(GameHubEvent.gameAction, action);
     }
 
     public stop(): Observable<void> {

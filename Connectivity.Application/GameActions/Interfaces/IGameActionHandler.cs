@@ -7,6 +7,6 @@ namespace Connectivity.Application.GameActions.Interfaces
 {
     public interface IGameActionHandler
     {
-        Task<GameActionResponse> HandleAsync(GameAction gameAction);
+        Task<GameAction> HandleAsync(GameAction inGameAction);
     }
 }

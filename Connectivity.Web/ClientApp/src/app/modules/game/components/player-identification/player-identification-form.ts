@@ -10,7 +10,6 @@ export class PlayerIdentificationForm extends AppFormGroup {
 
         this.addControls({
             name: new AppFormControl(
-                'Name',
                 '',
                 null,
                 null,

@@ -7,7 +7,6 @@ namespace Connectivity.Domain.Enums
     public enum GameHubMethod
     {
         [EnumMember(Value = "GameAction")]
-        GameAction,
-        PostProcessing
+        GameAction
     }
 }

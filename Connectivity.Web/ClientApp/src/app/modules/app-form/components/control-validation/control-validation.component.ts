@@ -12,7 +12,6 @@ import { IAppAbstractControl } from '@modules/app-form/models/app-abstract-contr
 })
 export class ControlValidationComponent implements OnInit {
     @Input() public control: IAppAbstractControl;
-    @Input() public controlNameKey: string;
     @Input() public translateParams: object;
 
     public get customErrorKeys(): string[] {
@@ -27,10 +26,6 @@ export class ControlValidationComponent implements OnInit {
     constructor(private readonly cdr: ChangeDetectorRef) { }
 
     public ngOnInit(): void {
-        if (!this.controlNameKey) {
-            this.controlNameKey = this.control.nameKey;
-        }
-
         this.control.statusChanges.subscribe(() => {
             this.cdr.markForCheck();
         });

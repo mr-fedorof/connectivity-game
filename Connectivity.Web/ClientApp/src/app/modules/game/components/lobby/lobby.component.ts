@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from '@modules/app-core/services';
-import { joinTeamPlayerAction } from '@modules/game/actions';
-import { GameSession, Lobby } from '@modules/game/models';
-import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
-import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
-import { GameSessionService, LobbyService } from '@modules/game/services';
+import { joinTeamPlayerAction, leaveTeamPlayerAction, longPlayerAction } from '@modules/game/actions';
+import { Lobby, Player } from '@modules/game/models';
+import { ActionService, GameService, LobbyService } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
-import { select, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby',
@@ -20,52 +17,65 @@ import { takeUntil } from 'rxjs/operators';
     }
 })
 export class LobbyComponent extends DestroyableComponent implements OnInit {
-    public playerId: string;
-    public lobbyId: string;
+    public lobby: Lobby;
+    public currentPlayer: Player;
 
+    public currentPlayer$: Observable<Player>;
     public lobby$: Observable<Lobby>;
-    public gameSession$: Observable<GameSession>;
 
     constructor(
-        private readonly store: Store,
-        private readonly lobbyService: LobbyService,
         private readonly navigationService: NavigationService,
-        private readonly gameSessionService: GameSessionService,
-        private readonly globalSpinnerService: GlobalSpinnerService
+        private readonly globalSpinnerService: GlobalSpinnerService,
+        private readonly lobbyService: LobbyService,
+        private readonly gameService: GameService,
+        private readonly actionService: ActionService
     ) {
         super();
     }
 
     public ngOnInit(): void {
-        this.lobby$ = this.store.pipe(select(lobbySelector));
-        this.gameSession$ = this.store.pipe(select(gameSessionSelector));
+        this.lobby$ = this.gameService.lobby$
+            .pipe(
+                tap(lobby => {
+                    this.lobby = lobby;
+                })
+            );
 
-        this.gameSession$
-            .pipe(takeUntil(this.onDestroy))
-            .subscribe(gameSession => {
-                this.playerId = gameSession.playerId;
-                this.lobbyId = gameSession.lobbyId;
-            });
+        this.currentPlayer$ = this.gameService.currentPlayer$
+            .pipe(
+                tap(player => {
+                    this.currentPlayer = player;
+                })
+            );
+
+        this.currentPlayer$.subscribe();
     }
 
     public onJoinTeamClick(playerId: string, teamId: string): void {
-        this.store.dispatch(joinTeamPlayerAction(playerId, teamId));
+        this.actionService.applyAction(joinTeamPlayerAction(playerId, teamId));
+    }
+
+    public onLeaveTeamClick(playerId: string, teamId: string): void {
+        this.actionService.applyAction(leaveTeamPlayerAction(playerId, teamId));
     }
 
     public onLeaveLobbyClick(): void {
-        this.lobbyService.leaveLobby(this.lobbyId, this.playerId)
+        this.lobbyService.leaveLobby(this.lobby.id, this.currentPlayer.id)
             .wrapWithSpinner(this.globalSpinnerService)
             .subscribe(() => {
-                this.gameSessionService.removeGameSession(this.lobbyId);
                 this.navigationService.goToHome();
             });
     }
 
     public onGameStartClick(): void {
-        this.lobbyService.startGame(this.lobbyId)
+        this.lobbyService.startGame(this.lobby.id)
             .wrapWithSpinner(this.globalSpinnerService)
             .subscribe(() => {
-                this.navigationService.goToGame(this.lobbyId);
+                this.navigationService.goToGame(this.lobby.id);
             });
+    }
+
+    public onLongActionClick(): void {
+        this.actionService.applyAction(longPlayerAction());
     }
 }

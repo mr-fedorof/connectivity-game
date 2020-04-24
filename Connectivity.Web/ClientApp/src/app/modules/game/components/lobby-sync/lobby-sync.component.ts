@@ -1,28 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '@modules/app-core/services';
-import { initLobbyAction, restoreGameSessionAction } from '@modules/game/actions';
-import { Lobby } from '@modules/game/models';
-import { gameSessionSelector } from '@modules/game/selectors/game-session.selectors';
-import { GameHubService, GameSessionService } from '@modules/game/services';
-import { Actions } from '@ngrx/effects';
+import { initActionStateAction, initGameSessionAction, initLobbyAction, shareLobbyAction } from '@modules/game/actions';
+import { actionStateSelector } from '@modules/game/selectors/action-state.selectors';
+import { ActionService, GameHubService, GameSessionService } from '@modules/game/services';
+import { GlobalSpinnerService } from '@modules/spinner';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
-import { filter, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby-sync',
-    template: '<router-outlet></router-outlet>'
+    template: '<div *ngIf="isReady$ | async"><router-outlet></router-outlet></div>',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbySyncComponent extends DestroyableComponent implements OnInit {
+    public isReady$: Observable<boolean>;
+
     constructor(
         private readonly store: Store,
-        private readonly action$: Actions,
         private readonly gameHubService: GameHubService,
         private readonly gameSessionService: GameSessionService,
         private readonly navigationService: NavigationService,
-        private readonly activatedRoute: ActivatedRoute
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly actionService: ActionService,
+        private readonly globalSpinnerService: GlobalSpinnerService
     ) {
         super();
     }
@@ -35,66 +39,38 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
             return;
         }
 
+        this.isReady$ = this.store.select(actionStateSelector)
+            .pipe(
+                map(actionState => !!actionState.initialized),
+                filter(initialized => !!initialized),
+                take(1)
+            )
+            .wrapWithSpinner(this.globalSpinnerService);
+
         const gameSession = this.gameSessionService.getGameSession(lobbyId);
         if (gameSession) {
-            this.store.dispatch(restoreGameSessionAction(gameSession));
+            this.store.dispatch(initGameSessionAction(gameSession));
         }
 
+        this.gameHubService.listenToActions()
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe((action: Action) => {
+                this.actionService.applyAction(action);
+            });
+
+        // TODO: Handle lost connection
         this.gameHubService.start()
             .pipe(
                 takeUntil(this.onDestroy),
                 switchMap(() => this.gameHubService.connectToLobby(lobbyId))
             )
-            .subscribe((lobby: Lobby) => {
-                if (!lobby) {
-                    this.navigationService.goToHome();
+            .subscribe(result => {
+                this.actionService.applyAction(initLobbyAction(result.lobby));
+                this.actionService.applyAction(initActionStateAction(result.globalActionIndex));
 
-                    return;
+                if (result.globalActionIndex > 0) {
+                    this.actionService.applyAction(shareLobbyAction());
                 }
-
-                this.store.dispatch(initLobbyAction(lobby));
-
-                this.syncInAction();
-                this.syncOutAction();
-            });
-    }
-
-    private syncInAction(): void {
-        this.gameHubService.listenToActions()
-            .pipe(
-                takeUntil(this.onDestroy)
-            )
-            .subscribe((action: Action) => {
-                // tslint:disable-next-line: no-console
-                console.log('in:', action);
-                this.store.dispatch(action);
-            });
-    }
-
-    private syncOutAction(): void {
-        this.action$
-            .pipe(
-                takeUntil(this.onDestroy),
-                withLatestFrom(this.store.select(gameSessionSelector)),
-                filter(([action, gameSession]) => {
-                    if (!gameSession.playerId) {
-                        return false;
-                    }
-
-                    return (action.type.includes('[S]')) && !(action as any).playerId;
-                })
-            )
-            .subscribe(([action, gameSession]) => {
-                // tslint:disable-next-line: no-console
-                console.log('out:', action);
-
-                const extendedAction = {
-                    ...action,
-                    lobbyId: gameSession.lobbyId,
-                    playerId: gameSession.playerId
-                };
-
-                this.gameHubService.sendAction(gameSession.lobbyId, extendedAction);
             });
     }
 }

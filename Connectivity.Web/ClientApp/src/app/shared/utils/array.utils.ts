@@ -22,6 +22,19 @@ export function addElement<T>(
     return [...values || [], value];
 }
 
+export function addIfNotExistsElement<T>(
+    values: T[],
+    value: T,
+    predicate: (value: T, index: number, obj: T[]) => boolean
+): T[] {
+    const index = values.findIndex(predicate);
+    if (index >= 0) {
+        return values;
+    }
+
+    return [...values || [], value];
+}
+
 export function removeElement<T>(
     values: T[],
     predicate: (value: T, index: number, obj: T[]) => boolean

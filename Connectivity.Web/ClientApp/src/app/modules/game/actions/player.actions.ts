@@ -16,10 +16,25 @@ export const leavePlayerAction = createAction('[Player] Leave', (playerId: strin
 }));
 export type LeavePlayerAction = ReturnType<typeof leavePlayerAction>;
 
-export const joinTeamPlayerAction = createAction('[Player] [S] Join Team', (playerId: string, teamId: string) => ({
+export const joinTeamPlayerAction = createAction('[Player] [Sh] Join Team', (playerId: string, teamId: string) => ({
     payload: {
         playerId,
         teamId
     }
 }));
 export type JoinTeamPlayerAction = ReturnType<typeof joinTeamPlayerAction>;
+
+export const leaveTeamPlayerAction = createAction('[Player] [Sh] Leave Team', (playerId: string, teamId: string) => ({
+    payload: {
+        playerId,
+        teamId
+    }
+}));
+export type LeaveTeamPlayerAction = ReturnType<typeof leaveTeamPlayerAction>;
+
+export const longPlayerAction = createAction('[Player] [Sh] Long Action', () => ({
+    payload: {
+    },
+    long: true
+}));
+export type LongPlayerAction = ReturnType<typeof longPlayerAction>;

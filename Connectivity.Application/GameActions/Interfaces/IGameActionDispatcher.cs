@@ -5,6 +5,6 @@ namespace Connectivity.Application.GameActions.Interfaces
 {
     public interface IGameActionDispatcher
     {
-        Task<GameActionResponse> DispatchAsync(GameAction gameAction);
+        Task<GameAction> DispatchAsync(GameAction gameAction);
     }
 }

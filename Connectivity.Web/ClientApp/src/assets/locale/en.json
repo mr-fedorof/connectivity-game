@@ -1,6 +1,5 @@
 {
     "HOME": {
-        "JOIN_LOBBY": "Join lobby",
         "CREATE_LOBBY": "Create lobby"
     },
     "HEADER": {
@@ -21,5 +20,11 @@
         "TEAM_NAME_LABEL_REQUIRED": "Provide team #{{ index }} name",
         "CREATE_LOBBY_BTN": "Create lobby",
         "CANCEL_BTN": "Cancel"
+    },
+    "LOBBY": {
+        "TITLE": "Lobby - {{ name }}",
+        "WAITING_TO_JOIN_LIST": "Waiting to join",
+        "JOIN_TEAM": "Join the team",
+        "LEAVE_TEAM": "Leave the team"
     }
 }

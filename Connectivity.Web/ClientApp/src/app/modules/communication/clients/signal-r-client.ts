@@ -1,5 +1,5 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@aspnet/signalr';
-import { bindCallback, EMPTY, from, Observable, of, Subject } from 'rxjs';
+import { EMPTY, from, Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 export class SignalRClient {
