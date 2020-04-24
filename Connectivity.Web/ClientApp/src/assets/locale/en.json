@@ -1,6 +1,10 @@
 {
     "HOME": {
-        "CREATE_LOBBY": "Create lobby"
+        "CONNECTIVITY": "CONNECTIVITY",
+        "P1": "Stay Safe",
+        "P2": "Be connected",
+        "P3": "Just play",
+        "CREATE_LOBBY": "Create Room"
     },
     "HEADER": {
         "RULES": "Rules",

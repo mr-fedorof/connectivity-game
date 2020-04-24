@@ -1,41 +1,197 @@
-<div class="container">
+<div class="game-container">
     <div class="row">
-        <div class="col-xs-3">
+        <div class="col-3">
             <div class="game-field">
                 <div class="finish"></div>
-                <div class="field-cell">1</div>
-                <div class="field-cell">2</div>
+                <div class="field-cell"><span class="no">1</span></div>
+                <div class="field-cell"><span class="no">2</span></div>
                 <div class="start"></div>
             </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-5">
             <div class="interactive-block">
                 <div class="row cards">
-                    <div class="col-xs-4 card talk-card">talk</div>
-                    <div class="col-xs-4 card mine-card">mine</div>
-                    <div class="col-xs-4 card draw-card">draw</div>
+                    <div class="col">
+                        <div class="card talk-card">
+                            <div class="dices">
+                                <div class="dice first-face">
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="dice down-dice first-face">
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mine-card">
+                            <div class="dices">
+                                <div class="dice second-face">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="dice down-dice second-face">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card draw-card">
+                            <div class="dices">
+                                <div class="dice third-face">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="dice down-dice third-face">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="central-block">
-                    <div class="dices">dices</div>
-                    <div class="hz">hz</div>
-                    <div class="timer">timer</div>
+                <div class="row central-block">
+                    <div class="col">
+                        <div class="roll-dice"></div>
+                    </div>
+                    <div class="col">hz</div>
+                    <div class="col">
+                        <div class="timer">
+                            <div class="timer-icon"></div>
+                            <div class="timer-count">{{ timeLeft | async }}</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="cards">
-                    <div class="crocodile-card">crocodile</div>
-                    <div class="agent-card">agent</div>
-                    <div class="joker-card">joker</div>
-                </div>
+                <div class="row cards">
+                    <div class="col">
+                        <div class="card crocodile-card">
+                            <div class="dices">
+                                <div class="dice fourth-face">
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="dice down-dice fourth-face">
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card agent-card">
+                            <div class="dices">
+                                <div class="dice fifth-face">
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="dice down-dice fifth-face ">
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card joker-card">
+                            <div class="dices">
+                                <div class="dice sixth-face">
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="dice down-dice sixth-face">
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="column">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-xs-4">
-            <div class="teams-block">
-                <div class="team team-a"><div class="team-icon icon-a"></div></div>
-                <div class="team team-b"><div class="team-icon icon-b"></div></div>
-                <div class="team team-c"><div class="team-icon icon-c"></div></div>
-                <div class="team team-d"><div class="team-icon icon-d"></div></div>
-            </div>
-            <div class="messages-block">
+
+        <div class="col-4">
+            <div class="info-block">
+                <div class="teams-block">
+                    <div class="team team-a">
+                        <div class="name">Team A</div>
+                        <div class="member">Max</div>
+                        <div class="member">Mamka Maksa</div>
+                        <div class="member">Petuch</div>
+                    </div>
+                    <div class="team team-b">
+                        <div class="name">Team Kozlovskikh</div>
+                        <div class="member">Ortsiom</div>
+                        <div class="member">Kotsiukha</div>
+                        <div class="member">Tema</div>
+                    </div>
+                    <div class="team team-c">
+                        <div class="name">Team Vklck</div>
+                        <div class="member">Jora</div>
+                        <div class="member">Tatyana</div>
+                        <div class="member">Arkadiy</div>
+                        <div class="member">Larry</div>
+                    </div>
+                    <div class="team team-d">
+                        <div class="name">Team Rudik</div>
+                        <div class="member">Jora</div>
+                        <div class="member">Tatyana</div>
+                        <div class="member">Arkadiy</div>
+                        <div class="member">Larry</div>
+                    </div>
+                </div>
+                <div class="messages-block">
+                </div>
             </div>
         </div>
     </div>

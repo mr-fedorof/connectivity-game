@@ -1,14 +1,64 @@
-:host(.app-home) {
-    & {
-        display: flex;
-        flex-grow: 1;
-        align-items: center;
-        justify-content: center;
+@import 'component-common.scss';
+
+:host {
+    @extend .app-home;
+}
+
+.app-home {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    &:after {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.34;
+        background-image: url("/assets/images/connect.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 40%;
     }
 
-    .app-home {
-        &__btn {
-            margin: 0 10px;
-        }
+    &__app-name {
+        align-self: center;
+        color: $cian;
+        font-family: Montserrat;
+        font-size: 150px;
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 183px;
+        text-align: center;
+    }
+
+    &__app-slogan {
+        align-self: center;
+        color: $cian;
+        font-family: Montserrat;
+        font-size: 80px;
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 97px;
+    }
+
+
+    &__btn {
+        align-self: center;
+        margin: 0 10px;
+        border-radius: 6px;
+        background-color: $orange;
+        font-family: Montserrat;
+        font-size: 32px;
+        font-weight: bold;
+        letter-spacing: 0;
+        line-height: 39px;
     }
 }

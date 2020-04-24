@@ -1,7 +1,8 @@
 @import 'component-common.scss';
 
 .game-container {
-    padding: 10px;
+    width: 100%;
+    padding: 20px;
 }
 
 .game-field {
@@ -9,7 +10,6 @@
     padding-bottom: 10px;
     /*width: 531px;
     height: 820px;*/
-
     .start {
         width: 178px;
         height: 86px;
@@ -21,6 +21,17 @@
         width: 85.68px;
         border-radius: 10px;
         background-color: #CEE7FD;
+
+        .no {
+            padding-top: 4px;
+            padding-left: 8px;
+            color: $kind-of-black;
+            font-family: Montserrat;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 0;
+            line-height: 37px;
+        }
     }
 
 
@@ -34,62 +45,236 @@
 .interactive-block {
     /*width: 805px;
     height: 863px;*/
-
     .cards {
-        height: 286px;
-        display: block;
+        .dices {
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dice {
+            background-color: $white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10%;
+            padding: 3px;
+        }
+
+        .down-dice {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .dot {
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: $kind-of-black;
+        }
+
+        .first-face {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .second-face, .third-face {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .second-face .dot:nth-of-type(1) {
+            align-self: flex-end;
+        }
+
+        .third-face .dot:nth-of-type(1) {
+            align-self: flex-end;
+        }
+
+        .third-face .dot:nth-of-type(2) {
+            align-self: center;
+        }
+
+        .fourth-face, .fifth-face, .sixth-face {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .fourth-face .column, .fifth-face .column, .sixth-face .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .fifth-face .column:nth-of-type(2) {
+            justify-content: center;
+        }
+
+        .card {
+            height: 286px;
+            width: 199px;
+            border-radius: 13px;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);
+        }
+
+        .talk-card {
+            background-color: $light-blue;
+            background-image: url(/assets/images/talk.svg);
+            background-repeat: no-repeat;
+            /*background-size: 153px 145px;*/
+            background-position: center center;
+        }
+
+        .mine-card {
+            background-color: $cian;
+            background-image: url(/assets/images/mine.svg);
+            background-repeat: no-repeat;
+            /*background-size: 153px 145px;*/
+            background-position: center center;
+        }
+
+        .draw-card {
+            background-color: $olive;
+            background-image: url(/assets/images/draw.svg);
+            background-repeat: no-repeat;
+            /*background-size: 153px 145px;*/
+            background-position: center center;
+        }
+
+        .crocodile-card {
+            background-color: $orange;
+            background-image: url(/assets/images/crocodile.svg);
+            background-repeat: no-repeat;
+            /*background-size: 153px 145px;*/
+            background-position: center center;
+        }
+
+        .agent-card {
+            background-color: $purple;
+            background-image: url(/assets/images/agent.svg);
+            background-repeat: no-repeat;
+            /*background-size: 153px 145px;*/
+            background-position: center center;
+        }
+
+        .joker-card {
+            background-color: $pink;
+            background-image: url(/assets/images/joker.svg);
+            background-repeat: no-repeat;
+            /*background-size: 153px 145px;*/
+            background-position: center center;
+        }
     }
 
     .central-block {
         padding-top: 10px;
         padding-bottom: 10px;
     }
+
+    .roll-dice {
+        height: 161px;
+        width: 188px;
+        background-image: url(/assets/images/dices.svg);
+        background-repeat: no-repeat;
+        /*background-size: 161px 188px;*/
+        background-position: center center;
+    }
+
+    .timer {
+        margin: 0 auto;
+        .timer-icon {
+            height: 110px;
+            width: 73px;
+            background-image: url(/assets/images/timer.svg);
+            background-repeat: no-repeat;
+            /*background-size: 161px 188px;*/
+            background-position: center center;
+        }
+
+        .timer-count {
+            height: 37px;
+            width: 84px;
+            color: #04101B;
+            font-family: Montserrat;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 0;
+            line-height: 37px;
+        }
+    }
 }
 
-.teams-block {
-    .team {
-        height: 151px;
-        width: 370px;
+.info-block {
+    .teams-block {
+        .team {
+            height: 131px;
+            width: 370px;
+            border-radius: 9px;
+            margin-bottom: 16px;
+
+            .name {
+                padding-top: 12px;
+                padding-left: 20px;
+                padding-bottom: 12px;
+                color: $white;
+                font-family: Montserrat;
+                font-size: 22px;
+                font-weight: 900;
+                letter-spacing: 0;
+                line-height: 25px;
+            }
+
+            .member {
+                padding-left: 20px;
+                color: $white;
+                font-family: Montserrat;
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: 0;
+                line-height: 20px;
+            }
+        }
+
+        .team-a {
+            background-color: $cian;
+            background-image: url(/assets/images/teamA.svg);
+            background-repeat: no-repeat;
+            background-size: 149px 164px;
+            background-position: bottom right;
+        }
+
+        .team-b {
+            background-color: $blue;
+            background-image: url(/assets/images/teamB.svg);
+            background-repeat: no-repeat;
+            background-size: 153px 145px;
+            background-position: bottom right;
+        }
+
+        .team-c {
+            background-color: $red;
+            background-image: url(/assets/images/teamC.svg);
+            background-repeat: no-repeat;
+            background-size: 145px 135px;
+            background-position: bottom right;
+        }
+
+        .team-d {
+            background-color: $orange;
+            background-image: url(/assets/images/teamD.svg);
+            background-repeat: no-repeat;
+            background-size: 146px 143px;
+            background-position: bottom right;
+        }
+    }
+
+    .messages-block {
+        height: 172px;
+        width: 368px;
         border-radius: 9px;
-        padding-bottom: 16px;
-    }
-
-    .team-icon {
-        float: right;
-        height: 157px;
-        width: 157px;
-        opacity: 0.2;
-    }
-
-    .team-a {
-        background-color: #00CEC9;
-    }
-
-    .team-b {
-        background-color: #0984E3;
-    }
-
-    .team-c {
-        background-color: #FF7675;
-    }
-
-    .team-d {
-        background-color: #FCBE4B;
-    }
-
-    .icon-a {
-        background-image: url(/assets/images/teamA.svg);
-    }
-
-    .icon-b {
-        background-image: url(/assets/images/teamB.svg);
-    }
-
-    .icon-c {
-        background-image: url(/assets/images/teamC.svg);
-    }
-
-    .icon-d {
-        background-image: url(/assets/images/teamD.svg);
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
     }
 }
