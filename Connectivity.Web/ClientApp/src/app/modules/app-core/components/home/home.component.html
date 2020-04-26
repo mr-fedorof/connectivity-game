@@ -1,15 +1,22 @@
-<div class="app-home__app-name">
-    <div translate>HOME.CONNECTIVITY</div>
-</div>
-
-<div class="app-home__app-slogan align-self-center">
-    <div translate>HOME.P1</div>
-    <div translate>HOME.P2</div>
-    <div translate>HOME.P3</div>
-</div>
-
-<a
-    class="app-home__btn btn-primary"
-    [routerLink]="['/lobby/new']"
+<h1
+    class="app-home__brand"
     translate
->HOME.CREATE_LOBBY</a>
+>
+    HOME.CONNECTIVITY
+</h1>
+
+<div class="app-home__content">
+    <div class="app-home__brand-text">
+        <p translate>HOME.P1</p>
+        <p translate>HOME.P2</p>
+        <p translate>HOME.P3</p>
+    </div>
+
+    <div class="app-home__action-container">
+        <a
+            class="app-home__action"
+            [routerLink]="['/lobby/new']"
+            translate
+        >HOME.CREATE_LOBBY</a>
+    </div>
+</div>

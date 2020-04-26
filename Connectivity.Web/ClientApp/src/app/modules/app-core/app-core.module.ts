@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { AlertModule } from '@modules/alert/alert.module';
 import { SharedModule } from '@shared/shared.module';
 
 import { AppRoutingModule } from './app-core-routing.module';
@@ -15,7 +16,8 @@ import { NavigationService } from './services';
 @NgModule({
     imports: [
         AppRoutingModule,
-        SharedModule
+        SharedModule,
+        AlertModule
     ],
     declarations: [
         AppComponent,

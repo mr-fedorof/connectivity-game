@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SignalRClient, SignalRService } from '@modules/communication';
 import { Action } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { merge, Observable, of, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { GameHubEvent } from '../enums';
 import { LobbyConnectResult } from '../models';
@@ -15,6 +15,10 @@ export class GameHubService {
         return this.client.connected;
     }
 
+    public get disconnected$(): Observable<Error | null> {
+        return this.client.close$;
+    }
+
     constructor(
         signalRService: SignalRService
     ) {
@@ -24,10 +28,19 @@ export class GameHubService {
     public start(): Observable<void> {
         if (this.isActive) {
             // TODO: return observable of connection
-            return of(false) as any as Observable<void>;
+            return of(undefined) as any as Observable<void>;
         }
 
-        return this.client.connect();
+        return merge(this.client.connect(), this.disconnected$)
+            .pipe(
+                switchMap(error => {
+                    if (error) {
+                        return throwError(error) as any as Observable<void>;
+                    }
+
+                    return of(undefined) as any as Observable<void>;
+                })
+            );
     }
 
     public connectToLobby(lobbyId: string): Observable<LobbyConnectResult> {

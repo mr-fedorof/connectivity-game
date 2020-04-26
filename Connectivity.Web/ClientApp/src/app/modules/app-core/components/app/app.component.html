@@ -3,5 +3,7 @@
 <!-- TODO: move to guard -->
 <ng-container *ngIf="isReady$ | async">
     <app-header></app-header>
+    <app-global-alert class="app__global-alert"></app-global-alert>
+
     <router-outlet></router-outlet>
 </ng-container>

@@ -1,21 +1,22 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnDestroy } from '@angular/core';
-import { hideTransparentAnimation } from '@shared/animations';
 import { DestroyableComponent } from '@shared/destroyable';
 import { BehaviorSubject, defer, Observable, timer } from 'rxjs';
 import { debounce, finalize, skipWhile, takeUntil, tap } from 'rxjs/operators';
+
 import { ISpinner } from '../../models/spinner.interface';
+import { showHideSpinnerAnimation } from '../../spiner.animations';
 
 @Component({
     selector: 'app-spinner',
     templateUrl: './spinner.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [hideTransparentAnimation()]
+    animations: [showHideSpinnerAnimation()]
 })
 export class SpinnerComponent extends DestroyableComponent implements ISpinner, OnDestroy {
     private readonly state = new BehaviorSubject<boolean>(false);
     private counter = 0;
 
-    @HostBinding('@hideTransparent') public get isHostHidden(): boolean {
+    @HostBinding('@showHideSpinner') public get isHostHidden(): boolean {
         return !this.isShown;
     }
     @HostBinding('class.vs-spinner-wrapper') public wrapperClass = true;

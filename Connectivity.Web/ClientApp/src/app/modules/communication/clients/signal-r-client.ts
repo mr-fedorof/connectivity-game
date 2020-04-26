@@ -1,8 +1,9 @@
 import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@aspnet/signalr';
-import { EMPTY, from, Observable, Subject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { from, Observable, of, Subject } from 'rxjs';
 
 export class SignalRClient {
+    private readonly _closeSubject: Subject<Error | null> = new Subject<Error | null>();
+
     private readonly _hubConnection: HubConnection;
     private readonly _url: string;
 
@@ -14,29 +15,61 @@ export class SignalRClient {
         return this._url;
     }
 
+    public get close$(): Observable<Error | null> {
+        return this._closeSubject.asObservable();
+    }
+
     constructor(url: string) {
         this._url = url;
         this._hubConnection = new HubConnectionBuilder()
             .withUrl(url)
             .build();
+
+        this._hubConnection.onclose(error => {
+            this._closeSubject.next(error);
+        });
     }
 
     public close(): Observable<void> {
         if (!this.connected) {
-            return EMPTY;
+            return of(undefined);
         }
 
-        const request = this._hubConnection.stop();
+        const result = new Observable<void>(s => {
+            const request = this._hubConnection.stop();
 
-        return from(request)
-            .pipe(take(1));
+            request.then(
+                () => {
+                    s.next();
+                },
+                error => {
+                    s.error(error);
+                }
+            );
+        });
+
+        return result;
     }
 
     public connect(): Observable<void> {
-        const request = this._hubConnection.start();
+        if (this.connected) {
+            return of(undefined);
+        }
 
-        return from(request)
-            .pipe(take(1));
+        const result = new Observable<void>(s => {
+            const request = this._hubConnection.start();
+
+            request.then(
+                () => {
+                    s.next();
+                },
+                error => {
+                    s.error(error);
+                }
+            );
+        });
+
+        return result;
     }
 
     public listen(eventName: string): Observable<any[]> {

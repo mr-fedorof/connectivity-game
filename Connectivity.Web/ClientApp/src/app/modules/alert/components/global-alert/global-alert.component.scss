@@ -1,0 +1,53 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-global-alert;
+}
+
+.app-global-alert {
+    display: block;
+    position: absolute;
+    width: 100%;
+    background: $red;
+
+    &__container {
+        @include make-container();
+        @include make-container-max-widths();
+
+        display: flex;
+        align-items: baseline;
+        padding: 15px 0;
+    }
+
+    &__content {
+        display: flex;
+        align-items: baseline;
+    }
+
+    &__icon {
+        @include app-icon($fa-var-exclamation-triangle);
+
+        color: $app-white;
+        font-size: 24px;
+        margin-right: 8px;
+    }
+
+    &__message {
+        color: $app-white;
+        font-size: 24px;
+        font-family: $app-font-family;
+        font-weight: 700;
+    }
+
+    &__btn {
+        @include btn-icon;
+
+        margin-left: auto;
+        color: $app-white;
+        font-size: 24px;
+
+        &-icon {
+            @include app-icon($fa-var-times);
+        }
+    }
+}

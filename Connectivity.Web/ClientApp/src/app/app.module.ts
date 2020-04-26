@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { AlertModule } from '@modules/alert/alert.module';
 import { AppCoreModule } from '@modules/app-core/app-core.module';
 import { LocalizationModule } from '@modules/localization/localization.module';
 import { SpinnerModule } from '@modules/spinner';
@@ -24,7 +25,8 @@ import { AppComponent } from './modules/app-core/components/app/app.component';
         SpinnerModule.forRoot(),
         LocalizationModule.forRoot(),
         RouterModule.forRoot([]),
-        AppCoreModule
+        AppCoreModule,
+        AlertModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]

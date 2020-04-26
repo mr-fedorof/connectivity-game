@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnDestroy } from '@angular/core';
-import { hideTransparentAnimation } from '@shared/animations';
+
 import { GlobalSpinnerService } from '../../services/global-spinner.service';
+import { showHideSpinnerAnimation } from '../../spiner.animations';
 import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
@@ -12,7 +13,7 @@ import { SpinnerComponent } from '../spinner/spinner.component';
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [hideTransparentAnimation()]
+    animations: [showHideSpinnerAnimation()]
 })
 export class GlobalSpinnerComponent extends SpinnerComponent implements OnDestroy {
     @HostBinding('class.vs-global-spinner') public componentClass = true;

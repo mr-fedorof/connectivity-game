@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GlobalAlertService } from '@modules/alert/services';
 import { NavigationService } from '@modules/app-core/services';
 import { initActionStateAction, initGameSessionAction, initLobbyAction, shareLobbyAction } from '@modules/game/actions';
 import { actionStateSelector } from '@modules/game/selectors/action-state.selectors';
@@ -9,7 +10,7 @@ import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
 import { Observable } from 'rxjs';
-import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { delay, filter, map, retryWhen, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby-sync',
@@ -26,7 +27,8 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
         private readonly navigationService: NavigationService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly actionService: ActionService,
-        private readonly globalSpinnerService: GlobalSpinnerService
+        private readonly globalSpinnerService: GlobalSpinnerService,
+        private readonly globalAlertService: GlobalAlertService
     ) {
         super();
     }
@@ -58,10 +60,26 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
                 this.actionService.applyAction(action);
             });
 
-        // TODO: Handle lost connection
-        this.gameHubService.start()
+        const start$ = this.gameHubService.start()
             .pipe(
                 takeUntil(this.onDestroy),
+                retryWhen(errors => errors.pipe(
+                    tap(() => {
+                        // TODO: Localization
+                        this.globalAlertService.error('Connection has been lost. Trying to reconnect.');
+                    }),
+                    delay(5000)
+                )),
+                shareReplay(1)
+            );
+
+        // Connection tracking
+        start$.subscribe();
+
+        // Init
+        start$
+            .pipe(
+                take(1),
                 switchMap(() => this.gameHubService.connectToLobby(lobbyId))
             )
             .subscribe(result => {
