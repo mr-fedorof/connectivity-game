@@ -1,6 +1,7 @@
 import { Action, createSelector, MemoizedSelector } from '@ngrx/store';
 
 import { IGameEngineFeature } from '../game-engine.feature';
+import { isOrderedAction } from '../helpers';
 import { ActionState } from '../models';
 import { gameEngineFeatureSelector } from './game-engine.selectors';
 
@@ -22,4 +23,9 @@ export const pendingActionsCountSelector: MemoizedSelector<IGameEngineFeature, n
 export const isProcessingSelector: MemoizedSelector<IGameEngineFeature, boolean> = createSelector(
     actionStateSelector,
     (actionState: ActionState) => actionState.isProcessing
+);
+
+export const indexedActionsSelector: MemoizedSelector<IGameEngineFeature, Action[]> = createSelector(
+    actionStateSelector,
+    (actionState: ActionState) => [...actionState.handledActions, ...actionState.pendingActions].filter(isOrderedAction)
 );

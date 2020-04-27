@@ -2,15 +2,23 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalAlertService } from '@modules/alert/services';
 import { NavigationService } from '@modules/app-core/services';
-import { initActionStateAction, initGameSessionAction, initLobbyAction, shareLobbyAction } from '@modules/game/actions';
+import {
+    initActionStateAction,
+    initGameSessionAction,
+    initLobbyAction,
+    shareActionsLobbyAction,
+    shareLobbyAction,
+} from '@modules/game/actions';
+import { ActionState, Lobby, LobbyConnectResult } from '@modules/game/models';
 import { actionStateSelector } from '@modules/game/selectors/action-state.selectors';
+import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
 import { ActionService, GameHubService, GameSessionService } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
 import { Observable } from 'rxjs';
-import { delay, filter, map, retryWhen, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { delay, filter, map, retryWhen, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby-sync',
@@ -60,34 +68,32 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
                 this.actionService.applyAction(action);
             });
 
-        const start$ = this.gameHubService.start()
+        this.gameHubService.start()
             .pipe(
                 takeUntil(this.onDestroy),
+                switchMap(() => this.gameHubService.connectToLobby(lobbyId)),
+                withLatestFrom(
+                    this.store.select(lobbySelector),
+                    this.store.select(actionStateSelector)
+                ),
                 retryWhen(errors => errors.pipe(
                     tap(() => {
                         // TODO: Localization
                         this.globalAlertService.error('Connection has been lost. Trying to reconnect.');
                     }),
                     delay(5000)
-                )),
-                shareReplay(1)
-            );
-
-        // Connection tracking
-        start$.subscribe();
-
-        // Init
-        start$
-            .pipe(
-                take(1),
-                switchMap(() => this.gameHubService.connectToLobby(lobbyId))
+                ))
             )
-            .subscribe(result => {
-                this.actionService.applyAction(initLobbyAction(result.lobby));
-                this.actionService.applyAction(initActionStateAction(result.globalActionIndex));
+            .subscribe(([connectResult, lobby, actionState]: [LobbyConnectResult, Lobby, ActionState]) => {
+                if (!actionState.initialized) {
+                    this.actionService.applyAction(initLobbyAction(connectResult.lobby));
+                    this.actionService.applyAction(initActionStateAction(connectResult.globalActionIndex));
 
-                if (result.globalActionIndex > 0) {
-                    this.actionService.applyAction(shareLobbyAction());
+                    if (connectResult.globalActionIndex > 0) {
+                        this.actionService.sendAction(shareLobbyAction());
+                    }
+                } else {
+                    this.actionService.sendAction(shareActionsLobbyAction(lobby.lastActionIndex));
                 }
             });
     }

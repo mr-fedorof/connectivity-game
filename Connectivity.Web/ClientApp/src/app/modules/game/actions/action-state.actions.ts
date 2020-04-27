@@ -33,3 +33,10 @@ export const refreshPendingActionsStateAction = createAction('[ActionState] Refr
     payload: {}
 }));
 export type RefreshPendingActionsStateAction = ReturnType<typeof refreshPendingActionsStateAction>;
+
+export const addHandledActionStateAction = createAction('[ActionState] Add Handled Action', (action: Action) => ({
+    payload: {
+        action
+    }
+}));
+export type AddHandledActionStateAction = ReturnType<typeof addHandledActionStateAction>;

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalSpinnerService } from '@modules/spinner';
+import { Actions } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableService } from '@shared/destroyable';
 import { from, merge, Observable, of, pipe, Subject } from 'rxjs';
@@ -17,6 +18,7 @@ import {
 } from 'rxjs/operators';
 
 import { addPendingActionStateAction, removePendingActionStateAction } from '../actions';
+import { isOrderedAction, isOutOfOrderAction } from '../helpers';
 import { GameSession } from '../models';
 import {
     isProcessingSelector,
@@ -33,10 +35,12 @@ export class ActionService extends DestroyableService {
 
     private readonly _internalActionsSubject: Subject<Action> = new Subject<Action>();
     private readonly _exteranlActionsSubject: Subject<Action> = new Subject<Action>();
+    private readonly _outActionsSubject: Subject<Action> = new Subject<Action>();
 
     public readonly internalActions$: Observable<Action>;
     public readonly exteranlActions$: Observable<Action>;
     public readonly pendingActions$: Observable<Action>;
+    public readonly outActions$: Observable<Action>;
 
     public readonly actions$: Observable<Action>;
     public readonly waitingForActions$: Observable<boolean>;
@@ -44,9 +48,17 @@ export class ActionService extends DestroyableService {
     constructor(
         private readonly store: Store,
         private readonly gameHubService: GameHubService,
-        private readonly globalSpinner: GlobalSpinnerService
+        private readonly globalSpinner: GlobalSpinnerService,
+        private readonly storeActions$: Actions
     ) {
         super();
+
+        this.storeActions$
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(action => {
+                // tslint:disable-next-line: no-console
+                // console.log('action', action);
+            });
 
         this.internalActions$ = this._internalActionsSubject.asObservable()
             .pipe(
@@ -62,15 +74,25 @@ export class ActionService extends DestroyableService {
 
         this.pendingActions$ = this.store.select(pendingActionsSelector)
             .pipe(
+                tap(actions => {
+                    // tslint:disable-next-line: no-console
+                    console.log('pendingActions$', actions);
+                }),
                 switchMap(actions => from(actions)),
                 share()
             );
 
         this.actions$ = merge(this.internalActions$, this.exteranlActions$, this.pendingActions$)
             .pipe(
-                this.orderActionsPipe,
-                this.waitWhileProcessingPipe,
+                this.actionsOrderingPipe,
+                this.actionProcessingPipe,
                 distinctUntilChanged(),
+                share()
+            );
+
+        this.outActions$ = this._outActionsSubject.asObservable()
+            .pipe(
+                this.handleInternalActionPipe,
                 share()
             );
 
@@ -90,6 +112,10 @@ export class ActionService extends DestroyableService {
             .subscribe(action => {
                 this.store.dispatch(action);
             });
+
+        this.outActions$
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe();
     }
 
     public applyAction(action: Action): void {
@@ -102,6 +128,14 @@ export class ActionService extends DestroyableService {
         } else {
             this._internalActionsSubject.next(action);
         }
+    }
+
+    public sendAction(action: Action): void {
+        if (!action) {
+            return;
+        }
+
+        this._outActionsSubject.next(action);
     }
 
     private readonly handleInternalActionPipe = pipe(
@@ -137,45 +171,55 @@ export class ActionService extends DestroyableService {
         })
     );
 
-    private readonly orderActionsPipe = pipe(
-        withLatestFrom(this.store.select(nextActionIndexSelector), this.store.select(pendingActionsSelector)),
-        filter(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => {
+    private readonly actionsOrderingPipe = pipe(
+        withLatestFrom(this.store.select(nextActionIndexSelector)),
+        tap(([action, nextActionIndex]: [Action, number]) => {
+            if (isOrderedAction(action)) {
+                if (action.index < nextActionIndex) {
+                    this.store.dispatch(removePendingActionStateAction(action));
+                }
+
+                if (action.index > nextActionIndex) {
+                    this.store.dispatch(addPendingActionStateAction(action));
+                }
+            }
+        }),
+        filter(([action, nextActionIndex]: [Action, number]) => {
             const isNextAction =
                 !action.type.includes('[Sh]') ||
                 action.type.includes('[SI]') ||
                 action.index === nextActionIndex;
 
-            if (action.index > 0 && !pendingActions.includes(action)) {
-                this.store.dispatch(addPendingActionStateAction(action));
-            }
-
-            // if (isNextAction) {
-            //     console.log('next-action', action);
-            // } else {
-            //     console.log('filtered-action', action.index, 'needs', nextActionIndex);
-            // }
-
             return isNextAction;
         }),
-        map(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => action)
+        map(([action, nextActionIndex]: [Action, number]) => action)
     );
 
-    private readonly waitWhileProcessingPipe = pipe(
-        switchMap((action: Action) => {
-            if (!action.index) {
-                return of(action);
+    private readonly actionProcessingPipe = pipe(
+        withLatestFrom(this.store.select(isProcessingSelector)),
+        switchMap(([action, isProcessing]: [Action, boolean]) => {
+            if (!isProcessing) {
+                return of([action, true]);
             }
 
+            if (isProcessing && isOutOfOrderAction(action)) {
+                return of([action, true]);
+            }
+
+            this.store.dispatch(addPendingActionStateAction(action));
+
             return of(action)
-                .pipe(this.delayWhileProcessing);
+                .pipe(
+                    this.delayWhileProcessing,
+                    map((action: Action) => ([action, false]))
+                );
         }),
-        withLatestFrom(this.store.select(pendingActionsSelector)),
-        tap(([action, pendingActions]: [Action, Action[]]) => {
-            if (pendingActions.includes(action)) {
+        tap(([action, instant]: [Action, boolean]) => {
+            if (!instant) {
                 this.store.dispatch(removePendingActionStateAction(action));
             }
         }),
-        map(([action, pendingActions]: [Action, Action[]]) => action)
+        map(([action, instant]: [Action, boolean]) => action)
     );
 
     private readonly delayWhileProcessing = pipe(

@@ -1,52 +1,93 @@
+import { Predicate } from '@angular/core';
+import { Comparator, uniqWith } from 'lodash';
+
 export function replaceElement<T>(
     values: T[],
-    predicate: (value: T, index: number, obj: T[]) => boolean,
-    replaceFunc: ((T) => T)
+    value: T,
+    comparator: Comparator<T>,
+    newValueFactory: ((T) => T)
 ): T[] {
-    const index = values.findIndex(predicate);
+    const index = values.findIndex(v => comparator(value, v));
     if (index < 0) {
         return values;
     }
 
-    values = [...values];
+    const result = [...values];
 
-    values.splice(index, 1, replaceFunc(values[index]));
+    result.splice(index, 1, newValueFactory(values[index]));
 
-    return values;
+    return result;
+}
+
+export function replaceElementWith<T>(
+    values: T[],
+    valuePredicate: Predicate<T>,
+    newValueFactory: ((T) => T)
+): T[] {
+    const index = values.findIndex(v => valuePredicate(v));
+    if (index < 0) {
+        return values;
+    }
+
+    const result = [...values];
+
+    result.splice(index, 1, newValueFactory(values[index]));
+
+    return result;
 }
 
 export function addElement<T>(
     values: T[],
-    value: T
-): T[] {
-    return [...values || [], value];
-}
-
-export function addIfNotExistsElement<T>(
-    values: T[],
     value: T,
-    predicate: (value: T, index: number, obj: T[]) => boolean
+    comparator: Comparator<T>
 ): T[] {
-    const index = values.findIndex(predicate);
+    const index = values.findIndex(v => comparator(value, v));
     if (index >= 0) {
         return values;
     }
 
-    return [...values || [], value];
+    const result = [...values, value];
+
+    return result;
 }
 
 export function removeElement<T>(
     values: T[],
-    predicate: (value: T, index: number, obj: T[]) => boolean
+    value: T,
+    comparator: Comparator<T>
 ): T[] {
-    const index = values.findIndex(predicate);
+    const index = values.findIndex(v => comparator(value, v));
     if (index < 0) {
         return values;
     }
 
-    values = [...values];
+    const result = [...values];
 
-    values.splice(index, 1);
+    result.splice(index, 1);
 
-    return values;
+    return result;
+}
+
+export function removeElementWith<T>(
+    values: T[],
+    valuePredicate: Predicate<T>
+): T[] {
+    const index = values.findIndex(v => valuePredicate(v));
+    if (index < 0) {
+        return values;
+    }
+
+    const result = [...values];
+
+    result.splice(index, 1);
+
+    return result;
+}
+
+export function mergeElements<T>(
+    values1: T[],
+    values2: T[],
+    comparator: Comparator<T>
+): T[] {
+    return uniqWith([...values1, ...values2], comparator);
 }

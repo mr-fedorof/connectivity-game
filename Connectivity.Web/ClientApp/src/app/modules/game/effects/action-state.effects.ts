@@ -5,19 +5,26 @@ import { EMPTY, Observable, of } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import {
+    addHandledActionStateAction,
     longFinishActionStateAction,
     longStartActionStateAction,
     refreshPendingActionsStateAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
 import { finishGameAction } from '../actions/game-actions.actions';
-import { ActionService } from '../services';
+import { isOrderedAction } from '../helpers';
 
 @Injectable()
 export class ActionStateEffects {
     public updateLastActionIndex$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        filter(action => action.index > 0),
+        filter(isOrderedAction),
         map(action => updateLastActionIndexLobbyAction(action.index))
+    ));
+
+    public addHandledAction$: Observable<Action> = createEffect(() => this.actions$.pipe(
+        filter(action => action.type !== addHandledActionStateAction.type),
+        filter(isOrderedAction),
+        map(action => addHandledActionStateAction(action))
     ));
 
     public longStart$: Observable<Action> = createEffect(() => this.actions$.pipe(
@@ -45,27 +52,16 @@ export class ActionStateEffects {
 
     public refreshPendingActionsAfterLongAction$: Observable<Action> = createEffect(() => this.actions$.pipe(
         ofType(finishGameAction),
-        map(() => {
-            // tslint:disable-next-line: no-console
-            console.log('refreshPendingAction$');
-
-            return refreshPendingActionsStateAction();
-        })
+        map(() => refreshPendingActionsStateAction())
     ));
 
     public refreshPendingActionsAfterInstantAction$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        filter((action: Action) => action.index > 0 && !action.long),
-        map(() => {
-            // tslint:disable-next-line: no-console
-            console.log('refreshPendingAction$');
-
-            return refreshPendingActionsStateAction();
-        })
+        filter((action: Action) => isOrderedAction(action) && !action.long),
+        map(() => refreshPendingActionsStateAction())
     ));
 
     constructor(
         private readonly actions$: Actions,
-        private readonly store: Store,
-        private readonly actionService: ActionService
+        private readonly store: Store
     ) { }
 }

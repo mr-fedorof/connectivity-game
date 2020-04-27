@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding } from '@angular/core';
+import { AlertType } from '@modules/alert/enums';
 import { GlobalAlertService } from '@modules/alert/services/global-alert.service';
 import { showHideAnimation } from '@shared/animations';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -21,6 +22,18 @@ export class GlobalAlertComponent extends DestroyableComponent {
 
     @HostBinding('@showHide') public get showHide(): string {
         return this.showHideTrigger ? 'show' : 'hide';
+    }
+
+    @HostBinding('class.error') public get errorTypeClass(): boolean {
+        return this.alert?.type === AlertType.Error;
+    }
+
+    @HostBinding('class.info') public get infoTypeClass(): boolean {
+        return this.alert?.type === AlertType.Info;
+    }
+
+    @HostBinding('class.warning') public get warningTypeClass(): boolean {
+        return this.alert?.type === AlertType.Warning;
     }
 
     constructor(

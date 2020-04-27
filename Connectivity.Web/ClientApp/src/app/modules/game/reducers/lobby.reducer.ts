@@ -1,5 +1,5 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { addElement, removeElement, replaceElement } from '@shared/utils/array.utils';
+import { addElement, removeElementWith, replaceElementWith } from '@shared/utils/array.utils';
 
 import {
     InitLobbyAction,
@@ -12,11 +12,12 @@ import {
     leaveTeamPlayerAction,
     NewPlayerAction,
     newPlayerAction,
-    ShareLobbyResponseAction,
-    shareLobbyResponseAction,
+    RestoreLobbyAction,
+    restoreLobbyAction,
     UpdateLastActionIndexLobbyAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
+import { playerComparator } from '../helpers';
 import { initialLobby, Lobby } from '../models';
 
 const _lobbyReducer: ActionReducer<Lobby> = createReducer(
@@ -26,11 +27,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         ...payload.lobby
     })),
 
-    on(shareLobbyResponseAction, (state: Lobby, { payload }: ShareLobbyResponseAction): Lobby => ({
+    on(restoreLobbyAction, (state: Lobby, { payload }: RestoreLobbyAction): Lobby => ({
         ...state,
-        lastActionIndex: payload.lobby.lastActionIndex,
-        players: payload.lobby.players,
-        game: payload.lobby.game
+        ...payload.lobby
     })),
 
     on(updateLastActionIndexLobbyAction, (state: Lobby, { payload }: UpdateLastActionIndexLobbyAction): Lobby => ({
@@ -40,17 +39,17 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
 
     on(newPlayerAction, (state: Lobby, { payload }: NewPlayerAction): Lobby => ({
         ...state,
-        players: addElement(state.players, payload.player)
+        players: addElement(state.players, payload.player, playerComparator)
     })),
 
     on(leavePlayerAction, (state: Lobby, { payload }: LeavePlayerAction): Lobby => ({
         ...state,
-        players: removeElement(state.players, p => p.id === payload.playerId)
+        players: removeElementWith(state.players, p => p.id === payload.playerId)
     })),
 
     on(joinTeamPlayerAction, (state: Lobby, { payload }: JoinTeamPlayerAction): Lobby => ({
         ...state,
-        players: replaceElement(state.players, p => p.id === payload.playerId, p => ({
+        players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
             teamId: payload.teamId
         }))
@@ -58,7 +57,7 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
 
     on(leaveTeamPlayerAction, (state: Lobby, { payload }: LeaveTeamPlayerAction): Lobby => ({
         ...state,
-        players: replaceElement(state.players, p => p.id === payload.playerId, p => ({
+        players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
             teamId: null
         }))

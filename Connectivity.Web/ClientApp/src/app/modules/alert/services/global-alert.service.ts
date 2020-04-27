@@ -24,6 +24,14 @@ export class GlobalAlertService {
         this._alertSubject.next({ type: AlertType.Error, message });
     }
 
+    public info(message: string): void {
+        this._alertSubject.next({ type: AlertType.Info, message });
+    }
+
+    public warn(message: string): void {
+        this._alertSubject.next({ type: AlertType.Warning, message });
+    }
+
     public somethingWentWrong(): void {
         this.error('Something went wrong. Please try again.');
     }

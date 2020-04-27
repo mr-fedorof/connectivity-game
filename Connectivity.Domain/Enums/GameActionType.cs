@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Connectivity.Domain.GameActions.Attributes;
 
@@ -26,6 +27,12 @@ namespace Connectivity.Domain.Enums
         [SkipIndex]
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share Response")]
         ShareLobbyResponse,
+        [SkipIndex]
+        [EnumMember(Value = "[Lobby] [Sh] [SI] Share Actions")]
+        ShareActionsLobby,
+        [SkipIndex]
+        [EnumMember(Value = "[Lobby] [Sh] [SI] Share Actions Response")]
+        ShareActionsLobbyResponse,
 
         [EnumMember(Value = "[TBD] StartGame")]
         StartGame,

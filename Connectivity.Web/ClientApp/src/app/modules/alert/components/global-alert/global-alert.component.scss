@@ -4,11 +4,35 @@
     @extend .app-global-alert;
 }
 
+:host(.error) {
+    @extend .app-global-alert--error;
+}
+
+:host(.info) {
+    @extend .app-global-alert--info;
+}
+
+:host(.warning) {
+    @extend .app-global-alert--warning;
+}
+
 .app-global-alert {
     display: block;
     position: absolute;
     width: 100%;
-    background: $red;
+
+    &,
+    &--info {
+        background: $cian;
+    }
+
+    &--error {
+        background: $red;
+    }
+
+    &--warning {
+        background: $orange;
+    }
 
     &__container {
         @include make-container();

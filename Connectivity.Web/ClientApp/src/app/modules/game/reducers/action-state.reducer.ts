@@ -1,7 +1,9 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { addIfNotExistsElement, removeElement } from '@shared/utils/array.utils';
+import { addElement, removeElement } from '@shared/utils/array.utils';
 
 import {
+    AddHandledActionStateAction,
+    addHandledActionStateAction,
     AddPendingActionStateAction,
     addPendingActionStateAction,
     InitActionStateAction,
@@ -15,6 +17,7 @@ import {
     RemovePendingActionStateAction,
     removePendingActionStateAction,
 } from '../actions';
+import { gameActionComparator } from '../helpers';
 import { ActionState, initialActionState } from '../models';
 
 const _actionStateReducer: ActionReducer<ActionState> = createReducer(
@@ -36,20 +39,55 @@ const _actionStateReducer: ActionReducer<ActionState> = createReducer(
         isProcessing: false
     })),
 
-    on(addPendingActionStateAction, (state: ActionState, { payload }: AddPendingActionStateAction): ActionState => ({
-        ...state,
-        pendingActions: addIfNotExistsElement(state.pendingActions, payload.action, a => a === payload.action)
-    })),
+    on(addPendingActionStateAction, (state: ActionState, { payload }: AddPendingActionStateAction): ActionState => {
+        const pendingActions = addElement(state.pendingActions, payload.action, gameActionComparator);
 
-    on(removePendingActionStateAction, (state: ActionState, { payload }: RemovePendingActionStateAction): ActionState => ({
-        ...state,
-        pendingActions: removeElement(state.pendingActions, a => a === payload.action)
-    })),
+        if (state.pendingActions === pendingActions) {
+            return state;
+        }
+
+        const newState = {
+            ...state,
+            pendingActions
+        };
+
+        return newState;
+    }),
+
+    on(removePendingActionStateAction, (state: ActionState, { payload }: RemovePendingActionStateAction): ActionState => {
+        const pendingActions = removeElement(state.pendingActions, payload.action, gameActionComparator);
+
+        if (state.pendingActions === pendingActions) {
+            return state;
+        }
+
+        const newState = {
+            ...state,
+            pendingActions
+        };
+
+        return newState;
+    }),
 
     on(refreshPendingActionsStateAction, (state: ActionState, { payload }: RefreshPendingActionsStateAction): ActionState => ({
         ...state,
         pendingActions: [...state.pendingActions]
-    }))
+    })),
+
+    on(addHandledActionStateAction, (state: ActionState, { payload }: AddHandledActionStateAction): ActionState => {
+        const handledActions = addElement(state.handledActions, payload.action, gameActionComparator);
+
+        if (state.handledActions === handledActions) {
+            return state;
+        }
+
+        const newState = {
+            ...state,
+            handledActions
+        };
+
+        return newState;
+    })
 );
 
 export function actionStateReducer(state: ActionState, action: Action): ActionState {
