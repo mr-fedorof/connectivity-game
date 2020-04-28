@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { from, Observable } from 'rxjs';
 
 @Injectable()
 export class NavigationService {
@@ -12,8 +13,8 @@ export class NavigationService {
         this.router.navigate(['']);
     }
 
-    public goToLobby(id: string): void {
-        this.router.navigate([`/lobby/${id}`]);
+    public goToLobby(id: string): Observable<boolean> {
+        return from(this.router.navigate([`/lobby/${id}`]));
     }
 
     public goToPlayerIdentification(id: string): void {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Connectivity.Persistence
-{
+{   
     public static class ServicesConfiguration
     {
         public static void AddCosmosDB(this IServiceCollection services, IConfiguration configuration)

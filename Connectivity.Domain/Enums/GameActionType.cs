@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Connectivity.Domain.GameActions.Attributes;
 
@@ -8,8 +7,6 @@ namespace Connectivity.Domain.Enums
     [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum GameActionType
     {
-        Unknown,
-        
         [EnumMember(Value = "[Player] New")]
         NewPlayer,
         [EnumMember(Value = "[Player] Leave")]

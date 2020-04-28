@@ -12,6 +12,8 @@ import {
     leaveTeamPlayerAction,
     NewPlayerAction,
     newPlayerAction,
+    ResetSystemAction,
+    resetSystemAction,
     RestoreLobbyAction,
     restoreLobbyAction,
     UpdateLastActionIndexLobbyAction,
@@ -22,6 +24,10 @@ import { initialLobby, Lobby } from '../models';
 
 const _lobbyReducer: ActionReducer<Lobby> = createReducer(
     initialLobby,
+
+    on(resetSystemAction, (state: Lobby, { payload }: ResetSystemAction): Lobby => ({
+        ...initialLobby
+    })),
 
     on(initLobbyAction, (state: Lobby, { payload }: InitLobbyAction): Lobby => ({
         ...payload.lobby

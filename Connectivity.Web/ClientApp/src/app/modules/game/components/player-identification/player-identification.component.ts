@@ -2,9 +2,11 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '@modules/app-core/services';
 import { validateForm } from '@modules/app-form/helpers';
+import { addPendingActionStateAction } from '@modules/game/actions';
 import { Player } from '@modules/game/models';
 import { LobbyService } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
+import { Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
 
@@ -27,7 +29,8 @@ export class PlayerIdentificationComponent extends DestroyableComponent implemen
         private readonly lobbyService: LobbyService,
         private readonly navigationService: NavigationService,
         private readonly activatedRoute: ActivatedRoute,
-        private readonly spinner: GlobalSpinnerService
+        private readonly spinner: GlobalSpinnerService,
+        private readonly store: Store
     ) {
         super();
     }
@@ -60,8 +63,13 @@ export class PlayerIdentificationComponent extends DestroyableComponent implemen
 
         this.lobbyService.joinLobby(this.lobbyId, player)
             .wrapWithSpinner(this.spinner)
-            .subscribe(newPlayer => {
-                this.navigationService.goToLobby(this.lobbyId);
+            .subscribe(action => {
+                this.navigationService.goToLobby(this.lobbyId)
+                    .subscribe(success => {
+                        if (success) {
+                            this.store.dispatch(addPendingActionStateAction(action));
+                        }
+                    });
             });
     }
 }

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
-using Connectivity.Application.GameActions.Interfaces;
-using Connectivity.Application.Interfaces;
-using Connectivity.Domain.Enums;
+﻿using System.Threading.Tasks;
+using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.GameActions;
-using Connectivity.Domain.GameActions.Attributes;
-using Connectivity.Domain.Helpers;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
@@ -16,53 +8,25 @@ namespace Connectivity.Application.Hubs
 {
     public class GameHub : Hub
     {
-        private static readonly GameActionType[] _skipIndexActions = EnumHelper.GetValuesWithAttribute<GameActionType, SkipIndexAttribute>();
+        private readonly IGameHubService _gameHubService;
 
-        private readonly IGameActionIndexer _gameActionIndexer;
-        private readonly IGameActionDispatcher _gameActionDispatcher;
-        private readonly ILobbyService _lobbyService;
-
-        public GameHub(
-            IGameActionDispatcher gameActionDispatcher,
-            IGameActionIndexer gameActionIndexer,
-            ILobbyService lobbyService)
+        public GameHub(IGameHubService gameHubService)
         {
-            _gameActionDispatcher = gameActionDispatcher;
-            _gameActionIndexer = gameActionIndexer;
-            _lobbyService = lobbyService;
+            _gameHubService = gameHubService;
         }
 
         public async Task<LobbyConnectResult> ConnectToLobby(string lobbyId)
         {
-            var lobby = await _lobbyService.GetLobbyAsync(lobbyId);
-            if (lobby == null)
-            {
-                return null;
-            }
+            var result = await _gameHubService.ConnectToLobbyAsync(Context.ConnectionId, lobbyId);
 
-            var lobbyConnectResult = new LobbyConnectResult
-            {
-                Lobby = lobby,
-                GlobalActionIndex = _gameActionIndexer.CurrentIndex(lobbyId)
-            };
-
-            await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
-
-            return lobbyConnectResult; 
+            return result; 
         }
 
         public async Task<GameAction> GameAction(GameAction gameAction)
         {
-            var outGameAction = await _gameActionDispatcher.DispatchAsync(gameAction);
+            var result = await _gameHubService.ProcessGameActionAsync(Context.ConnectionId, gameAction);
 
-            outGameAction.Index = !_skipIndexActions.Contains(gameAction.Type)
-                ? _gameActionIndexer.NextIndex(gameAction.LobbyId)
-                : -1;
-
-            await Clients.OthersInGroup(gameAction.LobbyId)
-                .SendAsync(GameHubMethod.GameAction.ToString(), outGameAction);
-
-            return outGameAction;
+            return result;
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

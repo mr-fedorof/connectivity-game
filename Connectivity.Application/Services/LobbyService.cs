@@ -3,8 +3,8 @@ using System.Linq;
 using Connectivity.Domain.Models;
 using Connectivity.Persistence;
 using System.Threading.Tasks;
+using Connectivity.Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Connectivity.Application.Interfaces;
 
 namespace Connectivity.Application.Services
 {

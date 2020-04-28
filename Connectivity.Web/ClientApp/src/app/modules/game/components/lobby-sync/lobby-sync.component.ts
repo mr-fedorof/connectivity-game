@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalAlertService } from '@modules/alert/services';
 import { NavigationService } from '@modules/app-core/services';
@@ -6,6 +6,7 @@ import {
     initActionStateAction,
     initGameSessionAction,
     initLobbyAction,
+    resetSystemAction,
     shareActionsLobbyAction,
     shareLobbyAction,
 } from '@modules/game/actions';
@@ -25,7 +26,7 @@ import { delay, filter, map, retryWhen, switchMap, take, takeUntil, tap, withLat
     template: '<div *ngIf="isReady$ | async"><router-outlet></router-outlet></div>',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LobbySyncComponent extends DestroyableComponent implements OnInit {
+export class LobbySyncComponent extends DestroyableComponent implements OnInit, OnDestroy {
     public isReady$: Observable<boolean>;
 
     constructor(
@@ -42,6 +43,8 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+        this.actionService.ngOnInit();
+
         const lobbyId = getRouteParam(this.activatedRoute.snapshot, 'lobbyId');
         if (!lobbyId) {
             this.navigationService.goToHome();
@@ -84,17 +87,27 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit {
                     delay(5000)
                 ))
             )
-            .subscribe(([connectResult, lobby, actionState]: [LobbyConnectResult, Lobby, ActionState]) => {
-                if (!actionState.initialized) {
-                    this.actionService.applyAction(initLobbyAction(connectResult.lobby));
-                    this.actionService.applyAction(initActionStateAction(connectResult.globalActionIndex));
+            .subscribe(
+                ([connectResult, lobby, actionState]: [LobbyConnectResult, Lobby, ActionState]) => {
+                    if (!actionState.initialized) {
+                        this.actionService.applyAction(initLobbyAction(connectResult.lobby));
+                        this.actionService.applyAction(initActionStateAction(connectResult.globalActionIndex));
 
-                    if (connectResult.globalActionIndex > 0) {
-                        this.actionService.sendAction(shareLobbyAction());
+                        if (connectResult.globalActionIndex > 0) {
+                            this.actionService.sendAction(shareLobbyAction());
+                        }
+                    } else {
+                        this.actionService.sendAction(shareActionsLobbyAction(lobby.lastActionIndex));
                     }
-                } else {
-                    this.actionService.sendAction(shareActionsLobbyAction(lobby.lastActionIndex));
-                }
-            });
+                });
+    }
+
+    public ngOnDestroy(): void {
+        super.ngOnDestroy();
+
+        this.store.dispatch(resetSystemAction());
+        this.gameHubService.stop();
+
+        this.actionService.ngOnDestroy();
     }
 }

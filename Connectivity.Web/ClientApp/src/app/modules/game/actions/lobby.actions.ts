@@ -5,17 +5,17 @@ import { Lobby } from '../models';
 export const initLobbyAction = createAction('[Lobby] Init', (lobby: Lobby) => ({
     payload: { lobby }
 }));
-export type InitLobbyAction = ReturnType<typeof initLobbyAction>;
+export type InitLobbyAction = ReturnType<typeof initLobbyAction> & Action;
 
 export const updateLastActionIndexLobbyAction = createAction('[Lobby] Update LastActionIndex', (lastActionIndex: number) => ({
     payload: { lastActionIndex }
 }));
-export type UpdateLastActionIndexLobbyAction = ReturnType<typeof updateLastActionIndexLobbyAction>;
+export type UpdateLastActionIndexLobbyAction = ReturnType<typeof updateLastActionIndexLobbyAction> & Action;
 
 export const shareLobbyAction = createAction('[Lobby] [Sh] [SI] Share', () => ({
     payload: {}
 }));
-export type ShareLobbyAction = ReturnType<typeof shareLobbyAction>;
+export type ShareLobbyAction = ReturnType<typeof shareLobbyAction> & Action;
 
 export const shareLobbyResponseAction = createAction('[Lobby] [Sh] [SI] Share Response', (targetPlayerId: string, lobby: Lobby) => ({
     payload: {
@@ -27,7 +27,7 @@ export const shareLobbyResponseAction = createAction('[Lobby] [Sh] [SI] Share Re
         }
     }
 }));
-export type ShareLobbyResponseAction = ReturnType<typeof shareLobbyResponseAction>;
+export type ShareLobbyResponseAction = ReturnType<typeof shareLobbyResponseAction> & Action;
 
 export const restoreLobbyAction = createAction('[Lobby] Restore', (lobby: Partial<Lobby>) => ({
     payload: {
@@ -38,14 +38,14 @@ export const restoreLobbyAction = createAction('[Lobby] Restore', (lobby: Partia
         }
     }
 }));
-export type RestoreLobbyAction = ReturnType<typeof restoreLobbyAction>;
+export type RestoreLobbyAction = ReturnType<typeof restoreLobbyAction> & Action;
 
 export const shareActionsLobbyAction = createAction('[Lobby] [Sh] [SI] Share Actions', (lastActionIndex: number) => ({
     payload: {
         lastActionIndex
     }
 }));
-export type ShareActionsLobbyAction = ReturnType<typeof shareActionsLobbyAction>;
+export type ShareActionsLobbyAction = ReturnType<typeof shareActionsLobbyAction> & Action;
 
 export const shareActionsLobbyResponseAction = createAction('[Lobby] [Sh] [SI] Share Actions Response', (targetPlayerId: string, actions: Action[]) => ({
     payload: {
@@ -53,4 +53,4 @@ export const shareActionsLobbyResponseAction = createAction('[Lobby] [Sh] [SI] S
         actions
     }
 }));
-export type ShareActionsLobbyResponseAction = ReturnType<typeof shareActionsLobbyResponseAction>;
+export type ShareActionsLobbyResponseAction = ReturnType<typeof shareActionsLobbyResponseAction> & Action;

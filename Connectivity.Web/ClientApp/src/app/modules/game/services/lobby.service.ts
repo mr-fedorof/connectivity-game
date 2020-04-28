@@ -4,6 +4,7 @@ import { environment } from '@env';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 
+import { NewPlayerAction } from '../actions';
 import { GameSession, Lobby, Player } from '../models';
 import { GameSessionService } from './game-session.service';
 
@@ -31,12 +32,12 @@ export class LobbyService {
         return this.httpClient.post<Lobby>(`${environment.apiUrl}api/lobby`, lobby);
     }
 
-    public joinLobby(lobbyId: string, player: Player): Observable<Player> {
-        return this.httpClient.post<Player>(`${environment.apiUrl}api/lobby/${lobbyId}/join`, player)
+    public joinLobby(lobbyId: string, player: Player): Observable<NewPlayerAction> {
+        return this.httpClient.post<NewPlayerAction>(`${environment.apiUrl}api/lobby/${lobbyId}/join`, player)
             .pipe(
-                tap(identifiedPlayer => {
+                tap((action: NewPlayerAction) => {
                     const gameSession = new GameSession({
-                        playerId: identifiedPlayer.id,
+                        playerId: action.payload.player.id,
                         lobbyId
                     });
 

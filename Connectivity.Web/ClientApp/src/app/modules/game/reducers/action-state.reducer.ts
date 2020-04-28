@@ -16,6 +16,10 @@ import {
     refreshPendingActionsStateAction,
     RemovePendingActionStateAction,
     removePendingActionStateAction,
+    ResetSystemAction,
+    resetSystemAction,
+    UpdateGlobalActionIndexActionStateAction,
+    updateGlobalActionIndexActionStateAction,
 } from '../actions';
 import { gameActionComparator } from '../helpers';
 import { ActionState, initialActionState } from '../models';
@@ -23,9 +27,18 @@ import { ActionState, initialActionState } from '../models';
 const _actionStateReducer: ActionReducer<ActionState> = createReducer(
     initialActionState,
 
+    on(resetSystemAction, (state: ActionState, { payload }: ResetSystemAction): ActionState => ({
+        ...initialActionState
+    })),
+
     on(initActionStateAction, (state: ActionState, { payload }: InitActionStateAction): ActionState => ({
         ...state,
         initialized: true,
+        globalActionIndex: payload.globalActionIndex
+    })),
+
+    on(updateGlobalActionIndexActionStateAction, (state: ActionState, { payload }: UpdateGlobalActionIndexActionStateAction): ActionState => ({
+        ...state,
         globalActionIndex: payload.globalActionIndex
     })),
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Connectivity.Domain.Converters;
 using Connectivity.Application.Hubs;
+using Connectivity.Domain;
 
 namespace Connectivity.WebApi
 {
@@ -27,7 +28,12 @@ namespace Connectivity.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JsonSerializerOptions>(ConfigureJsonSerializerOptions);
+            services.Configure<JsonSerializerOptions>(options =>
+            {
+                ConfigureJsonSerializerOptions(options);
+
+                AppDefaults.JsonOptions = options;
+            });
 
             services.AddSingleton<IServiceCollection>(services);
 

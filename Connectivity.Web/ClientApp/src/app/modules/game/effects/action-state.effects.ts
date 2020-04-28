@@ -11,7 +11,7 @@ import {
     refreshPendingActionsStateAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
-import { finishGameAction } from '../actions/game-actions.actions';
+import { FinishGameAction, finishGameAction } from '../actions/game-actions.actions';
 import { isOrderedAction } from '../helpers';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class ActionStateEffects {
     ));
 
     public longFinish$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(finishGameAction),
+        ofType<FinishGameAction>(finishGameAction),
         tap(() => {
             // tslint:disable-next-line: no-console
             console.log('longFinish$');
@@ -51,7 +51,7 @@ export class ActionStateEffects {
     ));
 
     public refreshPendingActionsAfterLongAction$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(finishGameAction),
+        ofType<FinishGameAction>(finishGameAction),
         map(() => refreshPendingActionsStateAction())
     ));
 

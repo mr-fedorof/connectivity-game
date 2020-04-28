@@ -1,16 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Connectivity.Application.Interfaces;
-using Connectivity.Application.Services;
-using Connectivity.Application.Hubs;
+using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.GameActions.Payloads;
 using Connectivity.Domain.Models;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Connectivity.WebApi.Controllers
 {
@@ -19,14 +15,14 @@ namespace Connectivity.WebApi.Controllers
     public class LobbyController : ControllerBase
     {
         private readonly ILobbyService _lobbyService;
-        private readonly IHubContext<GameHub> _gameHubContext;
+        private readonly IGameHubService _gameHubService;
 
         public LobbyController(
             ILobbyService lobbyService,
-            IHubContext<GameHub> gameHubContext)
+            IGameHubService gameHubService)
         {
             _lobbyService = lobbyService;
-            _gameHubContext = gameHubContext;
+            _gameHubService = gameHubService;
         }
 
         [HttpGet("{lobbyId}")]
@@ -78,18 +74,20 @@ namespace Connectivity.WebApi.Controllers
         {
             var createdPlayer = await _lobbyService.JoinLobbyAsync(lobbyId, player);
 
-            // TODO: Move to service
-            await _gameHubContext.Clients.Group(lobbyId).SendAsync(GameHubMethod.GameAction.ToString(), new GameAction<NewPlayerPayload>
+            var newPlayerAction = new GameAction<NewPlayerPayload>
             {
                 Type = GameActionType.NewPlayer,
                 Payload = new NewPlayerPayload
                 {
-                    Player = player
+                    Player = createdPlayer
                 },
-                PlayerId = player.Id
-            });
+                LobbyId = lobbyId,
+                PlayerId = createdPlayer.Id
+            };
 
-            return Ok(createdPlayer);
+            var handledNewPlayerAction = await _gameHubService.ProcessGameActionAsync(null, newPlayerAction);
+
+            return Ok(handledNewPlayerAction);
         }
 
         [HttpPost("{lobbyId}/player/{playerId}/leave")]
@@ -97,16 +95,19 @@ namespace Connectivity.WebApi.Controllers
         {
             await _lobbyService.LeaveLobbyAsync(lobbyId, playerId);
 
-            // TODO: Move to service
-            await _gameHubContext.Clients.Group(lobbyId).SendAsync(GameHubMethod.GameAction.ToString(), new GameAction<LeavePlayerPayload>
-            {
-                Type = GameActionType.LeavePlayer,
-                Payload = new LeavePlayerPayload
+            await _gameHubService.ProcessGameActionAsync(
+                null,
+                new GameAction<LeavePlayerPayload>
                 {
+                    Type = GameActionType.LeavePlayer,
+                    Payload = new LeavePlayerPayload
+                    {
+                        PlayerId = playerId
+                    },
+                    LobbyId = lobbyId,
                     PlayerId = playerId
-                },
-                PlayerId = playerId
-            });
+                }
+            );
 
             return Ok();
         }
@@ -117,15 +118,18 @@ namespace Connectivity.WebApi.Controllers
             // TODO: Handle game start
             // await _lobbyService.StartGameAsync(lobbyId, playerId);
 
-            // TODO: Move to service
-            await _gameHubContext.Clients.Group(lobbyId).SendAsync(GameHubMethod.GameAction.ToString(), new GameAction<object>
-            {
-                Type = GameActionType.StartGame,
-                Payload = new 
+            await _gameHubService.ProcessGameActionAsync(
+                null,
+                new GameAction<object>
                 {
+                    Type = GameActionType.StartGame,
+                    Payload = new
+                    {
+                        LobbyId = lobbyId
+                    },
                     LobbyId = lobbyId
                 }
-            });
+            );
 
             return Ok();
         }

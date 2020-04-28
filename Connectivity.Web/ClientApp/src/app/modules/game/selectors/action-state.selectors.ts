@@ -29,3 +29,13 @@ export const indexedActionsSelector: MemoizedSelector<IGameEngineFeature, Action
     actionStateSelector,
     (actionState: ActionState) => [...actionState.handledActions, ...actionState.pendingActions].filter(isOrderedAction)
 );
+
+export const globalActionIndexSelector: MemoizedSelector<IGameEngineFeature, number> = createSelector(
+    actionStateSelector,
+    (actionState: ActionState) => actionState.globalActionIndex
+);
+
+export const initializedSelector: MemoizedSelector<IGameEngineFeature, boolean> = createSelector(
+    actionStateSelector,
+    (actionState: ActionState) => actionState.initialized
+);

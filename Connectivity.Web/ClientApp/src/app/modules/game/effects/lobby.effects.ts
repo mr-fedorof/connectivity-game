@@ -7,9 +7,13 @@ import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
     addPendingActionStateAction,
     restoreLobbyAction,
+    ShareActionsLobbyAction,
     shareActionsLobbyAction,
+    ShareActionsLobbyResponseAction,
     shareActionsLobbyResponseAction,
+    ShareLobbyAction,
     shareLobbyAction,
+    ShareLobbyResponseAction,
     shareLobbyResponseAction,
 } from '../actions';
 import { Lobby } from '../models';
@@ -21,7 +25,7 @@ import { ActionService } from '../services';
 @Injectable()
 export class LobbyEffects {
     public shareLobby$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(shareLobbyAction),
+        ofType<ShareLobbyAction>(shareLobbyAction),
         withLatestFrom(this.store.select(lobbySelector)),
         tap(([action, lobby]: [Action, Lobby]) => {
             this.actionService.sendAction(shareLobbyResponseAction(action.playerId, lobby));
@@ -30,7 +34,7 @@ export class LobbyEffects {
     ));
 
     public shareLobbyResponse$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(shareLobbyResponseAction),
+        ofType<ShareLobbyResponseAction>(shareLobbyResponseAction),
         withLatestFrom(
             this.store.select(gameSessionSelector),
             this.store.select(lobbySelector)
@@ -40,9 +44,9 @@ export class LobbyEffects {
     ));
 
     public shareActionsLobby$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(shareActionsLobbyAction),
+        ofType<ShareActionsLobbyAction>(shareActionsLobbyAction),
         withLatestFrom(this.store.select(indexedActionsSelector)),
-        tap(([action, actions]: [Action, Action[]]) => {
+        tap(([action, actions]) => {
             const requestedActions = actions.filter(a => a.index > action.payload.lastActionIndex);
 
             this.actionService.sendAction(shareActionsLobbyResponseAction(action.playerId, requestedActions));
@@ -51,7 +55,7 @@ export class LobbyEffects {
     ));
 
     public shareActionsLobbyResponse$: Observable<Action> = createEffect(() => this.actions$.pipe(
-        ofType(shareActionsLobbyResponseAction),
+        ofType<ShareActionsLobbyResponseAction>(shareActionsLobbyResponseAction),
         withLatestFrom(
             this.store.select(gameSessionSelector)
         ),
