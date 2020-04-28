@@ -18,7 +18,7 @@ import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
-import { ActionService, GameHubService, GameService, GameSessionService, LobbyService } from './services';
+import { ActionService, GameHubService, GameService, GameSessionStorage, LobbyService, LobbyStorage } from './services';
 
 @NgModule({
     imports: [
@@ -45,7 +45,8 @@ import { ActionService, GameHubService, GameService, GameSessionService, LobbySe
     providers: [
         LobbyService,
         GameHubService,
-        GameSessionService,
+        GameSessionStorage,
+        LobbyStorage,
         LobbyExistsGuard,
         GameSessionExistsGuard,
         GameService,

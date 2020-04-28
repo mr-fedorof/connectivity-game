@@ -5,12 +5,12 @@ import { getRouteParam } from '@shared/utils/route.utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { GameSessionService, LobbyService } from '../services';
+import { GameSessionStorage, LobbyService } from '../services';
 
 @Injectable()
 export class GameSessionExistsGuard implements CanActivate {
     constructor(
-        private readonly gameSessionService: GameSessionService,
+        private readonly gameSessionStorage: GameSessionStorage,
         private readonly navigationService: NavigationService,
         private readonly lobbyService: LobbyService
     ) {
@@ -27,7 +27,7 @@ export class GameSessionExistsGuard implements CanActivate {
             return false;
         }
 
-        const gameSession = this.gameSessionService.getGameSession(lobbyId);
+        const gameSession = this.gameSessionStorage.get(lobbyId);
         if (!gameSession) {
             this.navigationService.goToPlayerIdentification(lobbyId);
 
@@ -38,7 +38,7 @@ export class GameSessionExistsGuard implements CanActivate {
             .pipe(
                 tap(exists => {
                     if (!exists) {
-                        this.gameSessionService.removeGameSession(lobbyId);
+                        this.gameSessionStorage.remove(lobbyId);
                         this.navigationService.goToPlayerIdentification(lobbyId);
                     }
                 })

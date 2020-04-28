@@ -13,7 +13,7 @@ import {
 import { ActionState, Lobby, LobbyConnectResult } from '@modules/game/models';
 import { actionStateSelector } from '@modules/game/selectors/action-state.selectors';
 import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
-import { ActionService, GameHubService, GameSessionService } from '@modules/game/services';
+import { ActionService, GameHubService, GameSessionStorage } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -32,7 +32,7 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
     constructor(
         private readonly store: Store,
         private readonly gameHubService: GameHubService,
-        private readonly gameSessionService: GameSessionService,
+        private readonly gameSessionStorage: GameSessionStorage,
         private readonly navigationService: NavigationService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly actionService: ActionService,
@@ -60,7 +60,7 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
             )
             .wrapWithSpinner(this.globalSpinnerService);
 
-        const gameSession = this.gameSessionService.getGameSession(lobbyId);
+        const gameSession = this.gameSessionStorage.get(lobbyId);
         if (gameSession) {
             this.store.dispatch(initGameSessionAction(gameSession));
         }

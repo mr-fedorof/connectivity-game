@@ -6,13 +6,13 @@ import { tap } from 'rxjs/operators';
 
 import { NewPlayerAction } from '../actions';
 import { GameSession, Lobby, Player } from '../models';
-import { GameSessionService } from './game-session.service';
+import { GameSessionStorage } from './game-session.storage';
 
 @Injectable()
 export class LobbyService {
     constructor(
         private readonly httpClient: HttpClient,
-        private readonly gameSessionService: GameSessionService
+        private readonly gameSessionStorage: GameSessionStorage
     ) {
     }
 
@@ -41,7 +41,7 @@ export class LobbyService {
                         lobbyId
                     });
 
-                    this.gameSessionService.saveGameSession(gameSession);
+                    this.gameSessionStorage.add(gameSession);
                 })
             );
     }
@@ -50,7 +50,7 @@ export class LobbyService {
         return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/player/${playerId}/leave`, null)
             .pipe(
                 tap(() => {
-                    this.gameSessionService.removeGameSession(lobbyId);
+                    this.gameSessionStorage.remove(lobbyId);
                 })
             );
     }
