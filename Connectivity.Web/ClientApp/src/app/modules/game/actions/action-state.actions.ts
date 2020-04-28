@@ -27,6 +27,13 @@ export const addPendingActionStateAction = createAction('[ActionState] Add Pendi
 }));
 export type AddPendingActionStateAction = ReturnType<typeof addPendingActionStateAction> & Action;
 
+export const addPendingsActionStateAction = createAction('[ActionState] Add Pending Actions', (actions: Action[]) => ({
+    payload: {
+        actions
+    }
+}));
+export type AddPendingsActionStateAction = ReturnType<typeof addPendingsActionStateAction> & Action;
+
 export const removePendingActionStateAction = createAction('[ActionState] Remove Pending Action', (action: Action) => ({
     payload: {
         action

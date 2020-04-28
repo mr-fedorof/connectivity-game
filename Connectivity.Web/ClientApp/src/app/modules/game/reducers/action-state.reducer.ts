@@ -6,6 +6,8 @@ import {
     addHandledActionStateAction,
     AddPendingActionStateAction,
     addPendingActionStateAction,
+    AddPendingsActionStateAction,
+    addPendingsActionStateAction,
     InitActionStateAction,
     initActionStateAction,
     LongFinishActionStateAction,
@@ -53,30 +55,27 @@ const _actionStateReducer: ActionReducer<ActionState> = createReducer(
     })),
 
     on(addPendingActionStateAction, (state: ActionState, { payload }: AddPendingActionStateAction): ActionState => {
-        const pendingActions = addElement(state.pendingActions, payload.action, gameActionComparator);
-
-        if (state.pendingActions === pendingActions) {
-            return state;
-        }
-
         const newState = {
             ...state,
-            pendingActions
+            pendingActions: [...state.pendingActions, payload.action]
+        };
+
+        return newState;
+    }),
+
+    on(addPendingsActionStateAction, (state: ActionState, { payload }: AddPendingsActionStateAction): ActionState => {
+        const newState = {
+            ...state,
+            pendingActions: [...state.pendingActions, ...payload.actions]
         };
 
         return newState;
     }),
 
     on(removePendingActionStateAction, (state: ActionState, { payload }: RemovePendingActionStateAction): ActionState => {
-        const pendingActions = removeElement(state.pendingActions, payload.action, gameActionComparator);
-
-        if (state.pendingActions === pendingActions) {
-            return state;
-        }
-
         const newState = {
             ...state,
-            pendingActions
+            pendingActions: removeElement(state.pendingActions, payload.action, gameActionComparator)
         };
 
         return newState;

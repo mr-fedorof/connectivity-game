@@ -37,7 +37,7 @@ export class ActionStateEffects {
         }),
         tap(() => {
             // tslint:disable-next-line: no-console
-            console.log('longStart$');
+            // console.log('longStart$');
         })
     ));
 
@@ -45,7 +45,7 @@ export class ActionStateEffects {
         ofType<FinishGameAction>(finishGameAction),
         tap(() => {
             // tslint:disable-next-line: no-console
-            console.log('longFinish$');
+            // console.log('longFinish$');
         }),
         map(() => longFinishActionStateAction())
     ));

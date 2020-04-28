@@ -7,9 +7,9 @@ namespace Connectivity.Domain.Enums
     [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum GameActionType
     {
-        [EnumMember(Value = "[Player] New")]
+        [EnumMember(Value = "[Player] [Sh] New")]
         NewPlayer,
-        [EnumMember(Value = "[Player] Leave")]
+        [EnumMember(Value = "[Player] [Sh] Leave")]
         LeavePlayer,
         [EnumMember(Value = "[Player] [Sh] Join Team")]
         JoinTeamPlayer,

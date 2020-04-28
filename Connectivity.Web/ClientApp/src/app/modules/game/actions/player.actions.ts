@@ -2,14 +2,14 @@ import { Action, createAction } from '@ngrx/store';
 
 import { Player } from '../models';
 
-export const newPlayerAction = createAction('[Player] New', (player: Player) => ({
+export const newPlayerAction = createAction('[Player] [Sh] New', (player: Player) => ({
     payload: {
         player
     }
 }));
 export type NewPlayerAction = ReturnType<typeof newPlayerAction> & Action;
 
-export const leavePlayerAction = createAction('[Player] Leave', (playerId: string) => ({
+export const leavePlayerAction = createAction('[Player] [Sh] Leave', (playerId: string) => ({
     payload: {
         playerId
     }

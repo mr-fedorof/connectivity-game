@@ -24,7 +24,7 @@ import {
     shareLobbyAction,
     updateGlobalActionIndexActionStateAction,
 } from '../actions';
-import { isOrderedAction, isOutOfOrderAction } from '../helpers';
+import { gameActionComparator, isOrderedAction, isOutOfOrderAction } from '../helpers';
 import { GameSession } from '../models';
 import {
     globalActionIndexSelector,
@@ -67,7 +67,7 @@ export class ActionService extends DestroyableService {
             .pipe(takeUntil(this.onDestroy))
             .subscribe(action => {
                 // tslint:disable-next-line: no-console
-                // console.log('action', action);
+                console.log('action', action);
             });
 
         this.internalActions$ = this._internalActionsSubject.asObservable()
@@ -90,7 +90,7 @@ export class ActionService extends DestroyableService {
                 this.delayUntilInitialized,
                 tap((actions: Action[]) => {
                     // tslint:disable-next-line: no-console
-                    console.log('pendingActions$', actions);
+                    // console.log('pendingActions$', actions);
                 }),
                 switchMap(actions => from(actions)),
                 share()
@@ -173,13 +173,13 @@ export class ActionService extends DestroyableService {
                     .pipe(
                         tap(sentAction => {
                             // tslint:disable-next-line: no-console
-                            console.log('out:', sentAction);
+                            // console.log('out:', sentAction);
                         })
                     );
             }
 
             // tslint:disable-next-line: no-console
-            console.log('sys:', action);
+            // console.log('sys:', action);
 
             return of(action);
         })
@@ -188,7 +188,7 @@ export class ActionService extends DestroyableService {
     private readonly handleExternalActionPipe = pipe(
         tap((action: Action) => {
             // tslint:disable-next-line: no-console
-            console.log('in:', action);
+            // console.log('in:', action);
         })
     );
 
@@ -203,19 +203,22 @@ export class ActionService extends DestroyableService {
     );
 
     private readonly actionsOrderingPipe = pipe(
-        withLatestFrom(this.store.select(nextActionIndexSelector)),
-        tap(([action, nextActionIndex]: [Action, number]) => {
+        withLatestFrom(
+            this.store.select(nextActionIndexSelector),
+            this.store.select(pendingActionsSelector)
+        ),
+        tap(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => {
             if (isOrderedAction(action)) {
-                if (action.index < nextActionIndex) {
+                if (action.index < nextActionIndex && pendingActions.find(pa => gameActionComparator(pa, action))) {
                     this.store.dispatch(removePendingActionStateAction(action));
                 }
 
-                if (action.index > nextActionIndex) {
+                if (action.index > nextActionIndex && !pendingActions.find(pa => gameActionComparator(pa, action))) {
                     this.store.dispatch(addPendingActionStateAction(action));
                 }
             }
         }),
-        filter(([action, nextActionIndex]: [Action, number]) => {
+        filter(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => {
             const isNextAction =
                 !action.type.includes('[Sh]') ||
                 action.type.includes('[SI]') ||
@@ -223,12 +226,15 @@ export class ActionService extends DestroyableService {
 
             return isNextAction;
         }),
-        map(([action, nextActionIndex]: [Action, number]) => action)
+        map(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => action)
     );
 
     private readonly actionProcessingPipe = pipe(
-        withLatestFrom(this.store.select(isProcessingSelector)),
-        switchMap(([action, isProcessing]: [Action, boolean]) => {
+        withLatestFrom(
+            this.store.select(isProcessingSelector),
+            this.store.select(pendingActionsSelector)
+        ),
+        switchMap(([action, isProcessing, pendingActions]: [Action, boolean, Action[]]) => {
             if (!isProcessing) {
                 return of([action, true]);
             }
@@ -237,7 +243,9 @@ export class ActionService extends DestroyableService {
                 return of([action, true]);
             }
 
-            this.store.dispatch(addPendingActionStateAction(action));
+            if (!pendingActions.find(pa => gameActionComparator(pa, action))) {
+                this.store.dispatch(addPendingActionStateAction(action));
+            }
 
             return of(action)
                 .pipe(
@@ -245,12 +253,13 @@ export class ActionService extends DestroyableService {
                     map((action: Action) => ([action, false]))
                 );
         }),
-        tap(([action, instant]: [Action, boolean]) => {
-            if (!instant) {
+        withLatestFrom(this.store.select(pendingActionsSelector)),
+        tap(([[action, instant], pendingActions]: [[Action, boolean], Action[]]) => {
+            if (!instant && pendingActions.find(pa => gameActionComparator(pa, action))) {
                 this.store.dispatch(removePendingActionStateAction(action));
             }
         }),
-        map(([action, instant]: [Action, boolean]) => action)
+        map(([[action, instant], pendingActions]: [[Action, boolean], Action[]]) => action)
     );
 
     private readonly delayWhileProcessing = pipe(
