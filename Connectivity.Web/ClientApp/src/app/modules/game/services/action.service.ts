@@ -24,7 +24,14 @@ import {
     shareLobbyAction,
     updateGlobalActionIndexActionStateAction,
 } from '../actions';
-import { gameActionComparator, isOrderedAction, isOutOfOrderAction } from '../helpers';
+import {
+    actionsIncludes,
+    gameActionComparator,
+    isOrderedAction,
+    isOriginalAction,
+    isOutOfOrderAction,
+    isShareAction,
+} from '../helpers';
 import { GameSession } from '../models';
 import {
     globalActionIndexSelector,
@@ -43,14 +50,14 @@ export class ActionService extends DestroyableService {
     private readonly REQUEST_LOBBY_STATE_DELAY = 15 * 1000;
     private readonly REQUEST_LOBBY_STATE_INTERVAL = 15 * 1000;
 
-    private readonly _internalActionsSubject: Subject<Action> = new Subject<Action>();
+    private readonly _originalActionsSubject: Subject<Action> = new Subject<Action>();
+    private readonly _skipSelfOriginalActionsSubject: Subject<Action> = new Subject<Action>();
     private readonly _exteranlActionsSubject: Subject<Action> = new Subject<Action>();
-    private readonly _outActionsSubject: Subject<Action> = new Subject<Action>();
 
-    public readonly internalActions$: Observable<Action>;
+    public readonly originalActions$: Observable<Action>;
+    public readonly skipSelfOriginalActions$: Observable<Action>;
     public readonly exteranlActions$: Observable<Action>;
     public readonly pendingActions$: Observable<Action>;
-    public readonly outActions$: Observable<Action>;
 
     public readonly actions$: Observable<Action>;
     public readonly waitingForActions$: Observable<number>;
@@ -70,17 +77,17 @@ export class ActionService extends DestroyableService {
                 console.log('action', action);
             });
 
-        this.internalActions$ = this._internalActionsSubject.asObservable()
+        this.originalActions$ = this._originalActionsSubject.asObservable()
             .pipe(
                 takeUntil(this.onDestroy),
-                this.handleInternalActionPipe,
+                this.originalActionHandlingPipe,
                 share()
             );
 
         this.exteranlActions$ = this._exteranlActionsSubject.asObservable()
             .pipe(
                 takeUntil(this.onDestroy),
-                this.handleExternalActionPipe,
+                this.externalActionHandlingPipe,
                 share()
             );
 
@@ -96,29 +103,31 @@ export class ActionService extends DestroyableService {
                 share()
             );
 
-        this.actions$ = merge(this.internalActions$, this.exteranlActions$, this.pendingActions$)
+        this.actions$ = merge(this.originalActions$, this.exteranlActions$, this.pendingActions$)
             .pipe(
                 takeUntil(this.onDestroy),
-                this.updateGlobalActionIndexPipe,
+                this.globalActionIndexUpdatingPipe,
                 this.actionsOrderingPipe,
                 this.actionProcessingPipe,
                 distinctUntilChanged(),
                 share()
             );
 
-        this.outActions$ = this._outActionsSubject.asObservable()
+        this.skipSelfOriginalActions$ = this._skipSelfOriginalActionsSubject.asObservable()
             .pipe(
                 takeUntil(this.onDestroy),
-                this.handleInternalActionPipe,
+                this.originalActionHandlingPipe,
                 share()
             );
 
         this.actions$
+            .pipe(takeUntil(this.onDestroy))
             .subscribe(action => {
                 this.store.dispatch(action);
             });
 
-        this.outActions$
+        this.skipSelfOriginalActions$
+            .pipe(takeUntil(this.onDestroy))
             .subscribe();
 
         this.waitingForActions$ = this.store.select(pendingActionsCountSelector)
@@ -129,37 +138,34 @@ export class ActionService extends DestroyableService {
             );
 
         this.waitingForActions$
-            .pipe(this.restoringLobbyStatePipe)
-            .subscribe(([first, lastActionIndex]) => {
-                if (first) {
-                    this.sendAction(shareActionsLobbyAction(lastActionIndex));
-                } else {
-                    this.sendAction(shareLobbyAction());
-                }
-            });
+            .pipe(
+                takeUntil(this.onDestroy),
+                this.lobbyStateRestoringPipe
+            )
+            .subscribe();
     }
 
-    public applyAction(action: Action): void {
+    public applyAction(action: Action, skipSelf?: boolean): void {
         if (!action) {
             return;
         }
 
-        if (typeof action.index === 'number' && (action.index >= 0 || action.index === -1)) {
-            this._exteranlActionsSubject.next(action);
-        } else {
-            this._internalActionsSubject.next(action);
-        }
-    }
+        if (skipSelf) {
+            this._skipSelfOriginalActionsSubject.next(action);
 
-    public sendAction(action: Action): void {
-        if (!action) {
             return;
         }
 
-        this._outActionsSubject.next(action);
+        if (isOriginalAction(action)) {
+            this._originalActionsSubject.next(action);
+
+            return;
+        }
+
+        this._exteranlActionsSubject.next(action);
     }
 
-    private readonly handleInternalActionPipe = pipe(
+    private readonly originalActionHandlingPipe = pipe(
         withLatestFrom(this.store.select(gameSessionSelector)),
         filter(([action, gameSession]: [Action, GameSession]) => !!gameSession.playerId),
         map(([action, gameSession]: [Action, GameSession]) => ({
@@ -168,7 +174,7 @@ export class ActionService extends DestroyableService {
             playerId: gameSession.playerId
         })),
         mergeMap((action: Action) => {
-            if (action.type.includes('[Sh]')) {
+            if (isShareAction(action)) {
                 return this.gameHubService.sendAction(action)
                     .pipe(
                         tap(sentAction => {
@@ -185,14 +191,14 @@ export class ActionService extends DestroyableService {
         })
     );
 
-    private readonly handleExternalActionPipe = pipe(
+    private readonly externalActionHandlingPipe = pipe(
         tap((action: Action) => {
             // tslint:disable-next-line: no-console
             // console.log('in:', action);
         })
     );
 
-    private readonly updateGlobalActionIndexPipe = pipe(
+    private readonly globalActionIndexUpdatingPipe = pipe(
         withLatestFrom(this.store.select(globalActionIndexSelector)),
         tap(([action, globalActionIndex]: [Action, number]) => {
             if (isOrderedAction(action) && action.index > globalActionIndex) {
@@ -209,20 +215,17 @@ export class ActionService extends DestroyableService {
         ),
         tap(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => {
             if (isOrderedAction(action)) {
-                if (action.index < nextActionIndex && pendingActions.find(pa => gameActionComparator(pa, action))) {
+                if (action.index < nextActionIndex && actionsIncludes(pendingActions, action)) {
                     this.store.dispatch(removePendingActionStateAction(action));
                 }
 
-                if (action.index > nextActionIndex && !pendingActions.find(pa => gameActionComparator(pa, action))) {
+                if (action.index > nextActionIndex && !actionsIncludes(pendingActions, action)) {
                     this.store.dispatch(addPendingActionStateAction(action));
                 }
             }
         }),
         filter(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => {
-            const isNextAction =
-                !action.type.includes('[Sh]') ||
-                action.type.includes('[SI]') ||
-                action.index === nextActionIndex;
+            const isNextAction = isOutOfOrderAction(action) || action.index === nextActionIndex;
 
             return isNextAction;
         }),
@@ -236,62 +239,68 @@ export class ActionService extends DestroyableService {
         ),
         switchMap(([action, isProcessing, pendingActions]: [Action, boolean, Action[]]) => {
             if (!isProcessing) {
-                return of([action, true]);
+                return of(action);
             }
 
             if (isProcessing && isOutOfOrderAction(action)) {
-                return of([action, true]);
+                return of(action);
             }
 
-            if (!pendingActions.find(pa => gameActionComparator(pa, action))) {
+            if (!actionsIncludes(pendingActions, action)) {
                 this.store.dispatch(addPendingActionStateAction(action));
             }
 
             return of(action)
-                .pipe(
-                    this.delayWhileProcessing,
-                    map((action: Action) => ([action, false]))
-                );
+                .pipe(this.delayUntilProcessed);
         }),
         withLatestFrom(this.store.select(pendingActionsSelector)),
-        tap(([[action, instant], pendingActions]: [[Action, boolean], Action[]]) => {
-            if (!instant && pendingActions.find(pa => gameActionComparator(pa, action))) {
+        tap(([action, pendingActions]: [Action, Action[]]) => {
+            if (pendingActions.find(pa => gameActionComparator(pa, action))) {
                 this.store.dispatch(removePendingActionStateAction(action));
             }
         }),
-        map(([[action, instant], pendingActions]: [[Action, boolean], Action[]]) => action)
+        map(([action, pendingActions]: [Action, Action[]]) => action)
     );
 
-    private readonly delayWhileProcessing = pipe(
-        delayWhen(() => this.store.select(isProcessingSelector)
-            .pipe(
-                filter(isProcessing => !isProcessing)
-            )
-        )
-    );
-
-    private readonly restoringLobbyStatePipe = pipe(
+    private readonly lobbyStateRestoringPipe = pipe(
+        map((count: number) => count > this.ALLOWED_PENDING_ACTIONS_COUNT),
+        distinctUntilChanged(),
         withLatestFrom(this.store.select(lastActionIndexSelector)),
-        filter(([count, lastActionIndex]: [number, number]) => lastActionIndex > 0),
-        switchMap(([count, lastActionIndex]: [number, number]) => {
-            if (count > this.ALLOWED_PENDING_ACTIONS_COUNT) {
-                // TODO: Localization
-                this.globalAlertService.warn('There are missed actions. Restoring the lobby.');
+        switchMap(([missed, lastActionIndex]: [boolean, number]) => {
+            if (missed) {
+                // Not show the warning if it's init restoring
+                if (lastActionIndex > 0) {
+                    // TODO: Localization
+                    this.globalAlertService.warn('There are missed actions. Restoring the lobby.');
+                }
 
-                let first = true;
+                let restoreOnlyActions = lastActionIndex > 0;
 
                 return timer(this.REQUEST_LOBBY_STATE_DELAY, this.REQUEST_LOBBY_STATE_INTERVAL)
                     .pipe(
-                        map(() => first),
+                        map(() => restoreOnlyActions),
                         tap(() => {
-                            first = false;
+                            restoreOnlyActions = false;
                         })
                     );
             }
 
             return EMPTY;
         }),
-        withLatestFrom(this.store.select(lastActionIndexSelector))
+        withLatestFrom(this.store.select(lastActionIndexSelector)),
+        tap(([restoreOnlyActions, lastActionIndex]: [boolean, number]) => {
+            if (restoreOnlyActions) {
+                this.applyAction(shareActionsLobbyAction(lastActionIndex), true);
+            } else {
+                this.applyAction(shareLobbyAction(), true);
+            }
+        })
+    );
+
+    private readonly delayUntilProcessed = pipe(
+        delayWhen(() => this.store.select(isProcessingSelector)
+            .pipe(filter(isProcessing => !isProcessing))
+        )
     );
 
     private readonly delayUntilInitialized = pipe(

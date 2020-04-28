@@ -94,10 +94,10 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
                         this.actionService.applyAction(initActionStateAction(connectResult.globalActionIndex));
 
                         if (connectResult.globalActionIndex > 0) {
-                            this.actionService.sendAction(shareLobbyAction());
+                            this.actionService.applyAction(shareLobbyAction(), true);
                         }
                     } else {
-                        this.actionService.sendAction(shareActionsLobbyAction(lobby.lastActionIndex));
+                        this.actionService.applyAction(shareActionsLobbyAction(lobby.lastActionIndex), true);
                     }
                 });
     }

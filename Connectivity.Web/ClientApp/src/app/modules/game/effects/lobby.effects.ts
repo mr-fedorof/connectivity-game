@@ -32,7 +32,7 @@ export class LobbyEffects {
             this.store.select(actionStateSelector)
         ),
         tap(([action, lobby, actionState]: [Action, Lobby, ActionState]) => {
-            this.actionService.sendAction(shareLobbyResponseAction(action.playerId, lobby, actionState));
+            this.actionService.applyAction(shareLobbyResponseAction(action.playerId, lobby, actionState), true);
         }),
         switchMap(() => EMPTY)
     ));
@@ -70,7 +70,7 @@ export class LobbyEffects {
         tap(([action, actions]) => {
             const requestedActions = actions.filter(a => a.index > action.payload.lastActionIndex);
 
-            this.actionService.sendAction(shareActionsLobbyResponseAction(action.playerId, requestedActions));
+            this.actionService.applyAction(shareActionsLobbyResponseAction(action.playerId, requestedActions), true);
         }),
         switchMap(() => EMPTY)
     ));

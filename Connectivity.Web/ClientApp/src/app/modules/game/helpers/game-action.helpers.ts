@@ -13,3 +13,7 @@ export function gameActionComparator(a1: Action, a2: Action): boolean {
 
     return false;
 }
+
+export function actionsIncludes(actions: Action[], action): boolean {
+    return !!actions.find(a => gameActionComparator(a, action));
+}
