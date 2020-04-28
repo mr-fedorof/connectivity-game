@@ -67,7 +67,7 @@ export class ActionService extends DestroyableService {
             .pipe(takeUntil(this.onDestroy))
             .subscribe(action => {
                 // tslint:disable-next-line: no-console
-                console.log('action', action);
+                // console.log('action', action);
             });
 
         this.internalActions$ = this._internalActionsSubject.asObservable()
