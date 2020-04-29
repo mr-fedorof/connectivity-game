@@ -19,6 +19,7 @@ steps:
   displayName: 'Build and publish the app for $(Build.SourceBranchName) ck'
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts to drop/$(Build.SourceBranchName)'
   inputs:
     PathtoPublish: '$(projectName)/bin/Release/netcoreapp3.0/publish'
     ArtifactName: 'drop/$(Build.SourceBranchName)'
