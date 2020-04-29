@@ -6,7 +6,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  projectName: 'Connectivity.WebApi'
+  projectName: 'Connectivity.Web'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -16,7 +16,7 @@ steps:
     restoreSolution: '$(solution)'
 
 - script: dotnet publish $(projectName) --configuration $(buildConfiguration)
-  displayName: 'Build and publish the api for $(Build.SourceBranchName) ck'
+  displayName: 'Build and publish the app for $(Build.SourceBranchName) ck'
 
 - task: PublishBuildArtifacts@1
   inputs:
