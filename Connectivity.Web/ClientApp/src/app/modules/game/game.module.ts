@@ -11,6 +11,7 @@ import { LobbySyncComponent } from './components/lobby-sync/lobby-sync.component
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
 import { ActionStateEffects } from './effects/action-state.effects';
+import { GameEffects } from './effects/game.effects';
 import { LobbyEffects } from './effects/lobby.effects';
 import { PlayerEffects } from './effects/player.effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
@@ -29,7 +30,8 @@ import { ActionService, GameHubService, GameService, GameSessionStorage, LobbySe
         EffectsModule.forFeature([
             ActionStateEffects,
             LobbyEffects,
-            PlayerEffects
+            PlayerEffects,
+            GameEffects
         ]),
         SharedModule
     ],

@@ -54,8 +54,4 @@ export class LobbyService {
                 })
             );
     }
-
-    public startGame(lobbyId: string): Observable<void> {
-        return this.httpClient.post<void>(`${environment.apiUrl}api/lobby/${lobbyId}/startGame`, null);
-    }
 }

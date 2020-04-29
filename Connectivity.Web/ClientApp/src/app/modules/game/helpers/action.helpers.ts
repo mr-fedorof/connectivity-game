@@ -16,3 +16,7 @@ export function isShareAction(action: Action): boolean {
 export function isOriginalAction(action: Action): boolean {
     return action.index === undefined || action.index === null;
 }
+
+export function isSystemAction(action: Action): boolean {
+    return action.type.includes('[Sys]');
+}

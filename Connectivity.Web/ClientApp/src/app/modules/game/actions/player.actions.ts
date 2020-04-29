@@ -38,3 +38,17 @@ export const longPlayerAction = createAction('[Player] [Sh] Long Action', () => 
     long: true
 }));
 export type LongPlayerAction = ReturnType<typeof longPlayerAction> & Action;
+
+export const readyPlayerAction = createAction('[Player] [Sh] Ready', (playerId: string) => ({
+    payload: {
+        playerId
+    }
+}));
+export type ReadyPlayerAction = ReturnType<typeof readyPlayerAction> & Action;
+
+export const notReadyPlayerAction = createAction('[Player] [Sh] Not Ready', (playerId: string) => ({
+    payload: {
+        playerId
+    }
+}));
+export type NotReadyPlayerAction = ReturnType<typeof notReadyPlayerAction> & Action;

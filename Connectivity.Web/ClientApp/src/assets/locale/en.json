@@ -1,4 +1,8 @@
 {
+    "MESSAGES": {
+        "CONNECTION_LOST": "Connection has been lost. Trying to reconnect.",
+        "CONNECTION_ESTABLISHED": "Connection established."
+    },
     "HOME": {
         "CONNECTIVITY": "CONNECTIVITY",
         "P1": "Stay Safe",
@@ -29,6 +33,10 @@
         "TITLE": "Lobby - {{ name }}",
         "WAITING_TO_JOIN_LIST": "Waiting to join",
         "JOIN_TEAM": "Join the team",
-        "LEAVE_TEAM": "Leave the team"
+        "LEAVE_TEAM": "Leave the team",
+        "PLAYER_READY_LABEL": "Ready",
+        "PLAYER_NOT_READY_LABEL": "Not ready",
+        "IM_READY": "I'm ready",
+        "IM_NOT_READY": "I'm not ready"
     }
 }

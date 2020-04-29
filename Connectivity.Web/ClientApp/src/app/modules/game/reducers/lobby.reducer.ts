@@ -12,8 +12,12 @@ import {
     leaveTeamPlayerAction,
     NewPlayerAction,
     newPlayerAction,
-    ResetSystemAction,
-    resetSystemAction,
+    NotReadyPlayerAction,
+    notReadyPlayerAction,
+    ReadyPlayerAction,
+    readyPlayerAction,
+    ResetAppAction,
+    resetAppAction,
     RestoreLobbyAction,
     restoreLobbyAction,
     UpdateLastActionIndexLobbyAction,
@@ -25,7 +29,7 @@ import { initialLobby, Lobby } from '../models';
 const _lobbyReducer: ActionReducer<Lobby> = createReducer(
     initialLobby,
 
-    on(resetSystemAction, (state: Lobby, { payload }: ResetSystemAction): Lobby => ({
+    on(resetAppAction, (state: Lobby, { payload }: ResetAppAction): Lobby => ({
         ...initialLobby
     })),
 
@@ -66,6 +70,22 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
             teamId: null
+        }))
+    })),
+
+    on(readyPlayerAction, (state: Lobby, { payload }: ReadyPlayerAction): Lobby => ({
+        ...state,
+        players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
+            ...p,
+            ready: true
+        }))
+    })),
+
+    on(notReadyPlayerAction, (state: Lobby, { payload }: NotReadyPlayerAction): Lobby => ({
+        ...state,
+        players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
+            ...p,
+            ready: false
         }))
     }))
 );

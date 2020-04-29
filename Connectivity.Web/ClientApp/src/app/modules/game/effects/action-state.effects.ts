@@ -6,12 +6,13 @@ import { filter, map, switchMap, tap } from 'rxjs/operators';
 
 import {
     addHandledActionStateAction,
+    FinishGameAction,
+    finishGameAction,
     longFinishActionStateAction,
     longStartActionStateAction,
     refreshPendingActionsStateAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
-import { FinishGameAction, finishGameAction } from '../actions/game-actions.actions';
 import { isOrderedAction } from '../helpers';
 
 @Injectable()

@@ -17,6 +17,10 @@ namespace Connectivity.Domain.Enums
         LeaveTeamPlayer,
         [EnumMember(Value = "[Player] [Sh] Long Action")]
         LongActionPlayer,
+        [EnumMember(Value = "[Player] [Sh] Ready")]
+        ReadyPlayer,
+        [EnumMember(Value = "[Player] [Sh] Not Ready")]
+        NotReadyPlayer,
 
         [SkipIndex]
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share")]
@@ -31,7 +35,7 @@ namespace Connectivity.Domain.Enums
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share Actions Response")]
         ShareActionsLobbyResponse,
 
-        [EnumMember(Value = "[TBD] StartGame")]
+        [EnumMember(Value = "[Game] [Sh] [Sys] Start")]
         StartGame,
     }
 }

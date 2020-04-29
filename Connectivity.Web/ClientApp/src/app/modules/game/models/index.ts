@@ -1,3 +1,4 @@
+export * from './game-action.interface';
 export * from './player.model';
 export * from './team.model';
 export * from './lobby.model';

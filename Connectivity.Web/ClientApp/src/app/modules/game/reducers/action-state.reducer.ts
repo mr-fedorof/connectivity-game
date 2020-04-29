@@ -18,8 +18,8 @@ import {
     refreshPendingActionsStateAction,
     RemovePendingActionStateAction,
     removePendingActionStateAction,
-    ResetSystemAction,
-    resetSystemAction,
+    ResetAppAction,
+    resetAppAction,
     UpdateGlobalActionIndexActionStateAction,
     updateGlobalActionIndexActionStateAction,
 } from '../actions';
@@ -29,7 +29,7 @@ import { ActionState, initialActionState } from '../models';
 const _actionStateReducer: ActionReducer<ActionState> = createReducer(
     initialActionState,
 
-    on(resetSystemAction, (state: ActionState, { payload }: ResetSystemAction): ActionState => ({
+    on(resetAppAction, (state: ActionState, { payload }: ResetAppAction): ActionState => ({
         ...initialActionState
     })),
 

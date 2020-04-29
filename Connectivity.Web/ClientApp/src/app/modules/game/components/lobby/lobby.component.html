@@ -17,21 +17,35 @@
             *ngFor="let team of lobby.teams"
         >
             <h4>{{ team.name }}</h4>
-            <p *ngFor="let player of lobby.players | teamPlayers: team.id">{{ player.name }}</p>
             <button
-                *ngIf="currentPlayer?.teamId !== team.id"
+                *ngIf="currentPlayer?.teamId !== team.id && !currentPlayer.ready"
                 type="button"
-                class="btn-secondary"
                 (click)="onJoinTeamClick(currentPlayer.id, team.id)"
                 translate
             >LOBBY.JOIN_TEAM</button>
             <button
-                *ngIf="currentPlayer?.teamId === team.id"
+                *ngIf="currentPlayer?.teamId === team.id && !currentPlayer.ready"
                 type="button"
-                class="btn-secondary"
                 (click)="onLeaveTeamClick(currentPlayer.id, team.id)"
                 translate
             >LOBBY.LEAVE_TEAM</button>
+            <hr />
+            <p *ngFor="let player of lobby.players | teamPlayers: team.id">
+                {{ player.name }}
+                <span>({{ (player.ready ? 'LOBBY.PLAYER_READY_LABEL' : 'LOBBY.PLAYER_NOT_READY_LABEL') | translate }})</span>
+                <button
+                    *ngIf="currentPlayer.id === player.id && !player.ready"
+                    type="button"
+                    translate
+                    (click)="onPlayerReadyClick(currentPlayer.id)"
+                >LOBBY.IM_READY</button>
+                <button
+                    *ngIf="currentPlayer.id === player.id && player.ready"
+                    type="button"
+                    translate
+                    (click)="onPlayerNotReadyClick(currentPlayer.id)"
+                >LOBBY.IM_NOT_READY</button>
+            </p>
         </div>
     </div>
     <hr />
@@ -40,11 +54,6 @@
         class="btn-secondary"
         (click)="onLeaveLobbyClick()"
     >Leave Lobby</button>
-    <button
-        type="button"
-        class="btn-secondary"
-        (click)="onGameStartClick()"
-    >Stub start game</button>
     <button
         type="button"
         class="btn-secondary"

@@ -1,3 +1,4 @@
+import { GameStatus } from '../enums';
 import { Game } from './game.model';
 import { Player } from './player.model';
 import { Team } from './team.model';
@@ -28,7 +29,9 @@ export const initialLobby: ILobby = {
     id: null,
     name: null,
     teams: [],
-    game: null,
+    game: {
+        status: GameStatus.WaitingForPlayers
+    },
     players: [],
     lastActionIndex: null
 };

@@ -111,27 +111,5 @@ namespace Connectivity.WebApi.Controllers
 
             return Ok();
         }
-
-        [HttpPost("{lobbyId}/startGame")]
-        public async Task<IActionResult> StartGame(string lobbyId)
-        {
-            // TODO: Handle game start
-            // await _lobbyService.StartGameAsync(lobbyId, playerId);
-
-            await _gameHubService.ProcessGameActionAsync(
-                null,
-                new GameAction<object>
-                {
-                    Type = GameActionType.StartGame,
-                    Payload = new
-                    {
-                        LobbyId = lobbyId
-                    },
-                    LobbyId = lobbyId
-                }
-            );
-
-            return Ok();
-        }
     }
 }

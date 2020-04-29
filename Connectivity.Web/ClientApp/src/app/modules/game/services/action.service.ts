@@ -3,6 +3,7 @@ import { GlobalAlertService } from '@modules/alert/services';
 import { Actions } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableService } from '@shared/destroyable';
+import { minBy } from 'lodash';
 import { EMPTY, from, merge, Observable, of, pipe, Subject, timer } from 'rxjs';
 import {
     delayWhen,
@@ -31,8 +32,9 @@ import {
     isOriginalAction,
     isOutOfOrderAction,
     isShareAction,
+    isSystemAction,
 } from '../helpers';
-import { GameSession } from '../models';
+import { GameSession, Lobby, Player } from '../models';
 import {
     globalActionIndexSelector,
     initializedSelector,
@@ -41,14 +43,19 @@ import {
     pendingActionsSelector,
 } from '../selectors/action-state.selectors';
 import { gameSessionSelector } from '../selectors/game-session.selectors';
-import { lastActionIndexSelector, nextActionIndexSelector } from '../selectors/lobby.selectors';
+import {
+    currentPlayerSelector,
+    lastActionIndexSelector,
+    lobbySelector,
+    nextActionIndexSelector,
+} from '../selectors/lobby.selectors';
 import { GameHubService } from './game-hub.service';
 
 @Injectable()
 export class ActionService extends DestroyableService {
-    private readonly ALLOWED_PENDING_ACTIONS_COUNT = 10;
-    private readonly REQUEST_LOBBY_STATE_DELAY = 15 * 1000;
-    private readonly REQUEST_LOBBY_STATE_INTERVAL = 15 * 1000;
+    public readonly ALLOWED_MISSED_ACTION_FRAME = 10;
+    public readonly REQUEST_LOBBY_STATE_DELAY = 15 * 1000;
+    public readonly REQUEST_LOBBY_STATE_INTERVAL = 15 * 1000;
 
     private readonly _originalActionsSubject: Subject<Action> = new Subject<Action>();
     private readonly _skipSelfOriginalActionsSubject: Subject<Action> = new Subject<Action>();
@@ -81,6 +88,8 @@ export class ActionService extends DestroyableService {
             .pipe(
                 takeUntil(this.onDestroy),
                 this.originalActionHandlingPipe,
+                this.systemActionHandlingPipe,
+                this.actionSharingPipe,
                 share()
             );
 
@@ -117,6 +126,7 @@ export class ActionService extends DestroyableService {
             .pipe(
                 takeUntil(this.onDestroy),
                 this.originalActionHandlingPipe,
+                this.actionSharingPipe,
                 share()
             );
 
@@ -172,7 +182,10 @@ export class ActionService extends DestroyableService {
             ...action,
             lobbyId: gameSession.lobbyId,
             playerId: gameSession.playerId
-        })),
+        }))
+    );
+
+    private readonly actionSharingPipe = pipe(
         mergeMap((action: Action) => {
             if (isShareAction(action)) {
                 return this.gameHubService.sendAction(action)
@@ -195,6 +208,32 @@ export class ActionService extends DestroyableService {
         tap((action: Action) => {
             // tslint:disable-next-line: no-console
             // console.log('in:', action);
+        })
+    );
+
+    private readonly systemActionHandlingPipe = pipe(
+        withLatestFrom(
+            this.store.select(lobbySelector),
+            this.store.select(currentPlayerSelector)
+        ),
+        switchMap(([action, lobby, currentPlayer]: [Action, Lobby, Player]) => {
+            if (!isSystemAction(action)) {
+                return of(action);
+            }
+
+            const currentPlayerIndex = lobby.players.findIndex(p => p.id === currentPlayer.id);
+            const delay = currentPlayerIndex * 5000;
+
+            if (delay === 0) {
+                return of(action);
+            }
+
+            return timer(delay)
+                .pipe(
+                    takeUntil(this.exteranlActions$
+                        .pipe(filter(a => a.type === action.type))),
+                    map(() => action)
+                );
         })
     );
 
@@ -263,30 +302,46 @@ export class ActionService extends DestroyableService {
     );
 
     private readonly lobbyStateRestoringPipe = pipe(
-        map((count: number) => count > this.ALLOWED_PENDING_ACTIONS_COUNT),
-        distinctUntilChanged(),
-        withLatestFrom(this.store.select(lastActionIndexSelector)),
-        switchMap(([missed, lastActionIndex]: [boolean, number]) => {
-            if (missed) {
-                // Not show the warning if it's init restoring
-                if (lastActionIndex > 0) {
-                    // TODO: Localization
-                    this.globalAlertService.warn('There are missed actions. Restoring the lobby.');
-                }
-
-                let restoreOnlyActions = lastActionIndex > 0;
-
-                return timer(this.REQUEST_LOBBY_STATE_DELAY, this.REQUEST_LOBBY_STATE_INTERVAL)
-                    .pipe(
-                        map(() => restoreOnlyActions),
-                        tap(() => {
-                            restoreOnlyActions = false;
-                        })
-                    );
+        withLatestFrom(
+            this.store.select(pendingActionsSelector),
+            this.store.select(nextActionIndexSelector)
+        ),
+        map(([count, pendingActions, nextActionIndex]: [number, Action[], number]) => {
+            if (count <= this.ALLOWED_MISSED_ACTION_FRAME) {
+                return false;
             }
 
-            return EMPTY;
+            if (pendingActions.length === 0) {
+                return true;
+            }
+
+            return minBy(pendingActions, 'index').index > nextActionIndex;
         }),
+        distinctUntilChanged(),
+
+        withLatestFrom(this.store.select(lastActionIndexSelector)),
+        switchMap(([missed, lastActionIndex]: [boolean, number]) => {
+            if (!missed) {
+                return EMPTY;
+            }
+
+            // Not show the warning if it's init restoring
+            if (lastActionIndex > 0) {
+                // TODO: Localization
+                this.globalAlertService.warn('There are missed actions. Restoring the lobby.');
+            }
+
+            let restoreOnlyActions = lastActionIndex > 0;
+
+            return timer(this.REQUEST_LOBBY_STATE_DELAY, this.REQUEST_LOBBY_STATE_INTERVAL)
+                .pipe(
+                    map(() => restoreOnlyActions),
+                    tap(() => {
+                        restoreOnlyActions = false;
+                    })
+                );
+        }),
+
         withLatestFrom(this.store.select(lastActionIndexSelector)),
         tap(([restoreOnlyActions, lastActionIndex]: [boolean, number]) => {
             if (restoreOnlyActions) {

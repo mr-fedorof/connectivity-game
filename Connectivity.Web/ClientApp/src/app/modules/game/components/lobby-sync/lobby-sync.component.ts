@@ -6,20 +6,20 @@ import {
     initActionStateAction,
     initGameSessionAction,
     initLobbyAction,
-    resetSystemAction,
+    resetAppAction,
     shareActionsLobbyAction,
     shareLobbyAction,
 } from '@modules/game/actions';
 import { ActionState, Lobby, LobbyConnectResult } from '@modules/game/models';
-import { actionStateSelector } from '@modules/game/selectors/action-state.selectors';
+import { actionStateSelector, initializedSelector } from '@modules/game/selectors/action-state.selectors';
 import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
-import { ActionService, GameHubService, GameSessionStorage } from '@modules/game/services';
+import { ActionService, GameHubService, GameSessionStorage, LobbyStorage } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
-import { Observable } from 'rxjs';
-import { delay, filter, map, retryWhen, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, pipe } from 'rxjs';
+import { delay, filter, map, retryWhen, skipUntil, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lobby-sync',
@@ -27,6 +27,8 @@ import { delay, filter, map, retryWhen, switchMap, take, takeUntil, tap, withLat
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbySyncComponent extends DestroyableComponent implements OnInit, OnDestroy {
+    private connectionWasLost = false;
+
     public isReady$: Observable<boolean>;
 
     constructor(
@@ -37,7 +39,8 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
         private readonly activatedRoute: ActivatedRoute,
         private readonly actionService: ActionService,
         private readonly globalSpinnerService: GlobalSpinnerService,
-        private readonly globalAlertService: GlobalAlertService
+        private readonly globalAlertService: GlobalAlertService,
+        private readonly lobbyStorage: LobbyStorage
     ) {
         super();
     }
@@ -81,8 +84,8 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
                 ),
                 retryWhen(errors => errors.pipe(
                     tap(() => {
-                        // TODO: Localization
-                        this.globalAlertService.error('Connection has been lost. Trying to reconnect.');
+                        this.connectionWasLost = true;
+                        this.globalAlertService.error('MESSAGES.CONNECTION_LOST');
                     }),
                     delay(5000)
                 ))
@@ -90,24 +93,46 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
             .subscribe(
                 ([connectResult, lobby, actionState]: [LobbyConnectResult, Lobby, ActionState]) => {
                     if (!actionState.initialized) {
-                        this.actionService.applyAction(initLobbyAction(connectResult.lobby));
+                        const lobbyFromStorage = this.lobbyStorage.get(lobbyId);
+                        const lobbyToRestore = lobbyFromStorage || connectResult.lobby;
+
+                        this.actionService.applyAction(initLobbyAction(lobbyToRestore));
                         this.actionService.applyAction(initActionStateAction(connectResult.globalActionIndex));
 
-                        if (connectResult.globalActionIndex > 0) {
+                        if (connectResult.globalActionIndex !== lobbyToRestore.lastActionIndex) {
                             this.actionService.applyAction(shareLobbyAction(), true);
                         }
                     } else {
                         this.actionService.applyAction(shareActionsLobbyAction(lobby.lastActionIndex), true);
                     }
+
+                    if (this.connectionWasLost) {
+                        this.globalAlertService.clearAlert('MESSAGES.CONNECTION_LOST');
+                        this.globalAlertService.info('MESSAGES.CONNECTION_ESTABLISHED', { time: 5000 });
+                    }
                 });
+
+        this.store.select(lobbySelector)
+            .pipe(
+                takeUntil(this.onDestroy),
+                this.skipUntilInitialized
+            )
+            .subscribe((lobby: Lobby) => {
+                this.lobbyStorage.add(lobby);
+            });
     }
 
     public ngOnDestroy(): void {
         super.ngOnDestroy();
 
-        this.store.dispatch(resetSystemAction());
+        this.store.dispatch(resetAppAction());
         this.gameHubService.stop();
 
         this.actionService.ngOnDestroy();
     }
+
+    private readonly skipUntilInitialized = pipe(
+        skipUntil(this.store.select(initializedSelector)
+            .pipe(filter(initialized => initialized)))
+    );
 }

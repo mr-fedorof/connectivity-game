@@ -3,7 +3,8 @@ import { AlertType } from '@modules/alert/enums';
 import { GlobalAlertService } from '@modules/alert/services/global-alert.service';
 import { showHideAnimation } from '@shared/animations';
 import { DestroyableComponent } from '@shared/destroyable';
-import { takeUntil } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { Alert } from '../../models';
 
@@ -50,6 +51,31 @@ export class GlobalAlertComponent extends DestroyableComponent {
                 }
 
                 this.showHideTrigger = !!alert;
+
+                this.cdr.markForCheck();
+
+                if (alert.time > 0) {
+                    timer(alert.time)
+                        .pipe(
+                            takeUntil(this.onDestroy),
+                            take(1)
+                        )
+                        .subscribe(() => {
+                            if (this.alert?.id === alert.id) {
+                                this.showHideTrigger = false;
+                                this.cdr.markForCheck();
+                            }
+                        });
+
+                }
+            });
+
+        this.globalAlertService.clear$
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(id => {
+                if (!id || this.alert?.id === id) {
+                    this.showHideTrigger = false;
+                }
 
                 this.cdr.markForCheck();
             });
