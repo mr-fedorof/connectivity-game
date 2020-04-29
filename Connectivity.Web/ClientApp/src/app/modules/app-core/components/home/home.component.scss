@@ -1,0 +1,115 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-home;
+}
+
+.app-home {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    height: 100%;
+
+    &:after {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.34;
+        background-image: url("/assets/images/connect.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 40%;
+    }
+
+    &__brand {
+        flex-grow: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: $cian;
+        font-weight: 800;
+
+        font-size: 67px;
+        line-height: 1.2;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 67px;
+        }
+
+        @include media-breakpoint-up(md) {
+            font-size: 89px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            font-size: 115px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            font-size: 140px;
+        }
+    }
+
+    &__content {
+        flex-grow: 2;
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    &__brand-text {
+        flex-grow: 1;
+        color: $cian;
+        font-weight: 800;
+
+        p {
+            margin: 0;
+        }
+
+        font-size: 38px;
+        line-height: 1.2;
+
+        @include media-breakpoint-up(sm) {
+            font-size: 38px;
+        }
+
+        @include media-breakpoint-up(md) {
+            font-size: 51px;
+        }
+
+        @include media-breakpoint-up(lg) {
+            font-size: 66px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            font-size: 80px;
+        }
+    }
+
+    &__action-container {
+        flex-grow: 1;
+    }
+
+    &__action {
+        @include btn-orange();
+
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        padding: 16px;
+        margin-top: 20px;
+
+        font-size: 32px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 24px;
+        }
+    }
+}

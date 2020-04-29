@@ -1,0 +1,60 @@
+<nav class="app-header__nav">
+    <a
+        class="app-header__nav-brand"
+        [routerLink]="['/']"
+    >Connectivity</a>
+    <ul class="app-header__nav-items">
+        <li class="app-header__nav-item">
+            <a
+                [routerLink]="['/rules']"
+                translate
+            >HEADER.RULES</a>
+        </li>
+        <li class="app-header__nav-item">
+            <a
+                [routerLink]="['/about']"
+                translate
+            >HEADER.ABOUT</a>
+        </li>
+        <li class="app-header__nav-item">
+            <a
+                [routerLink]="['/feedback']"
+                translate
+            >HEADER.FEEDBACK</a>
+        </li>
+        <li class="app-header__nav-item">
+            <a
+                [routerLink]="['/contact']"
+                translate
+            >HEADER.CONTACT</a>
+        </li>
+        <li class="app-header__nav-item">
+            <a
+                [routerLink]="['/donate']"
+                translate
+            >HEADER.DONATE</a>
+        </li>
+        <li
+            class="app-header__nav-item"
+            *ngIf="lang$ | async as lang"
+        >
+            <div class="app-header__lang-group">
+                <button
+                    type="button"
+                    class="app-header__lang-btn"
+                    [ngClass]="{ 'app-header__lang-btn--active': lang === 'en' }"
+                    (click)="onLangClick('en')"
+                    translate
+                >HEADER.EN</button>
+                <span class="app-header__lang-sep">|</span>
+                <button
+                    type="button"
+                    class="app-header__lang-btn"
+                    [ngClass]="{ 'app-header__lang-btn--active': lang === 'ru' }"
+                    (click)="onLangClick('ru')"
+                    translate
+                >HEADER.RU</button>
+            </div>
+        </li>
+    </ul>
+</nav>

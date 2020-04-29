@@ -1,0 +1,9 @@
+{
+    "html.format.wrapAttributes": "force-expand-multiline",
+    "html.format.endWithNewline": true,
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "typescriptHero.imports.organizeOnSave": true,
+    "sassFormat.indent": 2,
+    "sassFormat.useSingleQuotes": true,
+}

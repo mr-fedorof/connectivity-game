@@ -1,0 +1,25 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'ClientApp\'
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'run build -- --prod'
+    workingDir: 'ClientApp\'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/ClientApp/**'
+    ArtifactName: 'app'
+    publishLocation: 'Container'

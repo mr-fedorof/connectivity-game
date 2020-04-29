@@ -1,0 +1,53 @@
+<div
+    class="container"
+    *ngIf="lobby$ | async as lobby"
+>
+    <h3
+        translate
+        [translateParams]="{ name: lobby.name }"
+    >LOBBY.TITLE</h3>
+    <br />
+    <div class="row">
+        <div class="col">
+            <h4 translate>LOBBY.WAITING_TO_JOIN_LIST</h4>
+            <p *ngFor="let player of lobby.players | freePlayers">{{ player.name }}</p>
+        </div>
+        <div
+            class="col"
+            *ngFor="let team of lobby.teams"
+        >
+            <h4>{{ team.name }}</h4>
+            <p *ngFor="let player of lobby.players | teamPlayers: team.id">{{ player.name }}</p>
+            <button
+                *ngIf="currentPlayer?.teamId !== team.id"
+                type="button"
+                class="btn-secondary"
+                (click)="onJoinTeamClick(currentPlayer.id, team.id)"
+                translate
+            >LOBBY.JOIN_TEAM</button>
+            <button
+                *ngIf="currentPlayer?.teamId === team.id"
+                type="button"
+                class="btn-secondary"
+                (click)="onLeaveTeamClick(currentPlayer.id, team.id)"
+                translate
+            >LOBBY.LEAVE_TEAM</button>
+        </div>
+    </div>
+    <hr />
+    <button
+        type="button"
+        class="btn-secondary"
+        (click)="onLeaveLobbyClick()"
+    >Leave Lobby</button>
+    <button
+        type="button"
+        class="btn-secondary"
+        (click)="onGameStartClick()"
+    >Stub start game</button>
+    <button
+        type="button"
+        class="btn-secondary"
+        (click)="onLongActionClick()"
+    >Long action</button>
+</div>

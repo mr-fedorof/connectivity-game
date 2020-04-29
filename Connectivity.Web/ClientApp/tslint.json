@@ -1,0 +1,45 @@
+{
+    "rulesDirectory": [
+        "node_modules/codelyzer"
+    ],
+    "extends": [
+        "angular-tslint-rules"
+    ],
+    "rules": {
+        "no-implicit-dependencies": false,
+        "no-null-keyword": false,
+        "member-ordering": [
+            false,
+            {
+                "order": "instance-sandwich"
+            }
+        ],
+        "template-i18n": false,
+        "array-type": false,
+        "prefer-function-over-method": false,
+        "interface-name": [
+            true,
+            "always-prefix"
+        ],
+        "only-arrow-functions": [
+            true,
+            "allow-declarations",
+            "allow-named-functions"
+        ],
+        "no-parameter-reassignment": false,
+        "template-no-call-expression": false,
+        "template-use-track-by-function": false,
+        "no-floating-promises": false,
+        "member-access": [
+            true,
+            "check-accessor",
+            "check-parameter-property"
+        ],
+        "no-unused-css": false,
+        "no-unnecessary-callback-wrapper": false,
+        "no-empty-interface": false,
+        "invalid-void": false,
+        "no-host-metadata-property": false,
+        "use-component-view-encapsulation": false
+    }
+}

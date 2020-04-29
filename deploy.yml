@@ -1,0 +1,25 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Visual Studio Professional (0b71cbad-e0a9-4f4d-8fe2-e887c7702cc0)'
+    appType: 'webApp'
+    WebAppName: 'ConnectivityApp'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'connectivity_ck'
+    SlotName: 'production'
+    VirtualApplication: 'ConnectivityApp'
+    enableCustomDeployment: true
+    DeploymentType: 'webDeploy'
+    TakeAppOfflineFlag: false
+    RemoveAdditionalFilesFlag: true
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'

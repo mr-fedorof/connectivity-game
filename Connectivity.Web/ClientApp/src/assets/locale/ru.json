@@ -1,0 +1,34 @@
+{
+    "HOME": {
+        "CONNECTIVITY": "CONNECTIVITY",
+        "P1": "В безопасности",
+        "P2": "Все вместе",
+        "P3": "Играть",
+        "CREATE_LOBBY": "Создать Комнату"
+    },
+    "HEADER": {
+        "RULES": "Правила",
+        "ABOUT": "Об игре",
+        "FEEDBACK": "Отзыв",
+        "CONTACT": "Контакты",
+        "DONATE": "Донат",
+        "EN": "En",
+        "RU": "Ру"
+    },
+    "LOBBY_CREATE": {
+        "TITLE": "Создать комнату",
+        "NAME_LABEL": "Название комнаты",
+        "NAME_LABEL_REQUIRED": "Введите название комнаты.",
+        "TEAM_COUNT_LABEL": "Число команд",
+        "TEAM_NAME_LABEL": "Название команды №{{ index }}",
+        "TEAM_NAME_LABEL_REQUIRED": "Введите название команды №{{ index }}",
+        "CREATE_LOBBY_BTN": "Создать комнату",
+        "CANCEL_BTN": "Отмена"
+    },
+    "LOBBY": {
+        "TITLE": "Комната - {{ name }}",
+        "WAITING_TO_JOIN_LIST": "Неопределившиеся",
+        "JOIN_TEAM": "Присоединиться к команде",
+        "LEAVE_TEAM": "Покинуть команду"
+    }
+}

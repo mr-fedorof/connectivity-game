@@ -1,0 +1,18 @@
+@mixin fa-icon-solid() {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+@mixin fa-icon-regular() {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+}
+
+@mixin app-icon($icon) {
+    @include fa-icon();
+    @include fa-icon-solid();
+
+    &:before {
+        content: fa-content($icon);
+    }
+}

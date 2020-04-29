@@ -1,0 +1,78 @@
+
+<p *ngIf="!hithanks"><em>Fetching...</em></p>
+<div class='table table-striped' aria-labelledby="tableLabel" *ngIf="hithanks">
+  <span>{{hithanks}} from {{apiUrl}}.</span>
+  <span *ngIf="!signalRService.isConnected()"><em>HUB not Connected...</em></span>
+  <span *ngIf="signalRService.isConnected()"><em>HUB Connected!</em></span>
+  <p *ngIf="roomId"><em>Joined the room <strong>{{roomId}}</strong>!</em></p>
+</div>
+
+<div class="container" *ngIf="!roomId">
+  <div class="row">&nbsp;</div>
+  <div class="row">
+    <div class="col-2">Room Id</div>
+    <div class="col-4"><input type="text" id="roomId" /></div>
+  </div>
+  <div class="row">
+    <div class="col-2">Name</div>
+    <div class="col-4"><input type="text" id="userName" (keyup.enter)="joinRoom()"/></div>
+  </div>
+  <div class="row">&nbsp;</div>
+  <div class="row">
+    <div class="col-6">
+      <button (click)="joinRoom()">Join the Room</button>
+    </div>
+  </div>
+</div>
+
+<div [hidden]="!roomId">
+  <div class="row">
+    <div class="col-6">
+      <button (click)="leaveRoom()">Leave {{roomId}}</button>
+    </div>
+  </div>
+
+  <div class="float-container">
+
+    <div class="float-child">
+      <h1 id="tableLabel">Risovach</h1>
+      <canvas id="canvas" width="400" height="400" style="border: 2px solid;"></canvas>
+      <input type="button" value="clear" id="clr" size="23" (click)="erase($event)" style="top: 55%; left: 15%;">
+    </div>
+
+    <div class="float-child">
+
+      <h1 id="tableLabel">Chat</h1>
+      <div class="row">
+        <div class="col-12">
+          <ul id="messagesList"></ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <hr />
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-2">Message</div>
+          <div class="col-4"><input type="text" id="messageInput" (keyup.enter)="sendMessage($event)" /></div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+          <div class="col-6">
+            <input type="button" id="sendButton" value="Send Message" (click)="sendMessage($event)" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="float-child">
+      <h1 id="tableLabel">Video</h1>
+    </div>
+  </div>
+
+
+
+
+</div>

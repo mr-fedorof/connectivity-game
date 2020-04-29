@@ -1,0 +1,34 @@
+{
+    "HOME": {
+        "CONNECTIVITY": "CONNECTIVITY",
+        "P1": "Stay Safe",
+        "P2": "Be connected",
+        "P3": "Just play",
+        "CREATE_LOBBY": "Create Lobby"
+    },
+    "HEADER": {
+        "RULES": "Rules",
+        "ABOUT": "About",
+        "FEEDBACK": "Feedback",
+        "CONTACT": "Contact",
+        "DONATE": "Donate",
+        "EN": "En",
+        "RU": "Ру"
+    },
+    "LOBBY_CREATE": {
+        "TITLE": "Create lobby",
+        "NAME_LABEL": "Lobby name",
+        "NAME_LABEL_REQUIRED": "Provide lobby name",
+        "TEAM_COUNT_LABEL": "Number of teams",
+        "TEAM_NAME_LABEL": "Team #{{ index }} name",
+        "TEAM_NAME_LABEL_REQUIRED": "Provide team #{{ index }} name",
+        "CREATE_LOBBY_BTN": "Create lobby",
+        "CANCEL_BTN": "Cancel"
+    },
+    "LOBBY": {
+        "TITLE": "Lobby - {{ name }}",
+        "WAITING_TO_JOIN_LIST": "Waiting to join",
+        "JOIN_TEAM": "Join the team",
+        "LEAVE_TEAM": "Leave the team"
+    }
+}

@@ -1,0 +1,8 @@
+<div
+    class="vs-spinner-overlay"
+    [@showHideSpinner]="(isShown$ | async) === false"
+></div>
+<i
+    class="vs-spinner"
+    [@showHideSpinner]="(isShown$ | async) === false"
+></i>

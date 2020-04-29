@@ -1,0 +1,42 @@
+@mixin btn($bg-color) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 45px;
+    border: 0 solid transparent;
+
+    color: $app-white;
+    background-color: $bg-color;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+
+    transition: all 0.15s ease-in-out;
+
+    @content;
+
+    &:hover {
+        color: $app-white;
+        background: darken($bg-color, 5%);
+    }
+
+    &:active {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+    }
+}
+
+@mixin btn-orange {
+    @include btn($orange);
+}
+
+@mixin btn-icon {
+    display: inline-block;
+    padding: 0;
+    border: 0;
+    color: inherit;
+    font-size: inherit;
+    background: transparent;
+}

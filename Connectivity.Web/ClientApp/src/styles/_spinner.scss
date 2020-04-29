@@ -1,0 +1,63 @@
+.vs-spinner-wrapper {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+
+    &.vs-inline-spinner {
+        z-index: 8;
+    }
+}
+
+.vs-spinner-overlay {
+    background: rgba(0, 0, 0, 0.3);
+    height: 100%;
+    left: 0;
+    opacity: .5;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.vs-spinner {
+    animation: spin 2s linear infinite;
+    border: 8px solid white;
+    border-radius: 50%;
+    border-top: 8px solid transparent;
+    height: 70px;
+    left: calc(50% - 35px);
+    position: absolute;
+    top: calc(50% - 35px);
+    width: 70px;
+    z-index: 101;
+}
+
+.vs-global-spinner {
+    &.vs-spinner-wrapper {
+        z-index: 1100;
+    }
+
+    .vs-spinner-overlay {
+        z-index: 1100;
+    }
+
+    .vs-spinner {
+        position: fixed;
+        z-index: 1101;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
