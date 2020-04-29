@@ -1,0 +1,27 @@
+trigger:
+- master
+- dev
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  projectName: 'Connectivity.WebApi'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- script: dotnet publish $(projectName) --configuration $(buildConfiguration)
+  displayName: 'Build and publish the api for $(Build.SourceBranchName) ck'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts to drop/$(Build.SourceBranchName)'
+  inputs:
+    PathtoPublish: '$(projectName)/bin/Release/netcoreapp3.0/publish'
+    ArtifactName: 'drop/$(Build.SourceBranchName)'
+    publishLocation: 'Container'
