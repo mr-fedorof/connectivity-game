@@ -5,7 +5,7 @@ import { EMPTY, from, Observable, of } from 'rxjs';
 import { filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
-    addPendingsActionStateAction,
+    addPendingActionsLobbyStateAction,
     restoreLobbyAction,
     ShareActionsLobbyAction,
     shareActionsLobbyAction,
@@ -17,9 +17,9 @@ import {
     shareLobbyResponseAction,
 } from '../actions';
 import { gameActionComparator } from '../helpers';
-import { ActionState, Lobby } from '../models';
-import { actionStateSelector, indexedActionsSelector, pendingActionsSelector } from '../selectors/action-state.selectors';
+import { Lobby, LobbyState } from '../models';
 import { gameSessionSelector } from '../selectors/game-session.selectors';
+import { indexedActionsSelector, lobbyStateSelector, pendingActionsSelector } from '../selectors/lobby-state.selectors';
 import { lastActionIndexSelector, lobbySelector } from '../selectors/lobby.selectors';
 import { ActionService } from '../services';
 
@@ -29,10 +29,10 @@ export class LobbyEffects {
         ofType<ShareLobbyAction>(shareLobbyAction),
         withLatestFrom(
             this.store.select(lobbySelector),
-            this.store.select(actionStateSelector)
+            this.store.select(lobbyStateSelector)
         ),
-        tap(([action, lobby, actionState]: [Action, Lobby, ActionState]) => {
-            this.actionService.applyAction(shareLobbyResponseAction(action.playerId, lobby, actionState), true);
+        tap(([action, lobby, lobbyState]: [Action, Lobby, LobbyState]) => {
+            this.actionService.applyAction(shareLobbyResponseAction(action.playerId, lobby, lobbyState), true);
         }),
         switchMap(() => EMPTY)
     ));
@@ -52,12 +52,12 @@ export class LobbyEffects {
                 newActions.push(restoreLobbyAction(action.payload.lobby));
             }
 
-            const missedActions = action.payload.actionState.pendingActions
+            const missedActions = action.payload.lobbyState.pendingActions
                 .filter(a => a.index > lastActionIndex)
                 .filter(a => !pendingActions.find(pa => gameActionComparator(pa, a)));
 
             if (missedActions.length > 0) {
-                newActions.push(addPendingsActionStateAction(missedActions));
+                newActions.push(addPendingActionsLobbyStateAction(missedActions));
             }
 
             return from(newActions);
@@ -89,7 +89,7 @@ export class LobbyEffects {
                 .filter(a => !pendingActions.find(pa => gameActionComparator(pa, a)));
 
             if (missedActions.length > 0) {
-                return of(addPendingsActionStateAction(missedActions));
+                return of(addPendingActionsLobbyStateAction(missedActions));
             }
 
             return EMPTY;

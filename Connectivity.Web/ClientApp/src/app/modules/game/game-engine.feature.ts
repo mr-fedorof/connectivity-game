@@ -1,14 +1,14 @@
 import { ActionReducerMap } from '@ngrx/store';
 
-import { ActionState, GameSession, Lobby } from './models';
-import { actionStateReducer } from './reducers/action-state.reducer';
+import { GameSession, Lobby, LobbyState } from './models';
 import { gameSessionReducer } from './reducers/game-session.reducer';
+import { lobbyStateReducer } from './reducers/lobby-state.reducer';
 import { lobbyReducer } from './reducers/lobby.reducer';
 
 export interface IGameEngineFeature {
     lobby: Lobby;
     gameSession: GameSession;
-    actionState: ActionState;
+    lobbyState: LobbyState;
 }
 
 export const GAME_ENGINE_FEATURE_NAME = 'GAME_ENGINE';
@@ -16,5 +16,5 @@ export const GAME_ENGINE_FEATURE_NAME = 'GAME_ENGINE';
 export const gameEngineFeatureReducers: ActionReducerMap<IGameEngineFeature> = {
     lobby: lobbyReducer,
     gameSession: gameSessionReducer,
-    actionState: actionStateReducer
+    lobbyState: lobbyStateReducer
 };

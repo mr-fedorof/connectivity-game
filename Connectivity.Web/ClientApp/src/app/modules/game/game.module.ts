@@ -7,19 +7,28 @@ import { SharedModule } from '@shared/shared.module';
 
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
-import { LobbySyncComponent } from './components/lobby-sync/lobby-sync.component';
+import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
-import { ActionStateEffects } from './effects/action-state.effects';
 import { GameEffects } from './effects/game.effects';
+import { LobbyStateEffects } from './effects/lobby-state.effects';
 import { LobbyEffects } from './effects/lobby.effects';
 import { PlayerEffects } from './effects/player.effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
+import { LobbyStateInitializedGuard } from './guard/lobby-state-initialized.guard';
 import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
-import { ActionService, GameHubService, GameService, GameSessionStorage, LobbyService, LobbyStorage } from './services';
+import {
+    ActionService,
+    GameHubService,
+    GameService,
+    GameSessionStorage,
+    LobbyService,
+    LobbyStorage,
+    PendingActionsStorage,
+} from './services';
 
 @NgModule({
     imports: [
@@ -28,7 +37,7 @@ import { ActionService, GameHubService, GameService, GameSessionStorage, LobbySe
         GameRoutingModule,
         StoreModule.forFeature(GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers),
         EffectsModule.forFeature([
-            ActionStateEffects,
+            LobbyStateEffects,
             LobbyEffects,
             PlayerEffects,
             GameEffects
@@ -40,7 +49,7 @@ import { ActionService, GameHubService, GameService, GameSessionStorage, LobbySe
         LobbyCreateComponent,
         LobbyComponent,
         PlayerIdentificationComponent,
-        LobbySyncComponent,
+        LobbyStateComponent,
         TeamPlayersPipe,
         FreePlayersPipe
     ],
@@ -52,7 +61,9 @@ import { ActionService, GameHubService, GameService, GameSessionStorage, LobbySe
         LobbyExistsGuard,
         GameSessionExistsGuard,
         GameService,
-        ActionService
+        ActionService,
+        LobbyStateInitializedGuard,
+        PendingActionsStorage
     ]
 })
 export class GameModule { }

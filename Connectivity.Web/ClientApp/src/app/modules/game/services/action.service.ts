@@ -19,11 +19,11 @@ import {
 } from 'rxjs/operators';
 
 import {
-    addPendingActionStateAction,
-    removePendingActionStateAction,
+    addPendingActionLobbyStateAction,
+    removePendingActionLobbyStateAction,
     shareActionsLobbyAction,
     shareLobbyAction,
-    updateGlobalActionIndexActionStateAction,
+    updateGlobalIndexLobbyStateAction,
 } from '../actions';
 import {
     actionsIncludes,
@@ -35,14 +35,14 @@ import {
     isSystemAction,
 } from '../helpers';
 import { GameSession, Lobby, Player } from '../models';
+import { gameSessionSelector } from '../selectors/game-session.selectors';
 import {
     globalActionIndexSelector,
-    initializedSelector,
     isProcessingSelector,
+    lobbyStateInitializedSelector,
     pendingActionsCountSelector,
     pendingActionsSelector,
-} from '../selectors/action-state.selectors';
-import { gameSessionSelector } from '../selectors/game-session.selectors';
+} from '../selectors/lobby-state.selectors';
 import {
     currentPlayerSelector,
     lastActionIndexSelector,
@@ -241,7 +241,7 @@ export class ActionService extends DestroyableService {
         withLatestFrom(this.store.select(globalActionIndexSelector)),
         tap(([action, globalActionIndex]: [Action, number]) => {
             if (isOrderedAction(action) && action.index > globalActionIndex) {
-                this.store.dispatch(updateGlobalActionIndexActionStateAction(action.index));
+                this.store.dispatch(updateGlobalIndexLobbyStateAction(action.index));
             }
         }),
         map(([action, globalActionIndex]: [Action, number]) => action)
@@ -255,11 +255,11 @@ export class ActionService extends DestroyableService {
         tap(([action, nextActionIndex, pendingActions]: [Action, number, Action[]]) => {
             if (isOrderedAction(action)) {
                 if (action.index < nextActionIndex && actionsIncludes(pendingActions, action)) {
-                    this.store.dispatch(removePendingActionStateAction(action));
+                    this.store.dispatch(removePendingActionLobbyStateAction(action));
                 }
 
                 if (action.index > nextActionIndex && !actionsIncludes(pendingActions, action)) {
-                    this.store.dispatch(addPendingActionStateAction(action));
+                    this.store.dispatch(addPendingActionLobbyStateAction(action));
                 }
             }
         }),
@@ -286,7 +286,7 @@ export class ActionService extends DestroyableService {
             }
 
             if (!actionsIncludes(pendingActions, action)) {
-                this.store.dispatch(addPendingActionStateAction(action));
+                this.store.dispatch(addPendingActionLobbyStateAction(action));
             }
 
             return of(action)
@@ -295,7 +295,7 @@ export class ActionService extends DestroyableService {
         withLatestFrom(this.store.select(pendingActionsSelector)),
         tap(([action, pendingActions]: [Action, Action[]]) => {
             if (pendingActions.find(pa => gameActionComparator(pa, action))) {
-                this.store.dispatch(removePendingActionStateAction(action));
+                this.store.dispatch(removePendingActionLobbyStateAction(action));
             }
         }),
         map(([action, pendingActions]: [Action, Action[]]) => action)
@@ -359,7 +359,7 @@ export class ActionService extends DestroyableService {
     );
 
     private readonly delayUntilInitialized = pipe(
-        delayWhen(() => this.store.select(initializedSelector)
+        delayWhen(() => this.store.select(lobbyStateInitializedSelector)
             .pipe(filter(initialized => initialized)))
     );
 }

@@ -4,6 +4,7 @@ using Connectivity.Domain.Models;
 using Connectivity.Persistence;
 using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
+using Connectivity.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectivity.Application.Services
@@ -35,6 +36,11 @@ namespace Connectivity.Application.Services
             {
                 team.Id = Guid.NewGuid().ToString();
             }
+
+            lobby.Game = new Game
+            {
+                Status = GameStatus.WaitingForPlayers
+            };
 
             _context.Lobbies.Add(lobby);
             await _context.SaveChangesAsync();

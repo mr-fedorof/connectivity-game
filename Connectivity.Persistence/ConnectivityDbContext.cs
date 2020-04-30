@@ -21,7 +21,10 @@ namespace Connectivity.Persistence
             modelBuilder.Entity<Lobby>()
                 .ToContainer("lobbies")
                 .HasNoDiscriminator();
-            
+
+            modelBuilder.Entity<Lobby>()
+                .OwnsOne<Game>(e => e.Game);
+
             modelBuilder.Entity<Lobby>()
                 .OwnsMany<Team>(e => e.Teams);
 

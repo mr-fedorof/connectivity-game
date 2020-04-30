@@ -20,9 +20,12 @@ import {
     resetAppAction,
     RestoreLobbyAction,
     restoreLobbyAction,
+    StartGameAction,
+    startGameAction,
     UpdateLastActionIndexLobbyAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
+import { GameStatus } from '../enums';
 import { playerComparator } from '../helpers';
 import { initialLobby, Lobby } from '../models';
 
@@ -87,6 +90,14 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...p,
             ready: false
         }))
+    })),
+
+    on(startGameAction, (state: Lobby, { payload }: StartGameAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            status: GameStatus.Playing
+        }
     }))
 );
 

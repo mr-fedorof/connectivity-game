@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-export interface IActionState {
+export interface ILobbyState {
     initialized: boolean;
     isProcessing: boolean;
     globalActionIndex: number;
@@ -8,19 +8,19 @@ export interface IActionState {
     handledActions: Action[];
 }
 
-export class ActionState implements IActionState {
+export class LobbyState implements ILobbyState {
     public initialized: boolean;
     public isProcessing: boolean;
     public globalActionIndex: number;
     public handledActions: Action[];
     public pendingActions: Action[];
 
-    constructor(model: Partial<ActionState> = {}) {
+    constructor(model: Partial<LobbyState> = {}) {
         Object.assign(this, model);
     }
 }
 
-export const initialActionState: IActionState = {
+export const initialLobbyState: ILobbyState = {
     initialized: false,
     isProcessing: false,
     globalActionIndex: null,

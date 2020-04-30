@@ -16,6 +16,8 @@ namespace Connectivity.Domain.Models
 
         public string Name { get; set; }
 
+        public Game Game { get; set; }
+
         public IList<Team> Teams { get; set; }
 
         public IList<Player> Players { get; set; }

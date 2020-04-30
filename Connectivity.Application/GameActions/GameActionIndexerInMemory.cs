@@ -5,13 +5,13 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Connectivity.Application.GameActions
 {
-    public class GameActionIndexer : IGameActionIndexer
+    public class GameActionIndexerInMemory : IGameActionIndexer
     {
         private readonly object _syncObject = new object();
 
         private readonly IMemoryCache _cache;
 
-        public GameActionIndexer(IMemoryCache cache)
+        public GameActionIndexerInMemory(IMemoryCache cache)
         {
             _cache = cache;
         }

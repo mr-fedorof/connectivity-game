@@ -8,7 +8,6 @@ import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { startGameAction } from '../actions';
 import { Lobby } from '../models';
 import { lobbySelector } from '../selectors/lobby.selectors';
-import { ActionService } from '../services';
 
 @Injectable()
 export class GameEffects {
@@ -26,7 +25,6 @@ export class GameEffects {
     constructor(
         private readonly actions$: Actions,
         private readonly store: Store,
-        private readonly actionService: ActionService,
         private readonly navigationService: NavigationService
     ) { }
 }

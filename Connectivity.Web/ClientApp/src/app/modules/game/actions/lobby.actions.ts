@@ -1,6 +1,6 @@
 import { Action, createAction } from '@ngrx/store';
 
-import { ActionState, Lobby } from '../models';
+import { Lobby, LobbyState } from '../models';
 
 export const initLobbyAction = createAction('[Lobby] Init', (lobby: Lobby) => ({
     payload: { lobby }
@@ -20,7 +20,7 @@ export type ShareLobbyAction = ReturnType<typeof shareLobbyAction> & Action;
 export const shareLobbyResponseAction = createAction('[Lobby] [Sh] [SI] Share Response', (
     targetPlayerId: string,
     lobby: Lobby,
-    actionState: ActionState
+    lobbyState: LobbyState
 ) => ({
     payload: {
         targetPlayerId,
@@ -29,9 +29,9 @@ export const shareLobbyResponseAction = createAction('[Lobby] [Sh] [SI] Share Re
             players: lobby.players,
             game: lobby.game
         },
-        actionState: {
-            globalActionIndex: actionState.globalActionIndex,
-            pendingActions: actionState.pendingActions
+        lobbyState: {
+            globalActionIndex: lobbyState.globalActionIndex,
+            pendingActions: lobbyState.pendingActions
         }
     }
 }));

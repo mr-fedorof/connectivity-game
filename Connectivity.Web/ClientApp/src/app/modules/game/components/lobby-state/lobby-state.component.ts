@@ -3,30 +3,42 @@ import { ActivatedRoute } from '@angular/router';
 import { GlobalAlertService } from '@modules/alert/services';
 import { NavigationService } from '@modules/app-core/services';
 import {
-    initActionStateAction,
+    addPendingActionsLobbyStateAction,
     initGameSessionAction,
     initLobbyAction,
+    initLobbyStateAction,
     resetAppAction,
     shareActionsLobbyAction,
     shareLobbyAction,
 } from '@modules/game/actions';
-import { ActionState, Lobby, LobbyConnectResult } from '@modules/game/models';
-import { actionStateSelector, initializedSelector } from '@modules/game/selectors/action-state.selectors';
+import { LobbyStateInitializedGuard } from '@modules/game/guard/lobby-state-initialized.guard';
+import { Lobby, LobbyConnectResult, LobbyState } from '@modules/game/models';
+import {
+    lobbyStateInitializedSelector,
+    lobbyStateSelector,
+    pendingActionsSelector,
+} from '@modules/game/selectors/lobby-state.selectors';
 import { lobbySelector } from '@modules/game/selectors/lobby.selectors';
-import { ActionService, GameHubService, GameSessionStorage, LobbyStorage } from '@modules/game/services';
-import { GlobalSpinnerService } from '@modules/spinner';
+import {
+    ActionService,
+    GameHubService,
+    GameSessionStorage,
+    LobbyStorage,
+    PendingActionsStorage,
+} from '@modules/game/services';
 import { Action, Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
 import { getRouteParam } from '@shared/utils/route.utils';
 import { Observable, pipe } from 'rxjs';
-import { delay, filter, map, retryWhen, skipUntil, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, filter, retryWhen, skipUntil, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-lobby-sync',
-    template: '<div *ngIf="isReady$ | async"><router-outlet></router-outlet></div>',
+    selector: 'app-lobby-state',
+    template: '<router-outlet *ngIf="isReady$ | async"></router-outlet>',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LobbySyncComponent extends DestroyableComponent implements OnInit, OnDestroy {
+export class LobbyStateComponent extends DestroyableComponent implements OnInit, OnDestroy {
+    private lobbyId: string;
     private connectionWasLost = false;
 
     public isReady$: Observable<boolean>;
@@ -38,9 +50,10 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
         private readonly navigationService: NavigationService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly actionService: ActionService,
-        private readonly globalSpinnerService: GlobalSpinnerService,
         private readonly globalAlertService: GlobalAlertService,
-        private readonly lobbyStorage: LobbyStorage
+        private readonly lobbyStorage: LobbyStorage,
+        private readonly lobbyStateInitializedGuard: LobbyStateInitializedGuard,
+        private readonly pendingActionsStorage: PendingActionsStorage
     ) {
         super();
     }
@@ -48,22 +61,16 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
     public ngOnInit(): void {
         this.actionService.ngOnInit();
 
-        const lobbyId = getRouteParam(this.activatedRoute.snapshot, 'lobbyId');
-        if (!lobbyId) {
+        this.isReady$ = this.lobbyStateInitializedGuard.canLoad();
+
+        this.lobbyId = getRouteParam(this.activatedRoute.snapshot, 'lobbyId');
+        if (!this.lobbyId) {
             this.navigationService.goToHome();
 
             return;
         }
 
-        this.isReady$ = this.store.select(actionStateSelector)
-            .pipe(
-                map(actionState => !!actionState.initialized),
-                filter(initialized => !!initialized),
-                take(1)
-            )
-            .wrapWithSpinner(this.globalSpinnerService);
-
-        const gameSession = this.gameSessionStorage.get(lobbyId);
+        const gameSession = this.gameSessionStorage.get(this.lobbyId);
         if (gameSession) {
             this.store.dispatch(initGameSessionAction(gameSession));
         }
@@ -77,10 +84,10 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
         this.gameHubService.start()
             .pipe(
                 takeUntil(this.onDestroy),
-                switchMap(() => this.gameHubService.connectToLobby(lobbyId)),
+                switchMap(() => this.gameHubService.connectToLobby(this.lobbyId)),
                 withLatestFrom(
                     this.store.select(lobbySelector),
-                    this.store.select(actionStateSelector)
+                    this.store.select(lobbyStateSelector)
                 ),
                 retryWhen(errors => errors.pipe(
                     tap(() => {
@@ -91,13 +98,19 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
                 ))
             )
             .subscribe(
-                ([connectResult, lobby, actionState]: [LobbyConnectResult, Lobby, ActionState]) => {
+                ([connectResult, lobby, actionState]: [LobbyConnectResult, Lobby, LobbyState]) => {
                     if (!actionState.initialized) {
-                        const lobbyFromStorage = this.lobbyStorage.get(lobbyId);
-                        const lobbyToRestore = lobbyFromStorage || connectResult.lobby;
+                        const lobbyFromStorage = this.tryRestoreLobby(this.lobbyId);
+                        const pendingActionsFromStorage = this.tryRestorePendingActions(lobbyFromStorage);
 
+                        const lobbyToRestore = lobbyFromStorage || connectResult.lobby;
                         this.actionService.applyAction(initLobbyAction(lobbyToRestore));
-                        this.actionService.applyAction(initActionStateAction(connectResult.globalActionIndex));
+
+                        if (pendingActionsFromStorage) {
+                            this.actionService.applyAction(addPendingActionsLobbyStateAction(pendingActionsFromStorage));
+                        }
+
+                        this.actionService.applyAction(initLobbyStateAction(connectResult.globalActionIndex));
 
                         if (connectResult.globalActionIndex !== lobbyToRestore.lastActionIndex) {
                             this.actionService.applyAction(shareLobbyAction(), true);
@@ -120,6 +133,15 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
             .subscribe((lobby: Lobby) => {
                 this.lobbyStorage.add(lobby);
             });
+
+        this.store.select(pendingActionsSelector)
+            .pipe(
+                takeUntil(this.onDestroy),
+                this.skipUntilInitialized
+            )
+            .subscribe((actions: Action[]) => {
+                this.pendingActionsStorage.add(this.lobbyId, actions);
+            });
     }
 
     public ngOnDestroy(): void {
@@ -131,8 +153,34 @@ export class LobbySyncComponent extends DestroyableComponent implements OnInit, 
         this.actionService.ngOnDestroy();
     }
 
+    private tryRestoreLobby(lobbyId: string): Lobby {
+        const lobby = this.lobbyStorage.get(lobbyId);
+
+        return lobby;
+    }
+
+    private tryRestorePendingActions(lobby: Lobby): Action[] {
+        if (!lobby) {
+            return null;
+        }
+
+        const pendingActions = this.pendingActionsStorage.get(lobby.id);
+        if (!pendingActions) {
+            return null;
+        }
+
+        const actualPendingActions = pendingActions
+            .filter(a => a.index > lobby.lastActionIndex);
+
+        if (actualPendingActions.length === 0) {
+            return null;
+        }
+
+        return actualPendingActions;
+    }
+
     private readonly skipUntilInitialized = pipe(
-        skipUntil(this.store.select(initializedSelector)
+        skipUntil(this.store.select(lobbyStateInitializedSelector)
             .pipe(filter(initialized => initialized)))
     );
 }

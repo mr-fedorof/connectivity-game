@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
-import { LobbySyncComponent } from './components/lobby-sync/lobby-sync.component';
+import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
@@ -21,7 +21,7 @@ export const routes: Routes = [
             },
             {
                 path: '',
-                component: LobbySyncComponent,
+                component: LobbyStateComponent,
                 canActivate: [
                     GameSessionExistsGuard
                 ],
@@ -37,6 +37,5 @@ export const routes: Routes = [
                 ]
             }
         ]
-    },
-    { path: 'game/:id', component: GameFieldComponent, pathMatch: 'full' },
+    }
 ];

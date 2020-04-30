@@ -11,6 +11,7 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { RulesComponent } from './components/rules/rules.component';
+import { LocalizationReadyGuard } from './guards';
 import { NavigationService } from './services';
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NavigationService } from './services';
         DonateComponent
     ],
     providers: [
-        NavigationService
+        NavigationService,
+        LocalizationReadyGuard
     ],
     exports: [
         AppComponent
