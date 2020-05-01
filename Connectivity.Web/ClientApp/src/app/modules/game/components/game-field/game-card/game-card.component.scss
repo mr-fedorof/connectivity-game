@@ -1,0 +1,207 @@
+@import 'component-common.scss';
+
+$dice-w: 40px;
+$dice-h: 40px;
+$dice-pad: 3px;
+
+$dot-h: 10px;
+$dot-w: 10px;
+
+:host {
+    @extend .app-game-card;
+}
+
+.app-game-card {
+    display: block;
+    position: relative;
+    height: 300px;
+    width: 200px;
+    border-radius: 13px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+
+    &#{&}--talk {
+        background-color: $light-blue;
+        background-image: url(/assets/images/talk.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    &#{&}--mine {
+        background-color: $cian;
+        background-image: url(/assets/images/mine.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    &#{&}--draw {
+        background-color: $olive;
+        background-image: url(/assets/images/draw.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    &#{&}--crocodile {
+        background-color: $orange;
+        background-image: url(/assets/images/crocodile.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    &#{&}--agent {
+        background-color: $purple;
+        background-image: url(/assets/images/agent.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    &#{&}--joker {
+        background-color: $pink;
+        background-image: url(/assets/images/joker.svg);
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    &__dice {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: $white;
+        width: $dice-w;
+        height: $dice-h;
+        border-radius: 10%;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+
+        &--first {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        &--second {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        &-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            &:before {
+                content: ' ';
+                display: block;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: $kind-of-black;
+            }
+        }
+
+        @mixin dot-pos($t, $r, $b, $l) {
+            position: absolute;
+            top: $t;
+            right: $r;
+            bottom: $b;
+            left: $l;
+        }
+
+        &-1 &-dot {
+            &:nth-child(1) {
+                @include dot-pos(($dice-h - $dot-h)/2, auto, auto, ($dice-w - $dot-w)/2);
+            }
+        }
+
+        &-2 &-dot {
+            &:nth-child(1) {
+                @include dot-pos($dice-pad, auto, auto, $dice-pad);
+            }
+
+            &:nth-child(2) {
+                @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+            }
+        }
+
+        &-3 &-dot {
+            &:nth-child(1) {
+                @include dot-pos($dice-pad, auto, auto, $dice-pad);
+            }
+
+            &:nth-child(2) {
+                @include dot-pos(($dice-h - $dot-h)/2, auto, auto, ($dice-w - $dot-w)/2);
+            }
+
+            &:nth-child(3) {
+                @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+            }
+        }
+
+        &-4 &-dot {
+            &:nth-child(1) {
+                @include dot-pos($dice-pad, auto, auto, $dice-pad);
+            }
+
+            &:nth-child(2) {
+                @include dot-pos($dice-pad, $dice-pad, auto, auto);
+            }
+
+            &:nth-child(3) {
+                @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+            }
+
+            &:nth-child(4) {
+                @include dot-pos(auto, auto, $dice-pad, $dice-pad);
+            }
+        }
+
+        &-5 &-dot {
+            &:nth-child(1) {
+                @include dot-pos($dice-pad, auto, auto, $dice-pad);
+            }
+
+            &:nth-child(2) {
+                @include dot-pos($dice-pad, $dice-pad, auto, auto);
+            }
+
+            &:nth-child(3) {
+                @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+            }
+
+            &:nth-child(4) {
+                @include dot-pos(auto, auto, $dice-pad, $dice-pad);
+            }
+
+            &:nth-child(5) {
+                @include dot-pos(($dice-h - $dot-h)/2, auto, auto, ($dice-w - $dot-w)/2);
+            }
+        }
+
+        &-6 &-dot {
+            &:nth-child(1) {
+                @include dot-pos($dice-pad, auto, auto, $dice-pad);
+            }
+
+            &:nth-child(2) {
+                @include dot-pos(($dice-h - $dot-h)/2, auto, auto, $dice-pad);
+            }
+
+            &:nth-child(3) {
+                @include dot-pos(auto, auto, $dice-pad, $dice-pad);
+            }
+
+            &:nth-child(4) {
+                @include dot-pos($dice-pad, $dice-pad, auto, auto);
+            }
+
+            &:nth-child(5) {
+                @include dot-pos(($dice-w - $dot-w)/2, $dice-pad, auto, auto);
+            }
+
+            &:nth-child(6) {
+                @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+            }
+        }
+    }
+}

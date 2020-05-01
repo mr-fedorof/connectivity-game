@@ -1,19 +1,30 @@
-import { Component } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Player, Team } from '@modules/game/models';
+import { playersSelector, teamsSelector } from '@modules/game/selectors/lobby.selectors';
+import { Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-game-field',
     templateUrl: './game-field.component.html',
     styleUrls: ['./game-field.component.scss'],
 })
-export class GameFieldComponent {
+export class GameFieldComponent implements OnInit {
+    public teams$: Observable<Team[]>;
+    public players$: Observable<Player[]>;
+
     public timeLeft: Subject<string>;
 
-    constructor() {
+    constructor(
+        private readonly store: Store
+    ) {
         this.timeLeft = new Subject<string>();
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
+        this.teams$ = this.store.select(teamsSelector);
+        this.players$ = this.store.select(playersSelector);
+
         this.startTime();
     }
 

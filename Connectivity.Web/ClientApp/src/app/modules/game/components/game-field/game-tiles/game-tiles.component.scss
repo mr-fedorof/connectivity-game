@@ -1,0 +1,70 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-game-tiles;
+}
+
+.app-game-tiles {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    background-image: linear-gradient(#84C5FF, #E2F1FF);
+    box-shadow: inset 0 0 0 2px white;
+
+    &__tile-container {
+        position: relative;
+        overflow: hidden;
+        padding-top: 16.66666667%;
+
+        &,
+        &--single {
+            flex: 0 0 16.66666667%;
+            max-width: 16.66666667%;
+        }
+
+        &--double {
+            flex: 0 0 33.33333333%;
+            max-width: 33.33333333%;
+        }
+    }
+
+    &__tile {
+        position: absolute;
+        display: flex;
+        border-radius: 10px;
+        top: 2px;
+        left: 2px;
+        bottom: 2px;
+        right: 2px;
+        box-shadow: 0px 0px 0px 10px white;
+        pointer-events: none;
+
+        &--default {
+            padding-top: 4px;
+            padding-left: 8px;
+            color: $kind-of-black;
+            font-size: 1vw;
+            font-weight: bold;
+        }
+
+        &--start,
+        &--finish {
+            background: #FFC65E;
+            align-items: center;
+            justify-content: center;
+            color: $white;
+            font-size: 1.6vw;
+            font-weight: 900;
+            text-shadow: 0 2px 4px #494949;
+        }
+
+        &--start {
+            background: #38D87C;
+            //background-image: url(/assets/images/start.svg);
+        }
+
+        &--finish {
+            background: #FFC65E;
+            //background-image: url(/assets/images/start.svg);
+        }
+    }
+}

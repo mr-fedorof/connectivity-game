@@ -1,7 +1,7 @@
 import { createSelector, MemoizedSelector } from '@ngrx/store';
 
 import { IGameEngineFeature } from '../game-engine.feature';
-import { Lobby, Player } from '../models';
+import { Lobby, Player, Team } from '../models';
 import { gameEngineFeatureSelector } from './game-engine.selectors';
 
 export const lobbySelector: MemoizedSelector<IGameEngineFeature, Lobby> = createSelector(
@@ -12,6 +12,11 @@ export const lobbySelector: MemoizedSelector<IGameEngineFeature, Lobby> = create
 export const playersSelector: MemoizedSelector<IGameEngineFeature, Player[]> = createSelector(
     lobbySelector,
     (lobby: Lobby) => lobby.players
+);
+
+export const teamsSelector: MemoizedSelector<IGameEngineFeature, Team[]> = createSelector(
+    lobbySelector,
+    (lobby: Lobby) => lobby.teams
 );
 
 export const currentPlayerSelector: MemoizedSelector<IGameEngineFeature, Player> = createSelector(

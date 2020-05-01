@@ -1,0 +1,9 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-teams;
+}
+
+.app-teams {
+    display: block;
+}

@@ -1,0 +1,66 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-team-info;
+}
+
+.app-team-info {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 9px;
+    margin-bottom: 16px;
+    min-height: 130px;
+
+    &#{&}--type-1 {
+        background-color: $cian;
+        background-image: url(/assets/images/teamA.svg);
+        background-repeat: no-repeat;
+        background-size: 149px 164px;
+        background-position: bottom right;
+    }
+
+    &#{&}--type-2 {
+        background-color: $blue;
+        background-image: url(/assets/images/teamB.svg);
+        background-repeat: no-repeat;
+        background-size: 153px 145px;
+        background-position: bottom right;
+    }
+
+    &#{&}--type-3 {
+        background-color: $red;
+        background-image: url(/assets/images/teamC.svg);
+        background-repeat: no-repeat;
+        background-size: 145px 135px;
+        background-position: bottom right;
+    }
+
+    &#{&}--type-4 {
+        background-color: $orange;
+        background-image: url(/assets/images/teamD.svg);
+        background-repeat: no-repeat;
+        background-size: 146px 143px;
+        background-position: bottom right;
+    }
+
+    &__title {
+        margin-bottom: 12px;
+        color: $white;
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 25px;
+    }
+
+    &__player-list {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    &__player {
+        color: $white;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 20px;
+    }
+}

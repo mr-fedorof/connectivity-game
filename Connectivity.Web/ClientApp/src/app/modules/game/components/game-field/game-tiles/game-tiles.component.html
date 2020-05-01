@@ -1,0 +1,20 @@
+<div class="app-game-tiles__tile-container app-game-tiles__tile-container--double">
+    <div class="app-game-tiles__tile app-game-tiles__tile--start">
+        Start
+    </div>
+</div>
+
+<div
+    *ngFor="let tile of tiles; let i = index"
+    class="app-game-tiles__tile-container"
+>
+    <div class="app-game-tiles__tile app-game-tiles__tile--default">
+        {{ i + 1 }}
+    </div>
+</div>
+
+<div class="app-game-tiles__tile-container app-game-tiles__tile-container--double">
+    <div class="app-game-tiles__tile app-game-tiles__tile--finish">
+        Finish
+    </div>
+</div>

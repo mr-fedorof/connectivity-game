@@ -1,0 +1,9 @@
+<h3 class="app-team-info__title">{{ team.name }}</h3>
+<ul class="app-team-info__player-list">
+    <li
+        *ngFor="let player of players"
+        class="app-team-info__player"
+    >
+        {{ player.name }}
+    </li>
+</ul>

@@ -1,0 +1,9 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-game-chat;
+}
+
+.app-game-chat {
+    display: block;
+}

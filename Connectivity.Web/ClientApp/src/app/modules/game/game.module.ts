@@ -5,7 +5,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
+import { GameCardComponent } from './components/game-field/game-card/game-card.component';
+import { GameChatComponent } from './components/game-field/game-chat/game-chat.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
+import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
+import { TeamInfoComponent } from './components/game-field/team-info/team-info.component';
+import { TeamsComponent } from './components/game-field/teams/teams.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
@@ -51,7 +56,12 @@ import {
         PlayerIdentificationComponent,
         LobbyStateComponent,
         TeamPlayersPipe,
-        FreePlayersPipe
+        FreePlayersPipe,
+        GameChatComponent,
+        TeamsComponent,
+        GameTilesComponent,
+        GameCardComponent,
+        TeamInfoComponent
     ],
     providers: [
         LobbyService,
