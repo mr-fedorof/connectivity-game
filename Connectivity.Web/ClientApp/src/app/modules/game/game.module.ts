@@ -34,6 +34,7 @@ import {
     LobbyStorage,
     PendingActionsStorage,
 } from './services';
+import { DiceComponent } from './components/game-field/dice/dice.component';
 
 @NgModule({
     imports: [
@@ -61,7 +62,8 @@ import {
         TeamsComponent,
         GameTilesComponent,
         GameCardComponent,
-        TeamInfoComponent
+        TeamInfoComponent,
+        DiceComponent
     ],
     providers: [
         LobbyService,

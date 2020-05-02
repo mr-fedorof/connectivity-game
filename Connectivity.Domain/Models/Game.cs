@@ -6,6 +6,6 @@ namespace Connectivity.Domain.Models
     {
         public GameStatus Status { get; set; }
 
-        public string CurrentPlayerId { get; set; }
+        public string PlayerTurnId { get; set; }
     }
 }

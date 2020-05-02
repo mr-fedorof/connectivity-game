@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Player, Team } from '@modules/game/models';
 import { playersSelector, teamsSelector } from '@modules/game/selectors/lobby.selectors';
+import { GameService } from '@modules/game/services';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 
@@ -12,11 +13,13 @@ import { Observable, Subject } from 'rxjs';
 export class GameFieldComponent implements OnInit {
     public teams$: Observable<Team[]>;
     public players$: Observable<Player[]>;
+    public currentPlayerTurn$: Observable<boolean>;
 
     public timeLeft: Subject<string>;
 
     constructor(
-        private readonly store: Store
+        private readonly store: Store,
+        private readonly gameService: GameService
     ) {
         this.timeLeft = new Subject<string>();
     }
@@ -24,6 +27,7 @@ export class GameFieldComponent implements OnInit {
     public ngOnInit(): void {
         this.teams$ = this.store.select(teamsSelector);
         this.players$ = this.store.select(playersSelector);
+        this.currentPlayerTurn$ = this.gameService.currentPlayerTurn$;
 
         this.startTime();
     }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
