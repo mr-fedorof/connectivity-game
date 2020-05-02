@@ -60,9 +60,11 @@ $hamburger-types: (squeeze);
         position: absolute;
         right: 0;
         top: 92px;
-        padding: $spacer-16 $spacer-32 $spacer-16 $spacer-16;
+        padding: $spacer-16 $spacer-32;
         background: $white;
         z-index: 10;
+        border-top: 1px solid $black-10;
+        box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.25);
 
         &-items {
             display: flex;
