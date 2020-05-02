@@ -1,18 +1,19 @@
-@import './colors';
-@import './variables';
+@import './variables/app.variables';
 @import './mixins';
 
-@import url("https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900");
 
-
+@import './variables/fortawesome.variables';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 
 // TODO: Rework bootstrap
+
 @import '~bootstrap/scss/bootstrap-reboot';
 @import '~bootstrap/scss/bootstrap-grid';
+
+@import '~bootstrap/scss/type';
 @import '~bootstrap/scss/forms';
-@import '~bootstrap';
 
 @import './utils';
 @import './buttons';

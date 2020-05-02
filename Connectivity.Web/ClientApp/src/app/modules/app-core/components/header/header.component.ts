@@ -8,10 +8,7 @@ import { shareReplay, startWith } from 'rxjs/operators';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: {
-        class: 'app-header'
-    }
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
     public isExpanded = false;
@@ -38,11 +35,7 @@ export class HeaderComponent implements OnInit {
             .subscribe();
     }
 
-    public collapse(): void {
-        this.isExpanded = false;
-    }
-
-    public toggle(): void {
+    public onTogglerClick(): void {
         this.isExpanded = !this.isExpanded;
     }
 }

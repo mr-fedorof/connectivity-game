@@ -6,7 +6,7 @@
     padding: 10px 45px;
     border: 0 solid transparent;
 
-    color: $app-white;
+    color: $white;
     background-color: $bg-color;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 
@@ -19,7 +19,7 @@
     @content;
 
     &:hover {
-        color: $app-white;
+        color: $white;
         background: darken($bg-color, 5%);
     }
 

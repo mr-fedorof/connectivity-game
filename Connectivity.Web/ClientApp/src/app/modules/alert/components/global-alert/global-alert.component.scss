@@ -51,15 +51,15 @@
     &__icon {
         @include app-icon($fa-var-exclamation-triangle);
 
-        color: $app-white;
+        color: $white;
         font-size: 24px;
         margin-right: 8px;
     }
 
     &__message {
-        color: $app-white;
+        color: $white;
         font-size: 24px;
-        font-family: $app-font-family;
+        font-family: $font-family-base;
         font-weight: 700;
     }
 
@@ -67,7 +67,7 @@
         @include btn-icon;
 
         margin-left: auto;
-        color: $app-white;
+        color: $white;
         font-size: 24px;
 
         &-icon {

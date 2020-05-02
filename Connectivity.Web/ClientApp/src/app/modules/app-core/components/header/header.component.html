@@ -1,60 +1,100 @@
-<nav class="app-header__nav">
+<h1 class="app-header__brand">
     <a
-        class="app-header__nav-brand"
+        class="app-header__brand-link"
         [routerLink]="['/']"
-    >Connectivity</a>
+    >Connectivity </a>
+</h1>
+
+<nav class="app-header__nav">
     <ul class="app-header__nav-items">
         <li class="app-header__nav-item">
             <a
+                class="app-header__nav-link d-none d-md-inline"
                 [routerLink]="['/rules']"
                 translate
             >HEADER.RULES</a>
         </li>
         <li class="app-header__nav-item">
             <a
+                class="app-header__nav-link"
+                [routerLink]="['/donate']"
+                translate
+            >HEADER.DONATE</a>
+        </li>
+    </ul>
+</nav>
+
+<div
+    *ngIf="lang$ | async as lang"
+    class="app-header__lang"
+>
+    <button
+        type="button"
+        class="app-header__lang-btn"
+        [ngClass]="{ 'app-header__lang-btn--active': lang === 'en' }"
+        (click)="onLangClick('en')"
+        translate
+    >HEADER.EN</button>
+    <span class="app-header__lang-sep">|</span>
+    <button
+        type="button"
+        class="app-header__lang-btn"
+        [ngClass]="{ 'app-header__lang-btn--active': lang === 'ru' }"
+        (click)="onLangClick('ru')"
+        translate
+    >HEADER.RU</button>
+</div>
+
+<button
+    class="app-header__toggler hamburger hamburger--squeeze"
+    [class.is-active]="isExpanded"
+    type="button"
+    (click)="onTogglerClick()"
+>
+    <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+    </span>
+</button>
+
+<nav
+    class="app-header__sub-nav"
+    [class.d-none]="!isExpanded"
+>
+    <ul class="app-header__sub-nav-items">
+        <li class="app-header__sub-nav-item d-md-none">
+            <a
+                class="app-header__sub-nav-link"
+                [routerLink]="['/rules']"
+                translate
+            >HEADER.RULES</a>
+        </li>
+        <li class="app-header__sub-nav-item">
+            <a
+                class="app-header__sub-nav-link"
                 [routerLink]="['/about']"
                 translate
             >HEADER.ABOUT</a>
         </li>
-        <li class="app-header__nav-item">
+        <li class="app-header__sub-nav-item">
             <a
+                class="app-header__sub-nav-link"
                 [routerLink]="['/feedback']"
                 translate
             >HEADER.FEEDBACK</a>
         </li>
-        <li class="app-header__nav-item">
+        <li class="app-header__sub-nav-item">
             <a
+                class="app-header__sub-nav-link"
                 [routerLink]="['/contact']"
                 translate
             >HEADER.CONTACT</a>
         </li>
         <li class="app-header__nav-item">
             <a
+                class="app-header__nav-link"
                 [routerLink]="['/donate']"
                 translate
             >HEADER.DONATE</a>
-        </li>
-        <li
-            class="app-header__nav-item"
-            *ngIf="lang$ | async as lang"
-        >
-            <div class="app-header__lang-group">
-                <button
-                    type="button"
-                    class="app-header__lang-btn"
-                    [ngClass]="{ 'app-header__lang-btn--active': lang === 'en' }"
-                    (click)="onLangClick('en')"
-                    translate
-                >HEADER.EN</button>
-                <span class="app-header__lang-sep">|</span>
-                <button
-                    type="button"
-                    class="app-header__lang-btn"
-                    [ngClass]="{ 'app-header__lang-btn--active': lang === 'ru' }"
-                    (click)="onLangClick('ru')"
-                    translate
-                >HEADER.RU</button>
-            </div>
         </li>
     </ul>
 </nav>
