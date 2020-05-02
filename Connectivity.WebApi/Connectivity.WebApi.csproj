@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <StartupObject></StartupObject>
+    <Configurations>Debug;Release;dev;master</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
