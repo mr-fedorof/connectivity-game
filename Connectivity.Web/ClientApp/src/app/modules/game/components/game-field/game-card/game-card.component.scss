@@ -2,7 +2,7 @@
 
 $dice-w: 40px;
 $dice-h: 40px;
-$dice-pad: 3px;
+$dice-pad: 4px;
 
 $dot-h: 10px;
 $dot-w: 10px;
@@ -14,51 +14,42 @@ $dot-w: 10px;
 .app-game-card {
     display: block;
     position: relative;
-    height: 300px;
-    width: 200px;
-    border-radius: 13px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+    height: 256px;
+    width: 192px;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+
+    background-repeat: no-repeat;
+    background-position: center center;
 
     &#{&}--talk {
         background-color: $light-blue;
         background-image: url(/assets/images/talk.svg);
-        background-repeat: no-repeat;
-        background-position: center center;
     }
 
     &#{&}--mine {
         background-color: $cian;
         background-image: url(/assets/images/mine.svg);
-        background-repeat: no-repeat;
-        background-position: center center;
     }
 
     &#{&}--draw {
         background-color: $olive;
         background-image: url(/assets/images/draw.svg);
-        background-repeat: no-repeat;
-        background-position: center center;
     }
 
     &#{&}--crocodile {
         background-color: $orange;
         background-image: url(/assets/images/crocodile.svg);
-        background-repeat: no-repeat;
-        background-position: center center;
     }
 
     &#{&}--agent {
         background-color: $purple;
         background-image: url(/assets/images/agent.svg);
-        background-repeat: no-repeat;
-        background-position: center center;
     }
 
     &#{&}--joker {
         background-color: $pink;
         background-image: url(/assets/images/joker.svg);
-        background-repeat: no-repeat;
-        background-position: center center;
     }
 
     &__dice {
@@ -67,21 +58,21 @@ $dot-w: 10px;
         background-color: $white;
         width: $dice-w;
         height: $dice-h;
-        border-radius: 10%;
+        border-radius: $border-radius;
         padding: 0;
         margin: 0;
         list-style-type: none;
 
         &--first {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 8px;
+            left: 8px;
         }
 
         &--second {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 8px;
+            right: 8px;
         }
 
         &-dot {
@@ -93,8 +84,8 @@ $dot-w: 10px;
             &:before {
                 content: ' ';
                 display: block;
-                width: 10px;
-                height: 10px;
+                width: $dot-w;
+                height: $dot-h;
                 border-radius: 50%;
                 background-color: $kind-of-black;
             }

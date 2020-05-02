@@ -10,13 +10,30 @@
 
     padding: $spacer-32;
 
-    &__actions {
-        display: flex;
-        justify-content: center;
-        margin-top: $spacer-32;
+    &__center-col {
+        &-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: $spacer-32;
 
-        &-btn {
-            margin: 0 $spacer-16;
+            .btn {
+                margin: 0 $spacer-16;
+            }
+        }
+    }
+
+    &__right-col {
+        display: flex;
+        flex-direction: column;
+
+        &-chat {
+            margin-top: auto;
+        }
+
+        &-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: $spacer-32;
         }
     }
 }
@@ -51,15 +68,5 @@
         font-weight: bold;
         letter-spacing: 0;
         line-height: 37px;
-    }
-}
-
-.info-block {
-    .messages-block {
-        height: 172px;
-        width: 368px;
-        border-radius: 9px;
-        background-color: #FFFFFF;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     }
 }
