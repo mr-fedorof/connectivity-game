@@ -12,9 +12,17 @@ namespace Connectivity.Application
 {
     public static class ServicesConfiguration
     {
-        public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration, bool devMode)
         {
-            services.AddSingleton<IGameActionIndexer, GameActionIndexerInFile>();
+            if (devMode)
+            {
+                services.AddSingleton<IGameActionIndexer, GameActionIndexerInFile>();
+            }
+            else
+            {
+                services.AddSingleton<IGameActionIndexer, GameActionIndexerInMemory>();
+            }
+
             services.AddSingleton<IGameActionDispatcher, GameActionDispatcher>();
             // TODO: Make singleton
             services.AddScoped<IGameHubService, GameHubService>();

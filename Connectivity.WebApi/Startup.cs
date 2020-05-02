@@ -39,7 +39,7 @@ namespace Connectivity.WebApi
 
             services.AddApplicationInsightsTelemetry();
             services.AddCosmosDB(Configuration);
-            services.AddApplicationServices(Configuration);
+            services.AddApplicationServices(Configuration, Environment.IsDevelopment());
 
             services.AddCors(options =>
             {
