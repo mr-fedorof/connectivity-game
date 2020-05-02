@@ -1,0 +1,39 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-game-messages;
+}
+
+.app-game-messages {
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    height: 192px;
+
+    &__title {
+        padding: $spacer-8 $spacer-16;
+    }
+
+    &__messages { 
+        margin: 0;
+
+        &-container {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        tbody {
+            td {
+                padding: $spacer-8 $spacer-16;
+
+                &:first-child {
+                    width: 64px;
+                    text-align: center;
+                    font-weight: $font-weight-bold;
+                }
+            }
+        }
+    }
+}

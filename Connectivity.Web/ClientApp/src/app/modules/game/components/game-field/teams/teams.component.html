@@ -1,5 +1,6 @@
 <app-team-info
     *ngFor="let team of teams; let i = index"
+    class="app-teams__team"
     [index]="i + 1"
     [team]="team"
     [players]="players | teamPlayers: team.id"

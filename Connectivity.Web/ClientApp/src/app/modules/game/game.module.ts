@@ -6,8 +6,8 @@ import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
-import { GameChatComponent } from './components/game-field/game-chat/game-chat.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
+import { GameMessagesComponent } from './components/game-field/game-messages/game-messages.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
 import { TeamInfoComponent } from './components/game-field/team-info/team-info.component';
 import { TeamsComponent } from './components/game-field/teams/teams.component';
@@ -57,7 +57,7 @@ import {
         LobbyStateComponent,
         TeamPlayersPipe,
         FreePlayersPipe,
-        GameChatComponent,
+        GameMessagesComponent,
         TeamsComponent,
         GameTilesComponent,
         GameCardComponent,

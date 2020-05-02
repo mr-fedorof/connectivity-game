@@ -6,4 +6,10 @@
 
 .app-teams {
     display: block;
+
+    &__team {
+        &:not(:first-child) {
+            margin-top: $spacer-16;
+        }
+    }
 }
