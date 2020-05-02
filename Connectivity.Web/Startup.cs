@@ -32,7 +32,7 @@ namespace Connectivity.Web
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (Environment.IsDevelopment() || Environment.IsEnvironment("dev"))
             {
                 app.UseDeveloperExceptionPage();
             }
