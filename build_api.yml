@@ -6,7 +6,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
   projectName: 'Connectivity.WebApi'
 
 steps:
@@ -16,12 +15,12 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- script: dotnet publish $(projectName) --configuration $(buildConfiguration)
+- script: dotnet publish $(projectName) --configuration $(Build.SourceBranchName)
   displayName: 'Build and publish the api for $(Build.SourceBranchName) ck'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts to drop/$(Build.SourceBranchName)'
   inputs:
-    PathtoPublish: '$(projectName)/bin/Release/netcoreapp3.0/publish'
+    PathtoPublish: '$(projectName)/bin/$(Build.SourceBranchName)/netcoreapp3.0/publish'
     ArtifactName: 'drop/$(Build.SourceBranchName)'
     publishLocation: 'Container'
