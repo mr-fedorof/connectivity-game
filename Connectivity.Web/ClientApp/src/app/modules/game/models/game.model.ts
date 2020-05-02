@@ -2,7 +2,7 @@ import { GameStatus } from '../enums';
 
 export class Game {
     public status: GameStatus;
-    public currentPlayerId?: number;
+    public playerTurnId?: string;
 
     constructor(model: Partial<Game> = {}) {
         Object.assign(this, model);

@@ -24,8 +24,8 @@
 
             <div class="col">
                 <div class="row">
-                    <div class="col">
-                        <div class="roll-dice"></div>
+                    <div class="col app-game-field__center-col-dice">
+                        <app-dice></app-dice>
                     </div>
                     <div class="col">hz</div>
                     <div class="col">
@@ -55,10 +55,12 @@
 
             <div class="col-auto app-game-field__center-col-actions">
                 <button
+                    *ngIf="currentPlayerTurn$ | async"
                     type="button"
                     class="btn btn-primary"
                 >Roll the dice</button>
                 <button
+                    *ngIf="currentPlayerTurn$ | async"
                     type="button"
                     class="btn btn-danger"
                 >Skip a move</button>

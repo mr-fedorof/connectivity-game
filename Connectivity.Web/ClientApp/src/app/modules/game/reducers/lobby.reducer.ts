@@ -96,7 +96,8 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         ...state,
         game: {
             ...state.game,
-            status: GameStatus.Playing
+            status: GameStatus.Playing,
+            playerTurnId: state.players[0].id
         }
     }))
 );

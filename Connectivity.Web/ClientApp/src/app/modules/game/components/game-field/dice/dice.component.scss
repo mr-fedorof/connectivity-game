@@ -1,0 +1,241 @@
+@import 'component-common.scss';
+
+$dice-s: 64px;
+
+$dice-s: 64px;
+$dice-origin: $dice-s/2;
+
+$dot-s: 16px;
+$dot-pad: 8px;
+
+$z-index: 10;
+
+:host {
+    display: block;
+    position: relative;
+    width: $dice-s*2;
+    height: $dice-s*2;
+    border: 1px solid red;
+}
+
+.dice {
+    position: absolute;
+    top: $dice-s/2;
+    left: $dice-s/2;
+    width: $dice-s;
+    height: $dice-s;
+    transform-style: preserve-3d;
+    z-index: $z-index;
+    animation: dice-spin 50s infinite linear;
+
+    .side {
+        position: absolute;
+        width: $dice-s;
+        height: $dice-s;
+        background: $white;
+        border-radius: 20%;
+        box-shadow: inset 0 0 40px #ccc;
+
+        .dot {
+            position: absolute;
+            width: $dot-s;
+            height: $dot-s;
+            border-radius: 50%;
+            background: #444;
+            box-shadow: inset 5px 0 10px $black;
+
+            &.center {
+                margin: ($dice-s -$dot-s)/2 0 0 ($dice-s -$dot-s)/2;
+            }
+
+            &.dtop {
+                margin-top: $dot-pad;
+            }
+
+            &.dleft {
+                margin-left: $dice-s -$dot-s - $dot-pad;
+            }
+
+            &.dright {
+                margin-left: $dot-pad;
+            }
+
+            &.dbottom {
+                margin-top: $dice-s -$dot-s - $dot-pad;
+            }
+
+            &.center.dleft {
+                margin: ($dice-s -$dot-s)/2 0 0 $dot-pad;
+            }
+
+            &.center.dright {
+                margin: ($dice-s -$dot-s)/2 0 0 ($dice-s -$dot-s - $dot-pad);
+            }
+        }
+    }
+
+    .cover,
+    .inner {
+        background: #e0e0e0;
+        box-shadow: none;
+    }
+
+    .cover {
+        border-radius: 0;
+        transform: translateZ(0px);
+    }
+
+    .cover.x {
+        transform: rotateY(90deg);
+    }
+
+    .cover.z {
+        transform: rotateX(90deg);
+    }
+
+    .front {
+        transform: translateZ($dice-origin);
+    }
+
+    .front.inner {
+        transform: translateZ($dice-origin - 2px);
+    }
+
+    .back {
+        transform: rotateX(-180deg) translateZ($dice-origin);
+    }
+
+    .back.inner {
+        transform: rotateX(-180deg) translateZ($dice-origin - 2px);
+    }
+
+    .right {
+        transform: rotateY(90deg) translateZ($dice-origin);
+    }
+
+    .right.inner {
+        transform: rotateY(90deg) translateZ($dice-origin - 2px);
+    }
+
+    .left {
+        transform: rotateY(-90deg) translateZ($dice-origin);
+    }
+
+    .left.inner {
+        transform: rotateY(-90deg) translateZ($dice-origin - 2px);
+    }
+
+    .top {
+        transform: rotateX(90deg) translateZ($dice-origin);
+    }
+
+    .top.inner {
+        transform: rotateX(90deg) translateZ($dice-origin - 2px);
+    }
+
+    .bottom {
+        transform: rotateX(-90deg) translateZ($dice-origin);
+    }
+
+    .bottom.inner {
+        transform: rotateX(-90deg) translateZ($dice-origin - 2px);
+    }
+}
+
+@keyframes dice-spin {
+    0% {
+        transform: translateZ(-$dice-origin) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    16% {
+        transform: translateZ(-$dice-origin) rotateX(180deg) rotateY(180deg) rotateZ(0deg);
+    }
+
+    33% {
+        transform: translateZ(-$dice-origin) rotateX(360deg) rotateY(90deg) rotateZ(180deg);
+    }
+
+    50% {
+        transform: translateZ(-$dice-origin) rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+
+    66% {
+        transform: translateZ(-$dice-origin) rotateX(180deg) rotateY(360deg) rotateZ(270deg);
+    }
+
+    83% {
+        transform: translateZ(-$dice-origin) rotateX(270deg) rotateY(180deg) rotateZ(180deg);
+    }
+
+    100% {
+        transform: translateZ(-$dice-origin) rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+}
+
+@keyframes dice-spin-duplicate {
+    0% {
+        transform: translateZ(-100px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    16% {
+        transform: translateZ(-100px) rotateX(180deg) rotateY(180deg) rotateZ(0deg);
+    }
+
+    33% {
+        transform: translateZ(-100px) rotateX(360deg) rotateY(90deg) rotateZ(180deg);
+    }
+
+    50% {
+        transform: translateZ(-100px) rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+
+    66% {
+        transform: translateZ(-100px) rotateX(180deg) rotateY(360deg) rotateZ(270deg);
+    }
+
+    83% {
+        transform: translateZ(-100px) rotateX(270deg) rotateY(180deg) rotateZ(180deg);
+    }
+
+    100% {
+        transform: translateZ(-100px) rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+}
+
+@keyframes dice-roll {
+    0% {
+        transform: translate3d(-200px, -50px, -400px)
+    }
+
+    12% {
+        transform: translate3d(0px, 0, -100px)
+    }
+
+    25% {
+        transform: translate3d(200px, -50px, -400px)
+    }
+
+    37% {
+        transform: translate3d(0px, -100px, -800px)
+    }
+
+    50% {
+        transform: translate3d(-200px, -50px, -400px)
+    }
+
+    62% {
+        transform: translate3d(0px, 0, -100px)
+    }
+
+    75% {
+        transform: translate3d(200px, -50px, -400px)
+    }
+
+    87% {
+        transform: translate3d(0px, -100px, -800px)
+    }
+
+    100% {
+        transform: translate3d(-200px, -50px, -400px)
+    }
+}

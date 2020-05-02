@@ -13,8 +13,14 @@
     &__center-col {
         padding: 0 $spacer-48;
 
+        &-dice {
+            display: flex;
+            align-items: center;
+        }
+
         &-actions {
             display: flex;
+            height: 52px;
             justify-content: center;
             margin-top: $spacer-32;
 

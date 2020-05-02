@@ -1,20 +1,21 @@
-// import { MemoizedSelector, createSelector } from '@ngrx/store';
-// import { GameState } from '../states';
-// import { gameFeatureSelector } from './feature.selectors';
-// import { GameFeature } from '../game.feature';
-// import { GameStatus } from '../enums';
+import { createSelector, MemoizedSelector } from '@ngrx/store';
 
-// export const gameStateSelector: MemoizedSelector<GameFeature, GameState> = createSelector(
-//     gameFeatureSelector,
-//     (state: GameFeature) => state.game
-// );
+import { GameStatus } from '../enums';
+import { IGameEngineFeature } from '../game-engine.feature';
+import { Game, Lobby } from '../models';
+import { lobbySelector } from './lobby.selectors';
 
-// export const gameIdSelector: MemoizedSelector<GameFeature, string> = createSelector(
-//     gameStateSelector,
-//     (state: GameState) => state.id
-// );
+export const gameSelector: MemoizedSelector<IGameEngineFeature, Game> = createSelector(
+    lobbySelector,
+    (lobby: Lobby) => lobby.game
+);
 
-// export const gameStatusSelector: MemoizedSelector<GameFeature, GameStatus> = createSelector(
-//     gameStateSelector,
-//     (state: GameState) => state.status
-// );
+export const gameStatusSelector: MemoizedSelector<IGameEngineFeature, GameStatus> = createSelector(
+    gameSelector,
+    (game: Game) => game.status
+);
+
+export const playerTurnSelector: MemoizedSelector<IGameEngineFeature, string> = createSelector(
+    gameSelector,
+    (game: Game) => game.playerTurnId
+);
