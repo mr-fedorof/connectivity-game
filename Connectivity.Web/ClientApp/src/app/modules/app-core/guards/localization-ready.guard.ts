@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree } from '@angular/router';
+import { CanActivate } from '@angular/router';
 import { LocalizationService } from '@modules/localization';
 import { GlobalSpinnerService } from '@modules/spinner';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ export class LocalizationReadyGuard implements CanActivate {
     ) {
     }
 
-    public canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    public canActivate(): Observable<boolean> {
         const isReady$ = this.localizationService.use()
             .wrapWithSpinner(this.globalSpinnerService)
             .pipe(

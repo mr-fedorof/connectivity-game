@@ -1,0 +1,11 @@
+.flex-v {
+    @include flex-v;
+}
+
+.flex-v-max {
+    @include flex-v-max;
+}
+
+.flex-fill {
+    @include flex-fill;
+}

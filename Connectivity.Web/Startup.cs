@@ -64,7 +64,7 @@ namespace Connectivity.Web
 
                 if (Environment.IsDevelopment())
                 {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    spa.UseProxyToSpaDevelopmentServer(Configuration["ClientAppProxy"]);
                 }
             });
         }

@@ -1,14 +1,6 @@
 @import 'component-common.scss';
 
 :host {
-    @extend .app;
-}
-
-.app {
     @include flex-v-max;
     @include flex-fill;
-
-    &__global-alert {
-        top: 90px;
-    }
 }

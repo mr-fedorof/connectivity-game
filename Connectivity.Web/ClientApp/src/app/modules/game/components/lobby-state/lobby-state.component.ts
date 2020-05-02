@@ -35,6 +35,7 @@ import { delay, filter, retryWhen, skipUntil, switchMap, takeUntil, tap, withLat
 @Component({
     selector: 'app-lobby-state',
     template: '<router-outlet *ngIf="isReady$ | async"></router-outlet>',
+    styleUrls: ['./lobby-state.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbyStateComponent extends DestroyableComponent implements OnInit, OnDestroy {

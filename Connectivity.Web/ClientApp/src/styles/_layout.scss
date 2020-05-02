@@ -5,10 +5,12 @@
 html {
     font-size: 16px;
     min-width: 576px;
+
+    height: 100%;
+    @include flex-v-max
 }
 
-html,
-body,
-app-root {
-    @extend .v-max;
+body {
+    @include flex-v-max;
+    @include flex-fill;
 }

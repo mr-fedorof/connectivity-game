@@ -64,7 +64,6 @@
     }
 
     &__brand-text {
-        flex-grow: 1;
         color: $cian;
         font-weight: 800;
 
@@ -116,11 +115,6 @@
     }
 
     &__action {
-        @include btn-orange();
-
-        display: inline-block;
-        vertical-align: middle;
-        text-align: center;
         padding: $spacer-16 $spacer-32;
 
         font-size: $font-size-base * 2;

@@ -1,4 +1,37 @@
+// Color system
+
 @import './colors.variables';
+
+// Reset bootstrap themes
+$theme-colors: ();
+
+$app-theme-colors: ();
+$app-theme-colors: map-merge(
+  (
+    "primary":    $cian,
+    "secondary":  $grey-20,
+    "warning":    $orange,
+    "danger":     $red,
+  ),
+  $app-theme-colors
+);
+
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+
+$enable-caret:                                true;
+$enable-rounded:                              true;
+$enable-shadows:                              true;
+$enable-gradients:                            false;
+$enable-transitions:                          true;
+$enable-prefers-reduced-motion-media-query:   true;
+$enable-grid-classes:                         true;
+$enable-pointer-cursor-for-buttons:           true;
+$enable-print-styles:                         true;
+$enable-responsive-font-sizes:                false;
+$enable-validation-icons:                     true;
+$enable-deprecation-messages:                 true;
 
 // Spacing
 //
@@ -8,25 +41,29 @@
 
 $spacer: 1rem;
 
-$spacer-0: 0; // 0
-$spacer-4: $spacer * .25; // 4
-$spacer-8: $spacer * .5; // 8
-$spacer-16: $spacer; // 16
-$spacer-24: $spacer * 1.5; // 24
-$spacer-32: $spacer * 2; // 32
-$spacer-40: $spacer * 2.5; // 40
-$spacer-48: $spacer * 3; // 48
+$spacer-0:  0;              // 0
+$spacer-4:  $spacer * .25;  // 4
+$spacer-8:  $spacer * .5;   // 8
+$spacer-16: $spacer;        // 16
+$spacer-24: $spacer * 1.5;  // 24
+$spacer-32: $spacer * 2;    // 32
+$spacer-40: $spacer * 2.5;  // 40
+$spacer-48: $spacer * 3;    // 48
 
 $spacers: ();
-$spacers: map-merge((0: $spacer-0,
+$spacers: map-merge(
+    (
+        0: $spacer-0,
         4: $spacer-4,
         8: $spacer-8,
         16: $spacer-16,
         24: $spacer-24,
         32: $spacer-32,
         40: $spacer-40,
-        48: $spacer-48),
-    $spacers);
+        48: $spacer-48
+    ),
+    $spacers
+);
 
 // Body
 //
@@ -34,7 +71,6 @@ $spacers: map-merge((0: $spacer-0,
 
 $body-bg: $white;
 $body-color: $black-10;
-
 
 // Links
 //
@@ -51,27 +87,29 @@ $link-hover-decoration: underline;
 
 $paragraph-margin-bottom: $spacer-16;
 
-
 // Grid breakpoints
 //
 // Define the minimum dimensions at which your layout will change,
 // adapting to different screen sizes, for use in media queries.
 
-$grid-breakpoints: (xs: 0,
+$grid-breakpoints: (
+    xs: 0,
     sm: 576px,
     md: 768px,
     lg: 992px,
-    xl: 1200px);
-
+    xl: 1200px
+);
 
 // Grid containers
 //
 // Define the maximum width of `.container` for different screen sizes.
 
-$container-max-widths: (sm: 540px,
+$container-max-widths: (
+    sm: 540px,
     md: 720px,
     lg: 960px,
-    xl: 1140px);
+    xl: 1140px
+);
 
 // Grid columns
 //
@@ -125,4 +163,43 @@ $border-color: red;
 
 $border-radius: 4px;
 
-$box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+$box-shadow: 0 2px 4px 0 rgba($black, 0.5);
+
+// Buttons
+//
+// For each of Bootstrap's buttons, define text, background, and border color.
+
+$btn-padding-y:                 $spacer-8;
+$btn-padding-x:                 $spacer-32;
+$btn-font-family:               $font-family-base;
+$btn-font-size:                 $font-size-24;
+$btn-line-height:               $line-height-base;
+
+// $btn-padding-y-sm:            $input-btn-padding-y-sm !default;
+// $btn-padding-x-sm:            $input-btn-padding-x-sm !default;
+// $btn-font-size-sm:            $input-btn-font-size-sm !default;
+// $btn-line-height-sm:          $input-btn-line-height-sm !default;
+
+// $btn-padding-y-lg:            $input-btn-padding-y-lg !default;
+// $btn-padding-x-lg:            $input-btn-padding-x-lg !default;
+// $btn-font-size-lg:            $input-btn-font-size-lg !default;
+// $btn-line-height-lg:          $input-btn-line-height-lg !default;
+
+$btn-border-width:              0;
+
+$btn-font-weight:               $font-weight-bold;
+$btn-box-shadow:                $box-shadow;
+$btn-focus-width:               0;
+$btn-focus-box-shadow:          0;
+$btn-disabled-opacity:          .65;
+$btn-active-box-shadow:         null;
+
+// $btn-link-disabled-color:     $gray-600 !default;
+
+// $btn-block-spacing-y:         .5rem !default;
+
+$btn-border-radius:             $border-radius;
+// $btn-border-radius-lg:        $border-radius-lg !default;
+// $btn-border-radius-sm:        $border-radius-sm !default;
+
+$btn-transition:                all .15s ease-in-out;

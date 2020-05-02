@@ -5,13 +5,20 @@
 }
 
 .app-game-field {
-    display: block;
-    padding: 20px 30px;
-}
+    @include flex-v-max;
+    @include flex-fill;
 
-.central-block {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: $spacer-32;
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        margin-top: $spacer-32;
+
+        &-btn {
+            margin: 0 $spacer-16;
+        }
+    }
 }
 
 .roll-dice {

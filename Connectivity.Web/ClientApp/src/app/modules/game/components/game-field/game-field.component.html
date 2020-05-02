@@ -1,52 +1,77 @@
-<div class="row">
+<div class="row flex-fill">
     <div class="col-3">
-        <app-game-tiles class="app-game-field__tiles"></app-game-tiles>
+        <app-game-tiles></app-game-tiles>
     </div>
 
-    <div class="col-6">
-        <div class="row justify-content-between">
+    <div class="col-6 flex-v-max">
+
+        <div class="row flex-column no-gutters flex-fill">
             <div class="col-auto">
-                <app-game-card [type]="0"></app-game-card>
+
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <app-game-card [type]="0"></app-game-card>
+                    </div>
+                    <div class="col-auto">
+                        <app-game-card [type]="1"></app-game-card>
+                    </div>
+                    <div class="col-auto">
+                        <app-game-card [type]="2"></app-game-card>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-auto">
-                <app-game-card [type]="1"></app-game-card>
-            </div>
-            <div class="col-auto">
-                <app-game-card [type]="2"></app-game-card>
-            </div>
-        </div>
-        <div class="row central-block">
+
             <div class="col">
-                <div class="roll-dice"></div>
-            </div>
-            <div class="col">hz</div>
-            <div class="col">
-                <div class="timer">
-                    <div class="timer-icon"></div>
-                    <div class="timer-count">{{ timeLeft | async }}</div>
+                <div class="row">
+                    <div class="col">
+                        <div class="roll-dice"></div>
+                    </div>
+                    <div class="col">hz</div>
+                    <div class="col">
+                        <div class="timer">
+                            <div class="timer-icon"></div>
+                            <div class="timer-count">{{ timeLeft | async }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-between">
+
             <div class="col-auto">
-                <app-game-card [type]="3"></app-game-card>
+
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <app-game-card [type]="3"></app-game-card>
+                    </div>
+                    <div class="col-auto">
+                        <app-game-card [type]="4"></app-game-card>
+                    </div>
+                    <div class="col-auto">
+                        <app-game-card [type]="5"></app-game-card>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-auto">
-                <app-game-card [type]="4"></app-game-card>
-            </div>
-            <div class="col-auto">
-                <app-game-card [type]="5"></app-game-card>
+
+            <div class="col-auto app-game-field__actions">
+                <button
+                    type="button"
+                    class="btn btn-primary app-game-field__actions-btn"
+                >Roll the dice</button>
+                <button
+                    type="button"
+                    class="btn btn-danger app-game-field__actions-btn"
+                >Skip a move</button>
             </div>
         </div>
     </div>
 
     <div class="col-3">
         <app-teams
-            class="app-game-field__teams"
             [teams]="teams$ | async"
             [players]="players$ | async"
         ></app-teams>
 
-        <app-game-chat class="app-game-field__chat"></app-game-chat>
+        <app-game-chat></app-game-chat>
     </div>
 </div>

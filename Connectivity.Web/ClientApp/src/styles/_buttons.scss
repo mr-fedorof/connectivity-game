@@ -1,29 +1,5 @@
-.btn {
-    // &-primary {
-    //     @include btn($app-color-primary);
-    // }
-
-    // &-secondary {
-    //     @include btn($app-color-secondary);
-    // }
-
-    // &-c1 {
-    //     @include btn($app-color-1);
-    // }
-
-    // &-c2 {
-    //     @include btn($app-color-2);
-    // }
-
-    // &-c3 {
-    //     @include btn($app-color-3);
-    // }
-
-    // &-c4 {
-    //     @include btn($app-color-4);
-    // }
-
-    // &-c5 {
-    //     @include btn($app-color-5);
-    // }
+@each $color, $value in $app-theme-colors {
+    .btn-#{$color} {
+        @include app-button-variant($value, $value, $white);
+    }
 }

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
-import { LocalizationService } from '@modules/localization';
+import { LocalizationReadyGuard } from '@modules/app-core/guards';
 import { GlobalSpinnerService } from '@modules/spinner';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, filter, map, take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -16,19 +16,14 @@ export class AppComponent implements OnInit {
     public isNavigationPending$: Observable<boolean>;
 
     constructor(
-        private readonly localizationService: LocalizationService,
+        private readonly localizationReadyGuard: LocalizationReadyGuard,
         private readonly spinner: GlobalSpinnerService,
         private readonly router: Router
     ) {
     }
 
     public ngOnInit(): void {
-        this.isReady$ = this.localizationService.use()
-            .wrapWithSpinner(this.spinner)
-            .pipe(
-                take(1),
-                map(() => true)
-            );
+        this.isReady$ = this.localizationReadyGuard.canActivate();
 
         this.isNavigationPending$ = this.router.events
             .pipe(

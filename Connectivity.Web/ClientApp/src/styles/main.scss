@@ -7,17 +7,19 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 
-// TODO: Rework bootstrap
+// Import only neccessary bootstrap components!!!
+// Import only neccessary bootstrap components!!!
+// Import only neccessary bootstrap components!!!
 
 @import '~bootstrap/scss/bootstrap-reboot';
 @import '~bootstrap/scss/bootstrap-grid';
-
 @import '~bootstrap/scss/type';
+@import '~bootstrap/scss/buttons';
+// TODO: Customize forms
 @import '~bootstrap/scss/forms';
 
-@import './utils';
-@import './buttons';
+@import './utilities';
 
 @import './layout';
-
 @import './spinner';
+@import './buttons';

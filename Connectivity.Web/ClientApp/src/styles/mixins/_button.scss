@@ -1,35 +1,69 @@
-@mixin btn($bg-color) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+// Button variants
+//
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
 
-    padding: 10px 45px;
-    border: 0 solid transparent;
+@mixin app-button-variant(
+    $background,
+    $border,
+    $color,
+    $hover-background: darken($background, 5%),
+    $hover-border: darken($border, 10%),
+    $active-background: darken($background, 10%),
+    $active-border: darken($border, 12.5%)
+) {
+    color: $color;
+    @include gradient-bg($background);
+    border-color: $border;
+    @include box-shadow($btn-box-shadow);
 
-    color: $white;
-    background-color: $bg-color;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-
-    transition: all 0.15s ease-in-out;
-
-    @content;
-
-    &:hover {
-        color: $white;
-        background: darken($bg-color, 5%);
+    @include hover {
+        color: $color;
+        @include gradient-bg($hover-background);
+        border-color: $hover-border;
     }
 
-    &:active {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+    &:focus,
+    &.focus {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        @if $enable-shadows {
+            box-shadow: $btn-box-shadow;
+        }
     }
-}
 
-@mixin btn-orange {
-    @include btn($orange);
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+        color: $color;
+        background-color: $background;
+        border-color: $border;
+
+        // Remove CSS gradients if they're enabled
+        @if $enable-gradients {
+            background-image: none;
+        }
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show>&.dropdown-toggle {
+        color: $color;
+        background-color: $active-background;
+
+        @if $enable-gradients {
+            background-image: none; // Remove the gradient for the pressed/active state
+        }
+
+        border-color: $active-border;
+
+        &:focus {
+
+            // Avoid using mixin so we can pass custom focus shadow properly
+            @if $enable-shadows and $btn-active-box-shadow !=none {
+                box-shadow: $btn-active-box-shadow;
+            }
+        }
+    }
 }
 
 @mixin btn-icon {

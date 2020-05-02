@@ -6,4 +6,8 @@
     "typescriptHero.imports.organizeOnSave": true,
     "sassFormat.indent": 2,
     "sassFormat.useSingleQuotes": true,
+
+    "[scss]": {
+        "editor.formatOnSave": false
+    }
 }
