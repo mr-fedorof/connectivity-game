@@ -11,6 +11,8 @@
     padding: $spacer-32;
 
     &__center-col {
+        padding: 0 $spacer-48;
+
         &-actions {
             display: flex;
             justify-content: center;
