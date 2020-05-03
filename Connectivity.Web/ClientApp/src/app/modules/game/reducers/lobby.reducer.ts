@@ -13,7 +13,7 @@ import {
     NewPlayerAction,
     newPlayerAction,
     NextPlayerGameAction,
-    nextPlayerGameAction,
+    nextPlayerGameSysAction,
     NotReadyPlayerAction,
     notReadyPlayerAction,
     ReadyPlayerAction,
@@ -25,7 +25,7 @@ import {
     RollDicePlayerAction,
     rollDicePlayerAction,
     StartGameAction,
-    startGameAction,
+    startGameSysAction,
     UpdateLastActionIndexLobbyAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
@@ -96,7 +96,7 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         }))
     })),
 
-    on(startGameAction, (state: Lobby, { payload }: StartGameAction): Lobby => ({
+    on(startGameSysAction, (state: Lobby, { payload }: StartGameAction): Lobby => ({
         ...state,
         game: {
             ...state.game,
@@ -113,7 +113,7 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         }
     })),
 
-    on(nextPlayerGameAction, (state: Lobby, { payload }: NextPlayerGameAction): Lobby => ({
+    on(nextPlayerGameSysAction, (state: Lobby, { payload }: NextPlayerGameAction): Lobby => ({
         ...state,
         game: {
             ...state.game,

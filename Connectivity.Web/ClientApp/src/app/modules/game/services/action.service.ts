@@ -38,6 +38,7 @@ import { GameSession, Lobby, Player } from '../models';
 import { gameSessionSelector } from '../selectors/game-session.selectors';
 import {
     globalActionIndexSelector,
+    indexedActionsSelector,
     isProcessingSelector,
     lobbyStateInitializedSelector,
     pendingActionsCountSelector,
@@ -56,6 +57,7 @@ export class ActionService extends DestroyableService {
     public readonly ALLOWED_MISSED_ACTION_FRAME = 10;
     public readonly REQUEST_LOBBY_STATE_DELAY = 15 * 1000;
     public readonly REQUEST_LOBBY_STATE_INTERVAL = 15 * 1000;
+    public readonly SYSTEM_ACTION_SEND_INTERVAL = 5 * 1000;
 
     private readonly _originalActionsSubject: Subject<Action> = new Subject<Action>();
     private readonly _skipSelfOriginalActionsSubject: Subject<Action> = new Subject<Action>();
@@ -211,31 +213,62 @@ export class ActionService extends DestroyableService {
         })
     );
 
+    // Approach how to handle system actions
+    //
+    // The main idea that the responsibility to apply a system action is on the each player
+    // if the first player couldn't send the action, then after 5s the second player will try to send the action
+    // if the second player couldn't send the action, then after another 5s the third player will try to send the action
+    // and so on
+    // if the last player couldn't send the action, the tries will start from the first player
     private readonly systemActionHandlingPipe = pipe(
         withLatestFrom(
             this.store.select(lobbySelector),
-            this.store.select(currentPlayerSelector)
+            this.store.select(currentPlayerSelector),
+            this.store.select(lastActionIndexSelector)
         ),
-        switchMap(([action, lobby, currentPlayer]: [Action, Lobby, Player]) => {
+        switchMap(([action, lobby, currentPlayer, lastActionIndex]: [Action, Lobby, Player, number]) => {
             if (!isSystemAction(action)) {
                 return of(action);
             }
 
             const currentPlayerIndex = lobby.players.findIndex(p => p.id === currentPlayer.id);
-            const delay = currentPlayerIndex * 5000;
-
-            if (delay === 0) {
+            if (currentPlayerIndex === 0) {
                 return of(action);
             }
 
-            return timer(delay)
+            const delay = currentPlayerIndex * this.SYSTEM_ACTION_SEND_INTERVAL;
+            const interval = lobby.players.length * this.SYSTEM_ACTION_SEND_INTERVAL;
+
+            return timer(delay, interval)
                 .pipe(
-                    takeUntil(this.exteranlActions$
-                        .pipe(filter(a => a.type === action.type))),
+                    takeUntil(this.store.select(indexedActionsSelector)
+                        .pipe(filter(handledActions =>
+                            this.handledActionsIncludes(handledActions, action, lastActionIndex)))
+                    ),
                     map(() => action)
                 );
         })
     );
+
+    private handledActionsIncludes(handledActions: Action[], action: Action, fromActionIndex: number): boolean {
+        if (handledActions.length === 0) {
+            return false;
+        }
+
+        const firstActionIndex = handledActions[0].index;
+        // Assumes that handled actions are aligned by index
+        const lastActionArrayIndex = fromActionIndex - firstActionIndex;
+
+        for (let i = lastActionArrayIndex; i < handledActions.length; i++) {
+            const handledAction = handledActions[i];
+
+            if (handledAction.type === action.type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private readonly globalActionIndexUpdatingPipe = pipe(
         withLatestFrom(this.store.select(globalActionIndexSelector)),

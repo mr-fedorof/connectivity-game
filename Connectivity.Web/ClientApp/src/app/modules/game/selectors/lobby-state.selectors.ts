@@ -15,6 +15,11 @@ export const pendingActionsSelector: MemoizedSelector<IGameEngineFeature, Action
     (lobbyState: LobbyState) => lobbyState.pendingActions
 );
 
+export const handledActionsSelector: MemoizedSelector<IGameEngineFeature, Action[]> = createSelector(
+    lobbyStateSelector,
+    (lobbyState: LobbyState) => lobbyState.handledActions
+);
+
 export const pendingActionsCountSelector: MemoizedSelector<IGameEngineFeature, number> = createSelector(
     gameEngineFeatureSelector,
     (featureState: IGameEngineFeature) => featureState.lobbyState.globalActionIndex - featureState.lobby.lastActionIndex
@@ -25,9 +30,14 @@ export const isProcessingSelector: MemoizedSelector<IGameEngineFeature, boolean>
     (lobbyState: LobbyState) => lobbyState.isProcessing
 );
 
+// TODO: Think out the case when handledActions is reaching the amout more than 200 acitons
+// Probably memoization feature of ngrx selector handles this issue
 export const indexedActionsSelector: MemoizedSelector<IGameEngineFeature, Action[]> = createSelector(
     lobbyStateSelector,
-    (lobbyState: LobbyState) => [...lobbyState.handledActions, ...lobbyState.pendingActions].filter(isOrderedAction)
+    (lobbyState: LobbyState) => [
+        ...lobbyState.handledActions,
+        ...lobbyState.pendingActions.sort((a, b) => a.index - b.index)
+    ].filter(isOrderedAction)
 );
 
 export const globalActionIndexSelector: MemoizedSelector<IGameEngineFeature, number> = createSelector(

@@ -26,8 +26,6 @@ export const nextPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, string
     teamsSelector,
     playerTurnSelector,
     (players: Player[], teams: Team[], playerTurnId: string) => {
-        console.log('recalculate nextPlayerTurnSelector');
-
         if (!playerTurnId) {
             return null;
         }
@@ -38,9 +36,7 @@ export const nextPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, string
             return null;
         }
 
-        const nextIndex = (currentIndex + 1) === orderedPlayers.length
-            ? 0
-            : currentIndex + 1;
+        const nextIndex = (currentIndex + 1) % orderedPlayers.length;
 
         return orderedPlayers[nextIndex].id;
     }

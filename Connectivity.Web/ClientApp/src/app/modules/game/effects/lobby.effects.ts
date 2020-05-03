@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { EMPTY, from, Observable, of } from 'rxjs';
+import { EMPTY, from, of } from 'rxjs';
 import { filter, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
@@ -25,7 +25,7 @@ import { ActionService } from '../services';
 
 @Injectable()
 export class LobbyEffects {
-    public shareLobby$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public shareLobby$ = createEffect(() => this.actions$.pipe(
         ofType<ShareLobbyAction>(shareLobbyAction),
         withLatestFrom(
             this.store.select(lobbySelector),
@@ -33,11 +33,12 @@ export class LobbyEffects {
         ),
         tap(([action, lobby, lobbyState]: [Action, Lobby, LobbyState]) => {
             this.actionService.applyAction(shareLobbyResponseAction(action.playerId, lobby, lobbyState), true);
-        }),
-        switchMap(() => EMPTY)
-    ));
+        })
+    ), {
+        dispatch: false
+    });
 
-    public shareLobbyResponse$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public shareLobbyResponse$ = createEffect(() => this.actions$.pipe(
         ofType<ShareLobbyResponseAction>(shareLobbyResponseAction),
         withLatestFrom(
             this.store.select(gameSessionSelector),
@@ -64,18 +65,19 @@ export class LobbyEffects {
         })
     ));
 
-    public shareActionsLobby$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public shareActionsLobby$ = createEffect(() => this.actions$.pipe(
         ofType<ShareActionsLobbyAction>(shareActionsLobbyAction),
         withLatestFrom(this.store.select(indexedActionsSelector)),
         tap(([action, actions]) => {
             const requestedActions = actions.filter(a => a.index > action.payload.lastActionIndex);
 
             this.actionService.applyAction(shareActionsLobbyResponseAction(action.playerId, requestedActions), true);
-        }),
-        switchMap(() => EMPTY)
-    ));
+        })
+    ), {
+        dispatch: false
+    });
 
-    public shareActionsLobbyResponse$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public shareActionsLobbyResponse$ = createEffect(() => this.actions$.pipe(
         ofType<ShareActionsLobbyResponseAction>(shareActionsLobbyResponseAction),
         withLatestFrom(
             this.store.select(gameSessionSelector),
