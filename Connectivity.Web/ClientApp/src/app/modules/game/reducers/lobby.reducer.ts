@@ -12,6 +12,8 @@ import {
     leaveTeamPlayerAction,
     NewPlayerAction,
     newPlayerAction,
+    NextPlayerGameAction,
+    nextPlayerGameAction,
     NotReadyPlayerAction,
     notReadyPlayerAction,
     ReadyPlayerAction,
@@ -20,6 +22,8 @@ import {
     resetAppAction,
     RestoreLobbyAction,
     restoreLobbyAction,
+    RollDicePlayerAction,
+    rollDicePlayerAction,
     StartGameAction,
     startGameAction,
     UpdateLastActionIndexLobbyAction,
@@ -98,6 +102,23 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             status: GameStatus.Playing,
             playerTurnId: state.players[0].id
+        }
+    })),
+
+    on(rollDicePlayerAction, (state: Lobby, { payload }: RollDicePlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            diceValue: payload.value
+        }
+    })),
+
+    on(nextPlayerGameAction, (state: Lobby, { payload }: NextPlayerGameAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnId: payload.nextPlayerTurnId,
+            diceValue: null
         }
     }))
 );

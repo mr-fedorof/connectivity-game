@@ -25,7 +25,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col app-game-field__center-col-dice">
-                        <app-dice></app-dice>
+                        <app-dice [value]="diceValue$ | async"></app-dice>
                     </div>
                     <div class="col">hz</div>
                     <div class="col">
@@ -55,14 +55,24 @@
 
             <div class="col-auto app-game-field__center-col-actions">
                 <button
-                    *ngIf="currentPlayerTurn$ | async"
+                    *ngIf="(currentPlayerTurn$ | async) && !(diceValue$ | async)"
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-lg btn-primary"
+                    [disabled]="isProcessing$ | async"
+                    (click)="onRollDiceClick()"
                 >Roll the dice</button>
+                <button
+                    *ngIf="(currentPlayerTurn$ | async) && (diceValue$ | async)"
+                    type="button"
+                    class="btn btn-lg btn-primary"
+                    [disabled]="isProcessing$ | async"
+                    (click)="onTakeCardClick()"
+                >Take Card</button>
                 <button
                     *ngIf="currentPlayerTurn$ | async"
                     type="button"
-                    class="btn btn-danger"
+                    class="btn btn-lg btn-danger"
+                    [disabled]="isProcessing$ | async"
                 >Skip a move</button>
             </div>
         </div>
@@ -79,7 +89,7 @@
         <div class="app-game-field__right-col-actions">
             <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-lg btn-secondary"
             >Leave Lobby</button>
         </div>
     </div>

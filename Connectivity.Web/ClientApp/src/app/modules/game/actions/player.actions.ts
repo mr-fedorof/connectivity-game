@@ -52,3 +52,26 @@ export const notReadyPlayerAction = createAction('[Player] [Sh] Not Ready', (pla
     }
 }));
 export type NotReadyPlayerAction = ReturnType<typeof notReadyPlayerAction> & Action;
+
+export const rollDicePlayerAction = createAction('[Player] [Sh] Roll Dice', () => ({
+    payload: {
+        value: 0
+    },
+    long: true
+}));
+export type RollDicePlayerAction = ReturnType<typeof rollDicePlayerAction> & Action;
+
+export const takeCardPlayerAction = createAction('[Player] [Sh] Take Card', () => ({
+    payload: {}
+}));
+export type TakeCardPlayerAction = ReturnType<typeof takeCardPlayerAction> & Action;
+
+export const cardAnswerSuccessPlayerAction = createAction('[Player] [Sh] Card Answer Success', () => ({
+    payload: {}
+}));
+export type CardAnswerSuccessPlayerAction = ReturnType<typeof cardAnswerSuccessPlayerAction> & Action;
+
+export const cardAnswerFailPlayerAction = createAction('[Player] [Sh] Card Answer Fail', () => ({
+    payload: {}
+}));
+export type CardAnswerFailPlayerAction = ReturnType<typeof cardAnswerFailPlayerAction> & Action;
