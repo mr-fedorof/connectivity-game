@@ -23,13 +23,14 @@ namespace Connectivity.Persistence
                 .HasNoDiscriminator();
 
             modelBuilder.Entity<Lobby>()
-                .OwnsOne<Game>(e => e.Game);
+                .OwnsOne(e => e.Game)
+                .OwnsOne(e => e.PlayerTurnState);
 
             modelBuilder.Entity<Lobby>()
-                .OwnsMany<Team>(e => e.Teams);
+                .OwnsMany(e => e.Teams);
 
             modelBuilder.Entity<Lobby>()
-                .OwnsMany<Player>(e => e.Players);
+                .OwnsMany(e => e.Players);
         }
     }
 }

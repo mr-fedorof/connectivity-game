@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using Connectivity.Application;
 using Connectivity.Persistence;
@@ -69,7 +70,7 @@ namespace Connectivity.WebApi
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (Environment.IsDevelopment() || Environment.IsEnvironment("dev"))
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -84,6 +85,8 @@ namespace Connectivity.WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<GameHub>("hub/game");
             });
+
+            InitializeConnectivityDbContext(app.ApplicationServices);
         }
 
         private void ConfigureJsonSerializerOptions(JsonSerializerOptions options)
@@ -91,6 +94,17 @@ namespace Connectivity.WebApi
             options.PropertyNameCaseInsensitive = true;
             options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             options.Converters.Add(new JsonConverterJsonDocument());
+        }
+
+        private void InitializeConnectivityDbContext(IServiceProvider serviceProvider)
+        {
+            var serviceScopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
+
+            using var serviceScope = serviceScopeFactory.CreateScope();
+
+            var dbContext = serviceScope.ServiceProvider.GetService<ConnectivityDbContext>();
+
+            dbContext.Database.EnsureCreated();
         }
     }
 }

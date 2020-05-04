@@ -7,5 +7,7 @@ namespace Connectivity.Domain.Models
         public GameStatus Status { get; set; }
 
         public string PlayerTurnId { get; set; }
+
+        public PlayerTurnState PlayerTurnState { get; set; }
     }
 }

@@ -164,6 +164,7 @@ $border-width: 1px;
 $border-color: $black-10;
 
 $border-radius: 8px;
+$border-radius-sm: 4px;
 
 $box-shadow: 0 2px 4px 0 rgba($black, 0.5);
 
@@ -206,37 +207,74 @@ $table-striped-order:           odd;
 //
 // For each of Bootstrap's buttons, define text, background, and border color.
 
-$btn-padding-y:                 $spacer-8;
-$btn-padding-x:                 $spacer-32;
-$btn-font-family:               $font-family-base;
-$btn-font-size:                 $font-size-24;
-$btn-line-height:               $line-height-base;
+$btn-padding-y:                     $spacer-8;
+$btn-padding-x:                     $spacer-16;
+$btn-font-family:                   $font-family-base;
+$btn-font-size:                     $font-size-16;
+$btn-line-height:                   $line-height-base;
 
-// $btn-padding-y-sm:            $input-btn-padding-y-sm !default;
-// $btn-padding-x-sm:            $input-btn-padding-x-sm !default;
-// $btn-font-size-sm:            $input-btn-font-size-sm !default;
-// $btn-line-height-sm:          $input-btn-line-height-sm !default;
+$btn-padding-y-sm:                  $spacer-8;
+$btn-padding-x-sm:                  $spacer-16;
+$btn-font-size-sm:                  $font-size-8;
+$btn-line-height-sm:                $line-height-base;
 
-// $btn-padding-y-lg:            $input-btn-padding-y-lg !default;
-// $btn-padding-x-lg:            $input-btn-padding-x-lg !default;
-// $btn-font-size-lg:            $input-btn-font-size-lg !default;
-// $btn-line-height-lg:          $input-btn-line-height-lg !default;
+$btn-padding-y-lg:                  $spacer-8;
+$btn-padding-x-lg:                  $spacer-32;
+$btn-font-size-lg:                  $font-size-24;
+$btn-line-height-lg:                $line-height-base;
 
-$btn-border-width:              0;
+$btn-border-width:                  0;
 
-$btn-font-weight:               $font-weight-bold;
-$btn-box-shadow:                $box-shadow;
-$btn-focus-width:               0;
-$btn-focus-box-shadow:          0;
-$btn-disabled-opacity:          .65;
-$btn-active-box-shadow:         null;
+$btn-font-weight:                   $font-weight-bold;
+$btn-box-shadow:                    $box-shadow;
+$btn-focus-width:                   0;
+$btn-focus-box-shadow:              0;
+$btn-disabled-opacity:              .65;
+$btn-active-box-shadow:             null;
 
 // $btn-link-disabled-color:     $gray-600 !default;
 
 // $btn-block-spacing-y:         .5rem !default;
 
-$btn-border-radius:             4px;
+$btn-border-radius:                 $border-radius-sm;
 // $btn-border-radius-lg:        $border-radius-lg !default;
 // $btn-border-radius-sm:        $border-radius-sm !default;
 
-$btn-transition:                all .15s ease-in-out;
+$btn-transition: all .15s ease-in-out;
+
+// Modals
+
+// Padding applied to the modal body
+$modal-inner-padding:               $spacer-16;
+
+// $modal-dialog-margin:               .5rem !default;
+// $modal-dialog-margin-y-sm-up:       1.75rem !default;
+
+$modal-title-line-height:           $line-height-base;
+
+// $modal-content-color:               null !default;
+// $modal-content-bg:                  $white !default;
+// $modal-content-border-color:        rgba($black, .2) !default;
+// $modal-content-border-width:        $border-width !default;
+$modal-content-border-radius:       $border-radius;
+// $modal-content-box-shadow-xs:       0 .25rem .5rem rgba($black, .5) !default;
+// $modal-content-box-shadow-sm-up:    0 .5rem 1rem rgba($black, .5) !default;
+
+// $modal-backdrop-bg:                 $black !default;
+// $modal-backdrop-opacity:            .5 !default;
+// $modal-header-border-color:         $border-color !default;
+// $modal-footer-border-color:         $modal-header-border-color !default;
+// $modal-header-border-width:         $modal-content-border-width !default;
+// $modal-footer-border-width:         $modal-header-border-width !default;
+// $modal-header-padding-y:            1rem !default;
+// $modal-header-padding-x:            1rem !default;
+// $modal-header-padding:              $modal-header-padding-y $modal-header-padding-x !default; // Keep this for backwards compatibility
+
+// $modal-xl:                          1140px !default;
+// $modal-lg:                          800px !default;
+// $modal-md:                          500px !default;
+// $modal-sm:                          300px !default;
+
+// $modal-fade-transform:              translate(0, -50px) !default;
+// $modal-show-transform:              none !default;
+// $modal-transition:                  transform .3s ease-out !default;
