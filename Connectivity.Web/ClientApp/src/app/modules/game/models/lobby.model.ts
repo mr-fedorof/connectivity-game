@@ -30,7 +30,9 @@ export const initialLobby: ILobby = {
     name: null,
     teams: [],
     game: {
-        status: GameStatus.WaitingForPlayers
+        status: GameStatus.WaitingForPlayers,
+        playerTurnId: null,
+        playerTurnState: {}
     },
     players: [],
     lastActionIndex: null

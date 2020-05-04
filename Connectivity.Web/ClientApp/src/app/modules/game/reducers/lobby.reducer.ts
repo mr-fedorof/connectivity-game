@@ -101,7 +101,8 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         game: {
             ...state.game,
             status: GameStatus.Playing,
-            playerTurnId: state.players[0].id
+            playerTurnId: state.players[0].id,
+            playerTurnState: {}
         }
     })),
 
@@ -109,7 +110,10 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         ...state,
         game: {
             ...state.game,
-            diceValue: payload.value
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                diceValue: payload.value
+            }
         }
     })),
 
@@ -118,7 +122,7 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         game: {
             ...state.game,
             playerTurnId: payload.nextPlayerTurnId,
-            diceValue: null
+            playerTurnState: {}
         }
     }))
 );

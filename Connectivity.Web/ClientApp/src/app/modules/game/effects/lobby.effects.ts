@@ -16,7 +16,7 @@ import {
     ShareLobbyResponseAction,
     shareLobbyResponseAction,
 } from '../actions';
-import { gameActionComparator } from '../helpers';
+import { actionsIncludes } from '../helpers';
 import { Lobby, LobbyState } from '../models';
 import { gameSessionSelector } from '../selectors/game-session.selectors';
 import { indexedActionsSelector, lobbyStateSelector, pendingActionsSelector } from '../selectors/lobby-state.selectors';
@@ -55,7 +55,7 @@ export class LobbyEffects {
 
             const missedActions = action.payload.lobbyState.pendingActions
                 .filter(a => a.index > lastActionIndex)
-                .filter(a => !pendingActions.find(pa => gameActionComparator(pa, a)));
+                .filter(a => !actionsIncludes(pendingActions, a));
 
             if (missedActions.length > 0) {
                 newActions.push(addPendingActionsLobbyStateAction(missedActions));
@@ -88,7 +88,7 @@ export class LobbyEffects {
         switchMap(([action, gameSession, lastActionIndex, pendingActions]) => {
             const missedActions = action.payload.actions
                 .filter(a => a.index > lastActionIndex)
-                .filter(a => !pendingActions.find(pa => gameActionComparator(pa, a)));
+                .filter(a => !actionsIncludes(pendingActions, a));
 
             if (missedActions.length > 0) {
                 return of(addPendingActionsLobbyStateAction(missedActions));

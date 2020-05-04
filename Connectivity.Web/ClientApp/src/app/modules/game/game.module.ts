@@ -5,6 +5,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
+import { actionGuardingProviders } from './action-guarding';
+import { actionGuards } from './action-guards';
 import {
     CardResultConfirmationModalComponent,
 } from './components/game-field/card-result-confirmation-modal/card-result-confirmation-modal.component';
@@ -81,7 +83,9 @@ import {
         ActionService,
         LobbyStateInitializedGuard,
         PendingActionsStorage,
-        DiceService
+        DiceService,
+        ...actionGuardingProviders,
+        ...actionGuards
     ]
 })
 export class GameModule { }

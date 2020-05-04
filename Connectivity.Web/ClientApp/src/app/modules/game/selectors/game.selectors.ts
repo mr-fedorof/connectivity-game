@@ -3,7 +3,7 @@ import { flatMap } from 'lodash';
 
 import { GameStatus } from '../enums';
 import { IGameEngineFeature } from '../game-engine.feature';
-import { Game, Lobby, Player, Team } from '../models';
+import { Game, Lobby, Player, PlayerTurnState, Team } from '../models';
 import { lobbySelector, playersSelector, teamsSelector } from './lobby.selectors';
 
 export const gameSelector: MemoizedSelector<IGameEngineFeature, Game> = createSelector(
@@ -42,7 +42,12 @@ export const nextPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, string
     }
 );
 
-export const diceValueSelector: MemoizedSelector<IGameEngineFeature, number> = createSelector(
+export const playerTurnStateSelector: MemoizedSelector<IGameEngineFeature, PlayerTurnState> = createSelector(
     gameSelector,
-    (game: Game) => game.diceValue
+    (game: Game) => game.playerTurnState
+);
+
+export const diceValueSelector: MemoizedSelector<IGameEngineFeature, number> = createSelector(
+    playerTurnStateSelector,
+    (playerTurnState: PlayerTurnState) => playerTurnState.diceValue
 );

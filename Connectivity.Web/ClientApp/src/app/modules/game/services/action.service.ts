@@ -13,21 +13,23 @@ import {
     mergeMap,
     share,
     switchMap,
+    take,
     takeUntil,
     tap,
     withLatestFrom,
 } from 'rxjs/operators';
 
+import { ActionGuardService } from '../action-guarding';
 import {
     addPendingActionLobbyStateAction,
     removePendingActionLobbyStateAction,
     shareActionsLobbyAction,
     shareLobbyAction,
+    skipActionLobbyStateAction,
     updateGlobalIndexLobbyStateAction,
 } from '../actions';
 import {
     actionsIncludes,
-    gameActionComparator,
     isOrderedAction,
     isOriginalAction,
     isOutOfOrderAction,
@@ -75,7 +77,8 @@ export class ActionService extends DestroyableService {
         private readonly store: Store,
         private readonly gameHubService: GameHubService,
         private readonly storeActions$: Actions,
-        private readonly globalAlertService: GlobalAlertService
+        private readonly globalAlertService: GlobalAlertService,
+        private readonly actionGuardService: ActionGuardService
     ) {
         super();
 
@@ -121,6 +124,7 @@ export class ActionService extends DestroyableService {
                 this.actionsOrderingPipe,
                 this.actionProcessingPipe,
                 distinctUntilChanged(),
+                this.actionGuardPipe,
                 share()
             );
 
@@ -176,6 +180,29 @@ export class ActionService extends DestroyableService {
 
         this._exteranlActionsSubject.next(action);
     }
+
+    private readonly actionGuardPipe = pipe(
+        switchMap((action: Action) => {
+            if (!isOrderedAction(action)) {
+                return of(action);
+            }
+
+            return this.actionGuardService.canActivate(action)
+                .pipe(
+                    take(1),
+                    tap(canActivate => {
+                        if (!canActivate) {
+                            // tslint:disable-next-line: no-console
+                            console.log('ACTION SKIPPED', action);
+
+                            this.store.dispatch(skipActionLobbyStateAction(action));
+                        }
+                    }),
+                    filter(canActivate => canActivate),
+                    map(() => action)
+                );
+        })
+    );
 
     private readonly originalActionHandlingPipe = pipe(
         withLatestFrom(this.store.select(gameSessionSelector)),
@@ -327,7 +354,7 @@ export class ActionService extends DestroyableService {
         }),
         withLatestFrom(this.store.select(pendingActionsSelector)),
         tap(([action, pendingActions]: [Action, Action[]]) => {
-            if (pendingActions.find(pa => gameActionComparator(pa, action))) {
+            if (actionsIncludes(pendingActions, action)) {
                 this.store.dispatch(removePendingActionLobbyStateAction(action));
             }
         }),
