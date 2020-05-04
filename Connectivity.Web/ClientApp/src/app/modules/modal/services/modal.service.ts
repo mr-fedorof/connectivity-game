@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,7 +11,7 @@ export class ModalService {
 
     }
 
-    public show(component: any, resultFn: (_: any) => any = (() => undefined)): Observable<any> {
+    public show<T, R>(component: Type<T>, resultFn: (_: T) => R = (() => undefined)): Observable<R> {
         const config: ModalOptions = {};
         const modalRef: BsModalRef = this.bsModalService.show(component, config);
 
