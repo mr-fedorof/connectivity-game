@@ -29,7 +29,7 @@ namespace Connectivity.Persistence
                 .Property(e => e.Questions)
                 .HasConversion(
                     v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));   
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
             
             modelBuilder.Entity<Card>()
                 .OwnsOne(e => e.Task)

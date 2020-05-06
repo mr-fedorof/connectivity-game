@@ -48,8 +48,8 @@ namespace ImportExcelCardsBatch
                         Type = TaskType.Alias,
                         Questions = new[]
                         {
-                            sheet.Cells[$"A{curr}"].Text,
-                            sheet.Cells[$"A{curr + 1}"].Text
+                            sheet.Cells[$"A{curr}"].Text.Trim(),
+                            sheet.Cells[$"A{curr + 1}"].Text.Trim()
                         }
                     }
                 };
@@ -58,7 +58,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Alias questions");
+            Console.WriteLine($"Found {found} Alias cards");
         }
 
         private static void ImportTaboo(ExcelPackage package, List<Card> cards)
@@ -89,15 +89,15 @@ namespace ImportExcelCardsBatch
                         Type = TaskType.Taboo,
                         Questions = new[]
                         {
-                            sheet.Cells[$"A{curr}"].Text
+                            sheet.Cells[$"A{curr}"].Text.Trim()
                         },
                         BannedWords = new[]
                         {
-                            sheet.Cells[$"B{curr}"].Text,
-                            sheet.Cells[$"B{curr+1}"].Text,
-                            sheet.Cells[$"B{curr+2}"].Text,
-                            sheet.Cells[$"B{curr+3}"].Text,
-                            sheet.Cells[$"B{curr+4}"].Text,
+                            sheet.Cells[$"B{curr}"].Text.Trim(),
+                            sheet.Cells[$"B{curr+1}"].Text.Trim(),
+                            sheet.Cells[$"B{curr+2}"].Text.Trim(),
+                            sheet.Cells[$"B{curr+3}"].Text.Trim(),
+                            sheet.Cells[$"B{curr+4}"].Text.Trim(),
                         }
                     }
                 };
@@ -106,7 +106,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Taboo questions");
+            Console.WriteLine($"Found {found} Taboo cards");
         }
 
         private static void ImportDraw(ExcelPackage package, List<Card> cards)
@@ -133,7 +133,7 @@ namespace ImportExcelCardsBatch
                         Type = TaskType.Draw,
                         Questions = new[]
                         {
-                            sheet.Cells[$"A{curr}"].Text
+                            sheet.Cells[$"A{curr}"].Text.Trim()
                         }
                     }
                 };
@@ -142,7 +142,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Draw questions");
+            Console.WriteLine($"Found {found} Draw cards");
         }
 
         private static void ImportCrocodile(ExcelPackage package, List<Card> cards)
@@ -167,7 +167,7 @@ namespace ImportExcelCardsBatch
                         Type = TaskType.Crocodile,
                         Questions = new[]
                         {
-                            sheet.Cells[$"A{curr}"].Text
+                            sheet.Cells[$"A{curr}"].Text.Trim()
                         }
                     }
                 };
@@ -176,7 +176,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Crocodile questions");
+            Console.WriteLine($"Found {found} Crocodile cards");
         }
 
         private static void ImportWhoAmI(ExcelPackage package, List<Card> cards)
@@ -201,7 +201,7 @@ namespace ImportExcelCardsBatch
                         Type = TaskType.WhoAmI,
                         Questions = new[]
                         {
-                            sheet.Cells[$"A{curr}"].Text
+                            sheet.Cells[$"A{curr}"].Text.Trim()
                         }
                     }
                 };
@@ -210,7 +210,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Who Am I questions");
+            Console.WriteLine($"Found {found} Who Am I cards");
         }
 
         private static void ImportJoker(ExcelPackage package, List<Card> cards)
@@ -238,8 +238,8 @@ namespace ImportExcelCardsBatch
                             Type = TaskType.JokerTopsyTurvy,
                             Questions = new[]
                             {
-                                sheet.Cells[$"A{curr}"].Text,
-                                sheet.Cells[$"A{curr+1}"].Text
+                                sheet.Cells[$"A{curr}"].Text.Trim(),
+                                sheet.Cells[$"A{curr+1}"].Text.Trim()
                             }
                         }
                     };
@@ -260,8 +260,8 @@ namespace ImportExcelCardsBatch
                             Type = TaskType.JokerNotMyFilm,
                             Questions = new[]
                             {
-                                sheet.Cells[$"A{curr}"].Text,
-                                sheet.Cells[$"A{curr+1}"].Text
+                                sheet.Cells[$"A{curr}"].Text.Trim(),
+                                sheet.Cells[$"A{curr+1}"].Text.Trim()
                             }
                         }
                     };
@@ -282,9 +282,9 @@ namespace ImportExcelCardsBatch
                             Type = TaskType.JokerSpeakingBook,
                             Questions = new[]
                             {
-                                sheet.Cells[$"A{curr}"].Text,
-                                sheet.Cells[$"A{curr+1}"].Text,
-                                sheet.Cells[$"A{curr+2}"].Text
+                                sheet.Cells[$"A{curr}"].Text.Trim(),
+                                sheet.Cells[$"A{curr+1}"].Text.Trim(),
+                                sheet.Cells[$"A{curr+2}"].Text.Trim()
                             }
                         }
                     };
@@ -305,8 +305,8 @@ namespace ImportExcelCardsBatch
                             Type = TaskType.JokerNotMySong,
                             Questions = new[]
                             {
-                                sheet.Cells[$"A{curr}"].Text,
-                                sheet.Cells[$"A{curr+1}"].Text
+                                sheet.Cells[$"A{curr}"].Text.Trim(),
+                                sheet.Cells[$"A{curr+1}"].Text.Trim()
                             }
                         }
                     };
@@ -316,7 +316,7 @@ namespace ImportExcelCardsBatch
                 }
                 found++;
             }
-            Console.WriteLine($"Found {found} Joker questions");
+            Console.WriteLine($"Found {found} Joker cards");
         }
     }
 }
