@@ -16,9 +16,6 @@ namespace Connectivity.Application.Services
         public LobbyService(ConnectivityDbContext context)
         {
             _context = context;
-
-            // TODO: Move to any other place
-            _context.Database.EnsureCreated();
         }
 
         public async Task<Lobby> GetLobbyAsync(string lobbyId)

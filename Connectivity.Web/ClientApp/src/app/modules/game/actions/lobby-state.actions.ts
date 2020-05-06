@@ -52,3 +52,10 @@ export const addHandledActionLobbyStateAction = createAction('[LobbyState] Add H
     }
 }));
 export type AddHandledActionLobbyStateAction = ReturnType<typeof addHandledActionLobbyStateAction> & Action;
+
+export const skipActionLobbyStateAction = createAction('[LobbyState] Skip Action', (action: Action) => ({
+    payload: {
+        action
+    }
+}));
+export type SkipActionLobbyStateAction = ReturnType<typeof skipActionLobbyStateAction> & Action;

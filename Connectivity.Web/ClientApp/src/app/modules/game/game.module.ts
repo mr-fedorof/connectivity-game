@@ -5,6 +5,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
+import { actionGuardingProviders } from './action-guarding';
+import { actionGuards } from './action-guards';
+import {
+    CardResultConfirmationModalComponent,
+} from './components/game-field/card-result-confirmation-modal/card-result-confirmation-modal.component';
+import { DiceComponent } from './components/game-field/dice/dice.component';
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { GameMessagesComponent } from './components/game-field/game-messages/game-messages.component';
@@ -27,6 +33,7 @@ import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
 import {
     ActionService,
+    DiceService,
     GameHubService,
     GameService,
     GameSessionStorage,
@@ -34,7 +41,6 @@ import {
     LobbyStorage,
     PendingActionsStorage,
 } from './services';
-import { DiceComponent } from './components/game-field/dice/dice.component';
 
 @NgModule({
     imports: [
@@ -63,7 +69,8 @@ import { DiceComponent } from './components/game-field/dice/dice.component';
         GameTilesComponent,
         GameCardComponent,
         TeamInfoComponent,
-        DiceComponent
+        DiceComponent,
+        CardResultConfirmationModalComponent
     ],
     providers: [
         LobbyService,
@@ -75,7 +82,10 @@ import { DiceComponent } from './components/game-field/dice/dice.component';
         GameService,
         ActionService,
         LobbyStateInitializedGuard,
-        PendingActionsStorage
+        PendingActionsStorage,
+        DiceService,
+        ...actionGuardingProviders,
+        ...actionGuards
     ]
 })
 export class GameModule { }

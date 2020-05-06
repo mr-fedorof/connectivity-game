@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { NavigationService } from '@modules/app-core/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { EMPTY, Observable, of } from 'rxjs';
-import { filter, map, switchMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, from, of } from 'rxjs';
+import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
     addHandledActionLobbyStateAction,
@@ -11,6 +11,7 @@ import {
     initLobbyAction,
     refreshPendingActionsStateAction,
     restoreLobbyAction,
+    skipActionLobbyStateAction,
     startProcessingLobbyStateAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
@@ -19,7 +20,7 @@ import { lobbySelector } from '../selectors/lobby.selectors';
 
 @Injectable()
 export class LobbyStateEffects {
-    public internalNavigation$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public internalNavigation$ = createEffect(() => this.actions$.pipe(
         ofType(
             initLobbyAction,
             restoreLobbyAction
@@ -28,22 +29,32 @@ export class LobbyStateEffects {
         tap(([action, lobby]) => {
             // TODO: Wait for routing
             this.navigationService.doInternalLobbyNavigation(lobby);
-        }),
-        switchMapTo(EMPTY)
+        })
+    ), {
+        dispatch: false
+    });
+
+    public skipAction$ = createEffect(() => this.actions$.pipe(
+        ofType(skipActionLobbyStateAction),
+        switchMap((action: Action) => from([
+            updateLastActionIndexLobbyAction(action.index),
+            addHandledActionLobbyStateAction(action),
+            refreshPendingActionsStateAction()
+        ]))
     ));
 
-    public updateLastActionIndex$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public updateLastActionIndex$ = createEffect(() => this.actions$.pipe(
         filter(isOrderedAction),
         map(action => updateLastActionIndexLobbyAction(action.index))
     ));
 
-    public addHandledAction$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public addHandledAction$ = createEffect(() => this.actions$.pipe(
         filter(action => action.type !== addHandledActionLobbyStateAction.type),
         filter(isOrderedAction),
         map(action => addHandledActionLobbyStateAction(action))
     ));
 
-    public startProcessing$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public startProcessing$ = createEffect(() => this.actions$.pipe(
         switchMap(action => {
             if (action.long) {
                 return of(startProcessingLobbyStateAction());
@@ -53,12 +64,12 @@ export class LobbyStateEffects {
         })
     ));
 
-    public refreshPendingActionsAfterProcessing$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public refreshPendingActionsAfterProcessing$ = createEffect(() => this.actions$.pipe(
         ofType(finishProcessingLobbyStateAction),
         map(() => refreshPendingActionsStateAction())
     ));
 
-    public refreshPendingActionsAfterInstantAction$: Observable<Action> = createEffect(() => this.actions$.pipe(
+    public refreshPendingActionsAfterInstantAction$ = createEffect(() => this.actions$.pipe(
         filter((action: Action) => isOrderedAction(action) && !action.long),
         map(() => refreshPendingActionsStateAction())
     ));
