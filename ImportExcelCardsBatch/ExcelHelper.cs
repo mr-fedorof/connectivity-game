@@ -176,7 +176,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Draw questions");
+            Console.WriteLine($"Found {found} Crocodile questions");
         }
 
         private static void ImportWhoAmI(ExcelPackage package, List<Card> cards)
@@ -210,7 +210,7 @@ namespace ImportExcelCardsBatch
                 found++;
             }
 
-            Console.WriteLine($"Found {found} Draw questions");
+            Console.WriteLine($"Found {found} Who Am I questions");
         }
 
         private static void ImportJoker(ExcelPackage package, List<Card> cards)
