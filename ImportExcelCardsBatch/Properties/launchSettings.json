@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ImportExcelCardsBatch": {
+      "commandName": "Project",
+      "commandLineArgs": "dev Cards.xlsx",
+      "environmentVariables": {
+      }
+    }
+  }
+}
