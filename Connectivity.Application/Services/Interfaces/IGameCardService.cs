@@ -5,7 +5,7 @@ using Connectivity.Domain.Models.Cards;
 
 namespace Connectivity.Application.Services.Interfaces
 {
-    public interface IGameCardsService
+    public interface IGameCardService
     {
         List<Card> GetAllCardsAsync();
 

@@ -21,7 +21,7 @@ namespace ImportExcelCardsBatch
             serviceCollection.ConfigureServices(env);
 
             _container = serviceCollection.BuildServiceProvider();
-            var service = _container.GetService<IGameCardsService>();
+            var service = _container.GetService<IGameCardService>();
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 

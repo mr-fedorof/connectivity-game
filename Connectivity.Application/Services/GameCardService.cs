@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Connectivity.Application.Services
 {
-    public class GameCardsService : IGameCardsService
+    public class GameCardService : IGameCardService
     {
         private readonly CardsDbContext _context;
 
-        public GameCardsService(CardsDbContext context)
+        public GameCardService(CardsDbContext context)
         {
             _context = context;
             _context.Database.EnsureCreated();

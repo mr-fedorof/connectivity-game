@@ -18,7 +18,7 @@ namespace ImportExcelCardsBatch
             services.AddConfiguration(env);
 
             services.AddCosmosDB(_configuration);
-            services.AddTransient<IGameCardsService, GameCardsService>();
+            services.AddTransient<IGameCardService, GameCardService>();
         }
 
         private static void AddConfiguration(
