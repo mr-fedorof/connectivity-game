@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
 import { IActionGuard } from './action-guard.interface';
-import { ACTION_GUARDS } from './action-guard.token';
+import { ACTION_GUARDS } from './action-guards.token';
 
 @Injectable()
 export class ActionGuardService {

@@ -35,23 +35,17 @@
 
         color: $cian;
         font-weight: 800;
+        margin: $spacer-48 auto 0;
+        line-height: 1;
 
-        font-size: $font-size-base * 4;
+        font-size: $font-size-base * 7;
 
-        @include media-breakpoint-up(sm) {
-            font-size: $font-size-base * 4;
-        }
-
-        @include media-breakpoint-up(md) {
+        @include media-breakpoint-down(md) {
             font-size: $font-size-base * 5;
         }
 
-        @include media-breakpoint-up(lg) {
-            font-size: $font-size-base * 7;
-        }
-
-        @include media-breakpoint-up(xl) {
-            font-size: $font-size-base * 9;
+        @include media-breakpoint-down(sm) {
+            font-size: $font-size-base * 4;
         }
     }
 
@@ -65,61 +59,33 @@
 
     &__brand-text {
         color: $cian;
-        font-weight: 800;
+        font-weight: 700;
+        text-align: center;
 
         p {
             margin: 0;
         }
 
-        font-size: $font-size-base * 3;
-        line-height: 1.2;
+        font-size: $font-size-base * 2.5;
 
-        @include media-breakpoint-up(sm) {
-            font-size: $font-size-base * 3;
-        }
-
-        @include media-breakpoint-up(md) {
-            font-size: $font-size-base * 3;
-        }
-
-        @include media-breakpoint-up(lg) {
-            font-size: $font-size-base * 4;
-        }
-
-        @include media-breakpoint-up(xl) {
-            font-size: $font-size-base * 4;
+        @include media-breakpoint-down(sm) {
+            font-size: $font-size-base * 2.25;
         }
     }
 
     &__action-container {
         display: flex;
         align-items: center;
+        justify-content: center;
 
-        height: $font-size-base * 4 * $headings-line-height;
-
-        @include media-breakpoint-up(sm) {
-            height: $font-size-base * 4 * $headings-line-height;
-        }
-
-        @include media-breakpoint-up(md) {
-            height: $font-size-base * 5 * $headings-line-height;
-        }
-
-        @include media-breakpoint-up(lg) {
-            height: $font-size-base * 7 * $headings-line-height;
-        }
-
-        @include media-breakpoint-up(xl) {
-            height: $font-size-base * 9 * $headings-line-height;
-        }
+        margin-top: $spacer*7;
     }
 
     &__action {
         padding: $spacer-16 $spacer-32;
-
         font-size: $font-size-base * 2;
 
-        @include media-breakpoint-down(md) {
+        @include media-breakpoint-down(sm) {
             font-size: $font-size-base * 1.5;
         }
     }

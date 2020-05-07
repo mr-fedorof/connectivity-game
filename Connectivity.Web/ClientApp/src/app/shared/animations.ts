@@ -1,6 +1,6 @@
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
 
-export function showHideAnimation(): AnimationTriggerMetadata {
+export function showHideAnimation(duration = '150ms'): AnimationTriggerMetadata {
     return trigger('showHide', [
         state('show', style({
             height: '*',
@@ -12,7 +12,7 @@ export function showHideAnimation(): AnimationTriggerMetadata {
         })),
         transition(
             'hide <=> show',
-            animate('150ms 0ms ease-in-out')
+            animate(`${duration} 0ms ease-in-out`)
         )
     ]);
 }

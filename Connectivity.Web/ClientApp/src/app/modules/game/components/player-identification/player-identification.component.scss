@@ -1,7 +1,28 @@
 @import 'component-common.scss';
 
-:host(.app-player-identification) {
-    & {}
+:host {
+    @extend .app-player-identification;    
+}
 
-    .app-player-identification {}
+.app-player-identification {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    background: $white;
+    width: $container-sm-max-width;
+    margin: $spacer-48 auto $spacer-48;
+    padding: $spacer-48;
+    border: 1px solid $gray-200;
+    border-radius: $border-radius-sm;
+
+    @include media-breakpoint-down(md) {
+        padding: $spacer-32;
+        margin: $spacer-16;
+        width: auto;
+    }
+
+    &__title {
+        margin-bottom: $spacer;
+        color: $cian;
+    }
 }

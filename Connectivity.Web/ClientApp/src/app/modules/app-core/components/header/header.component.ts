@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LocalizationService } from '@modules/localization';
 import { GlobalSpinnerService } from '@modules/spinner';
+import { showHideAnimation } from '@shared/animations';
 import { Observable } from 'rxjs';
 import { shareReplay, startWith } from 'rxjs/operators';
 
@@ -8,7 +9,10 @@ import { shareReplay, startWith } from 'rxjs/operators';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        showHideAnimation('500ms')
+    ]
 })
 export class HeaderComponent implements OnInit {
     public isExpanded = false;

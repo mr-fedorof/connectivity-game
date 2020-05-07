@@ -13,7 +13,9 @@ export class PlayerIdentificationForm extends AppFormGroup {
                 '',
                 null,
                 null,
-                null,
+                {
+                    required: 'PLAYER_IDENTIFICATION.NAME_REQUIRED'
+                },
                 {
                     required: true,
                     maxLength: 25

@@ -5,9 +5,9 @@
 $hamburger-padding-x: 0;
 $hamburger-padding-y: 0;
 $hamburger-layer-width: $font-size-24;
-$hamburger-layer-height: $spacer-4;
-$hamburger-layer-spacing: $spacer-4;
-$hamburger-layer-color: $black-10;
+$hamburger-layer-height: $spacer-2;
+$hamburger-layer-spacing: $spacer-6;
+$hamburger-layer-color: $gray-900;
 $hamburger-layer-border-radius: $border-radius;
 $hamburger-hover-opacity: 1;
 
@@ -23,7 +23,7 @@ $hamburger-types: (squeeze);
     position: relative;
     display: flex;
     align-items: center;
-    padding: $spacer-16 $spacer-32;
+    padding: $spacer-8 $spacer-32;
     height: 92px;
 
     &__brand {
@@ -31,7 +31,13 @@ $hamburger-types: (squeeze);
         margin-right: auto;
 
         &-link {
-            text-decoration: none;
+            background-image: url('/assets/images/logo.svg');
+            background-repeat: no-repeat;
+            background-size: 72px 72px;
+            background-position: center center;
+            display: block;
+            height: 72px;
+            width: 72px;
         }
     }
 
@@ -52,7 +58,7 @@ $hamburger-types: (squeeze);
 
         &-link {
             font-size: $font-size-24;
-            font-weight: $font-weight-bold;
+            font-weight: $font-weight-normal;
         }
     }
 
@@ -60,19 +66,18 @@ $hamburger-types: (squeeze);
         position: absolute;
         right: 0;
         top: 92px;
-        padding: $spacer-16 $spacer-32;
-        background: $white;
+        //background: rgba($white, 0.75);
         z-index: 10;
-        border-top: 1px solid $black-10;
-        box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        border-radius: $border-radius-sm;
 
         &-items {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             list-style-type: none;
-            padding: 0;
             margin: 0;
+            padding: $spacer-16 $spacer-32;
         }
 
         &-item {
@@ -83,7 +88,7 @@ $hamburger-types: (squeeze);
 
         &-link {
             font-size: $font-size-24;
-            font-weight: $font-weight-bold;
+            font-weight: $font-weight-normal;
         }
     }
 
@@ -93,7 +98,17 @@ $hamburger-types: (squeeze);
         font-size: $font-size-24;
 
         &-sep {
-            padding: 0 $spacer-8;
+            display: flex;
+            align-items: center;
+            padding: 0 $spacer-8 1px;
+
+            &:before {
+                content: ' ';
+                display: block;
+                height: $font-size-24;
+                width: 2px;
+                background-color: $text-color-base;
+            }
         }
 
         &-btn {
@@ -105,6 +120,7 @@ $hamburger-types: (squeeze);
             text-transform: uppercase;
 
             &--active {
+                color: $orange;
                 font-weight: $font-weight-bold;
             }
         }

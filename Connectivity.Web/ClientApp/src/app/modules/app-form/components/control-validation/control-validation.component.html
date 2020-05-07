@@ -1,4 +1,7 @@
-<ng-container *ngIf="isErrorsVisible">
+<div
+    class="app-control-validation__container"
+    *ngIf="isErrorsVisible"
+>
     <!--Built-in errors-->
     <p
         class="app-control-validation__error"
@@ -12,4 +15,4 @@
     >
         {{control.errorMessages[customErrorKey] || control.getError(customErrorKey)}}
     </p>
-</ng-container>
+</div>

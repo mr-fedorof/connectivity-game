@@ -11,7 +11,8 @@
     min-height: 130px;
 
     &#{&}--type-1 {
-        background-color: $cian;
+        border: 4px solid #BA59A7;
+        // background-color: #BA59A7;
         background-image: url(/assets/images/teamA.svg);
         background-repeat: no-repeat;
         background-size: 149px 164px;
@@ -19,7 +20,8 @@
     }
 
     &#{&}--type-2 {
-        background-color: $blue;
+        border: 4px solid #0978E3;
+        // background-color: #0978E3;
         background-image: url(/assets/images/teamB.svg);
         background-repeat: no-repeat;
         background-size: 153px 145px;
@@ -27,7 +29,8 @@
     }
 
     &#{&}--type-3 {
-        background-color: $red;
+        border: 4px solid #7BC24F;
+        // background-color: #7BC24F;
         background-image: url(/assets/images/teamC.svg);
         background-repeat: no-repeat;
         background-size: 145px 135px;
@@ -35,7 +38,8 @@
     }
 
     &#{&}--type-4 {
-        background-color: $orange;
+        border: 4px solid $orange;
+        // background-color: $orange;
         background-image: url(/assets/images/teamD.svg);
         background-repeat: no-repeat;
         background-size: 146px 143px;
@@ -43,7 +47,7 @@
     }
 
     &__title {
-        color: $white;
+        // color: $white;
         font-weight: $font-weight-boldest;
         margin-bottom: $spacer-8;
     }
@@ -55,7 +59,7 @@
     }
 
     &__player {
-        color: $white;
+        // color: $white;
         font-weight: $font-weight-bold;
     }
 }

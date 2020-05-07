@@ -1,9 +1,9 @@
 {
     "HOME": {
-        "CONNECTIVITY": "CONNECTIVITY",
+        "CONNECTIVITY": "Connectivity",
         "P1": "В безопасности",
-        "P2": "Все вместе",
-        "P3": "Играть",
+        "P2": "Всем вместе",
+        "P3": "Играть просто",
         "CREATE_LOBBY": "Создать Комнату"
     },
     "HEADER": {

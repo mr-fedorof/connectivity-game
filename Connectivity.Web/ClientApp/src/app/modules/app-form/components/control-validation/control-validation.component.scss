@@ -1,9 +1,17 @@
 @import 'component-common.scss';
 
-:host(.app-control-validation) {
-    .app-control-validation {
-        &__error {
-            color: $red;
-        }
+:host {
+    @extend .app-control-validation;    
+}
+
+.app-control-validation {
+    display: block;
+
+    &__container {
+        margin-top: $spacer-8;
+    }
+
+    &__error {
+        color: $red;
     }
 }

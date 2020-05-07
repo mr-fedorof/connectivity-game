@@ -4,8 +4,8 @@
         "CONNECTION_ESTABLISHED": "Connection established."
     },
     "HOME": {
-        "CONNECTIVITY": "CONNECTIVITY",
-        "P1": "Stay Safe",
+        "CONNECTIVITY": "Connectivity",
+        "P1": "Stay safe",
         "P2": "Be connected",
         "P3": "Just play",
         "CREATE_LOBBY": "Create Lobby"
@@ -29,9 +29,16 @@
         "CREATE_LOBBY_BTN": "Create lobby",
         "CANCEL_BTN": "Cancel"
     },
+    "PLAYER_IDENTIFICATION": {
+        "TITLE": "Player",
+        "NAME": "Your name",
+        "NAME_REQUIRED": "Please, provide your name",
+        "NEXT": "Go"
+    },
     "LOBBY": {
         "TITLE": "Lobby - {{ name }}",
-        "WAITING_TO_JOIN_LIST": "Waiting to join",
+        "TEAMS": "Teams",
+        "WAITING_TO_JOIN_LIST": "Players without the team",
         "JOIN_TEAM": "Join the team",
         "LEAVE_TEAM": "Leave the team",
         "PLAYER_READY_LABEL": "Ready",

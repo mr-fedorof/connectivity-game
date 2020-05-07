@@ -16,10 +16,7 @@ import { PlayerIdentificationForm } from './player-identification-form';
     selector: 'app-player-identification',
     templateUrl: './player-identification.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./player-identification.component.scss'],
-    host: {
-        class: 'app-player-identification'
-    }
+    styleUrls: ['./player-identification.component.scss']
 })
 export class PlayerIdentificationComponent extends DestroyableComponent implements OnInit, OnDestroy {
     public lobbyId: string;

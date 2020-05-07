@@ -17,10 +17,7 @@ import { tap } from 'rxjs/operators';
 @Component({
     selector: 'app-lobby',
     templateUrl: './lobby.component.html',
-    styleUrls: ['./lobby.component.scss'],
-    host: {
-        class: 'app-lobby'
-    }
+    styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent extends DestroyableComponent implements OnInit {
     public lobby: Lobby;

@@ -2,7 +2,8 @@
     <a
         class="app-header__brand-link"
         [routerLink]="['/']"
-    >Connectivity </a>
+        title="Connectivity"
+    ></a>
 </h1>
 
 <nav class="app-header__nav">
@@ -35,7 +36,7 @@
         (click)="onLangClick('en')"
         translate
     >HEADER.EN</button>
-    <span class="app-header__lang-sep">|</span>
+    <span class="app-header__lang-sep"></span>
     <button
         type="button"
         class="app-header__lang-btn"
@@ -58,7 +59,7 @@
 
 <nav
     class="app-header__sub-nav"
-    [class.d-none]="!isExpanded"
+    [@showHide]="isExpanded ? 'show' : 'hide'"
 >
     <ul class="app-header__sub-nav-items">
         <li class="app-header__sub-nav-item d-md-none">

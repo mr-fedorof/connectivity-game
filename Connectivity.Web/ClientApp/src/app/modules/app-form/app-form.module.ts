@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LocalizationModule } from '@modules/localization/localization.module';
 
 import { ControlValidationComponent } from './components/control-validation/control-validation.component';
+import { AutofocusDirective } from './directives/auto-focus.directive';
 
 @NgModule({
     imports: [
@@ -12,11 +13,13 @@ import { ControlValidationComponent } from './components/control-validation/cont
         LocalizationModule
     ],
     declarations: [
-        ControlValidationComponent
+        ControlValidationComponent,
+        AutofocusDirective
     ],
     exports: [
         ReactiveFormsModule,
-        ControlValidationComponent
+        ControlValidationComponent,
+        AutofocusDirective
     ]
 })
 export class AppFormModule {

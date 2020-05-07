@@ -1,62 +1,91 @@
-<div
-    class="container"
-    *ngIf="lobby$ | async as lobby"
->
-    <h3
-        translate
-        [translateParams]="{ name: lobby.name }"
-    >LOBBY.TITLE</h3>
-    <br />
+<ng-container *ngIf="lobby$ | async as lobby">
+    <h2 class="app-lobby__title">{{ lobby.name }}</h2>
     <div class="row">
-        <div class="col">
-            <h4 translate>LOBBY.WAITING_TO_JOIN_LIST</h4>
-            <p *ngFor="let player of lobby.players | freePlayers">{{ player.name }}</p>
+        <div class="col-12 col-md-7 col-lg-7 col-xl-8 app-lobby__left-column">
+            <h5
+                translate
+                class="app-lobby__teams-title"
+            >LOBBY.TEAMS</h5>
+            <div class="row">
+                <div
+                    class="col-12 col-xl-6 app-lobby__team"
+                    *ngFor="let team of lobby.teams; let i = index"
+                >
+                    <app-team-info
+                        [index]="i + 1"
+                        [team]="team"
+                        [players]="lobby.players | teamPlayers: team.id"
+                    ></app-team-info>
+
+                    <div class="row no-gutters app-lobby__team-actions">
+                        <div
+                            class="col-auto app-lobby__team-action"
+                            *ngIf="currentPlayer?.teamId === team.id && !currentPlayer.ready"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                (click)="onLeaveTeamClick(currentPlayer.id, team.id)"
+                                translate
+                            >LOBBY.LEAVE_TEAM</button>
+                        </div>
+                        <div
+                            class="col-auto app-lobby__team-action app-lobby__team-action--right"
+                            *ngIf="currentPlayer?.teamId !== team.id && !currentPlayer.ready"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                (click)="onJoinTeamClick(currentPlayer.id, team.id)"
+                                translate
+                            >LOBBY.JOIN_TEAM</button>
+                        </div>
+                        <div
+                            class="col-auto app-lobby__team-action app-lobby__team-action--right"
+                            *ngIf="currentPlayer.teamId === team.id && !currentPlayer.ready"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                translate
+                                (click)="onPlayerReadyClick(currentPlayer.id)"
+                            >LOBBY.IM_READY</button>
+                        </div>
+                        <div
+                            class="col-auto app-lobby__team-action app-lobby__team-action--right"
+                            *ngIf="currentPlayer.teamId === team.id && currentPlayer.ready"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                translate
+                                (click)="onPlayerNotReadyClick(currentPlayer.id)"
+                            >LOBBY.IM_NOT_READY</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <span>({{ (player.ready ? 'LOBBY.PLAYER_READY_LABEL' : 'LOBBY.PLAYER_NOT_READY_LABEL') | translate }})</span> -->
         </div>
-        <div
-            class="col"
-            *ngFor="let team of lobby.teams"
-        >
-            <h4>{{ team.name }}</h4>
-            <button
-                *ngIf="currentPlayer?.teamId !== team.id && !currentPlayer.ready"
-                type="button"
-                (click)="onJoinTeamClick(currentPlayer.id, team.id)"
+        <div class="col-12 col-md-5 col-lg-5 col-xl-4 app-lobby__right-column">
+            <h5
                 translate
-            >LOBBY.JOIN_TEAM</button>
+                class="app-lobby__players-title"
+            >LOBBY.WAITING_TO_JOIN_LIST</h5>
+            <ul class="app-lobby__players-list">
+                <li
+                    *ngFor="let player of lobby.players | freePlayers"
+                    class="app-lobby__player"
+                >{{ player.name }}</li>
+            </ul>
+        </div>
+        <div class="col-12 app-lobby__actions">
             <button
-                *ngIf="currentPlayer?.teamId === team.id && !currentPlayer.ready"
                 type="button"
-                (click)="onLeaveTeamClick(currentPlayer.id, team.id)"
-                translate
-            >LOBBY.LEAVE_TEAM</button>
-            <hr />
-            <p *ngFor="let player of lobby.players | teamPlayers: team.id">
-                {{ player.name }}
-                <span>({{ (player.ready ? 'LOBBY.PLAYER_READY_LABEL' : 'LOBBY.PLAYER_NOT_READY_LABEL') | translate }})</span>
-                <button
-                    *ngIf="currentPlayer.id === player.id && !player.ready"
-                    type="button"
-                    translate
-                    (click)="onPlayerReadyClick(currentPlayer.id)"
-                >LOBBY.IM_READY</button>
-                <button
-                    *ngIf="currentPlayer.id === player.id && player.ready"
-                    type="button"
-                    translate
-                    (click)="onPlayerNotReadyClick(currentPlayer.id)"
-                >LOBBY.IM_NOT_READY</button>
-            </p>
+                class="btn btn-secondary"
+                (click)="onLeaveLobbyClick()"
+            >Leave Lobby</button>
         </div>
     </div>
-    <hr />
-    <button
-        type="button"
-        class="btn-secondary"
-        (click)="onLeaveLobbyClick()"
-    >Leave Lobby</button>
-    <button
-        type="button"
-        class="btn-secondary"
-        (click)="onLongActionClick()"
-    >Long action</button>
-</div>
+</ng-container>

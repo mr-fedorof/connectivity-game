@@ -1,7 +1,32 @@
 @import 'component-common.scss';
 
-:host(.app-lobby-create) {
-    & {}
+:host {
+    @extend .app-lobby-create;    
+}
 
-    .app-lobby-create {}
+.app-lobby-create {
+    display: block;
+    background: $white;
+    width: $container-sm-max-width;
+    margin: $spacer-48 auto $spacer-48;
+    padding: $spacer-48;
+    border: 1px solid $gray-200;
+    border-radius: $border-radius-sm;
+
+    @include media-breakpoint-down(md) {
+        padding: $spacer-32;
+        margin: $spacer-16;
+        width: auto;
+    }
+
+    &__title {
+        margin-bottom: $spacer;
+        color: $cian;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        padding-top: $spacer-16;
+    }
 }

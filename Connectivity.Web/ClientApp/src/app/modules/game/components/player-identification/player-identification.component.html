@@ -1,26 +1,33 @@
-<div class="container">
-    <h3>Player</h3>
+<h2
+    class="app-player-identification__title"
+    translate
+>PLAYER_IDENTIFICATION.TITLE</h2>
 
-    <form
-        autocomplete="off"
-        [formGroup]="form"
-        (ngSubmit)="onFormSubmit()"
-    >
-        <div class="form-group">
-            <label for="player-name">Name</label>
-            <input
-                type="text"
-                class="form-control"
-                id="player-name"
-                name="name"
-                [formControl]="form.name"
-            />
-            <app-control-validation [control]="form.name"></app-control-validation>
-        </div>
+<form
+    autocomplete="off"
+    [formGroup]="form"
+    (ngSubmit)="onFormSubmit()"
+>
+    <div class="form-group">
+        <label
+            for="player-name"
+            translate
+        >PLAYER_IDENTIFICATION.NAME</label>
+        <input
+            type="text"
+            class="form-control"
+            id="player-name"
+            name="name"
+            [appAutofocus]
+            [formControl]="form.name"
+            [maxlength]="form.name.maxLength"
+        />
+        <app-control-validation [control]="form.name"></app-control-validation>
+    </div>
 
-        <button
-            type="submit"
-            class="btn btn-primary"
-        >Go</button>
-    </form>
-</div>
+    <button
+        type="submit"
+        class="btn btn-block btn-primary"
+        translate
+    >PLAYER_IDENTIFICATION.NEXT</button>
+</form>
