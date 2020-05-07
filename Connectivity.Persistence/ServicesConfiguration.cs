@@ -9,9 +9,15 @@ namespace Connectivity.Persistence
     {
         public static void AddCosmosDB(this IServiceCollection services, IConfiguration configuration)
         {
+            var config = configuration.GetSection(nameof(CosmosDbConfiguration)).Get<CosmosDbConfiguration>();
+
             services.AddDbContext<ConnectivityDbContext>(builder =>
             {
-                var config = configuration.GetSection(nameof(CosmosDbConfiguration)).Get<CosmosDbConfiguration>();
+                builder.UseCosmos(config.AccountEndpoint, config.AccountKey, config.DatabaseName);
+            });
+
+            services.AddDbContext<CardsDbContext>(builder =>
+            {
                 builder.UseCosmos(config.AccountEndpoint, config.AccountKey, config.DatabaseName);
             });
         }
