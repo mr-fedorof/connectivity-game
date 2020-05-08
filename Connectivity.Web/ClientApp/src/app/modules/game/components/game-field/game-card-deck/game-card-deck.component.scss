@@ -1,0 +1,52 @@
+@import 'component-common.scss';
+
+$card-w: 192px;
+$card-h: 256px;
+
+$card-count: 16;
+$card-pad: 4px;
+
+$z-index: 1000;
+
+:host {
+    @extend .app-game-card-deck;
+}
+
+.app-game-card-deck {
+    position: relative;
+    display: block;
+    height: $card-h;
+    width: $card-w + ($card-count - 1)*$card-pad;
+
+    &__card {
+        height: $card-h;
+        width: $card-w;
+        position: absolute;
+        top: 0;
+        left: 0;
+        
+        @for $i from 1 through $card-count {
+            &:nth-child(#{$i}) {
+                left: $card-pad * $i;
+            }
+        }
+
+        &#{&}--active {
+            position: relative;
+            top: 0;
+            left: 0;
+
+            transform-style: preserve-3d;
+            transform-origin: center center;
+        }
+    }
+
+    &__backdrop {
+        position: fixed;
+        z-index: $z-index;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}

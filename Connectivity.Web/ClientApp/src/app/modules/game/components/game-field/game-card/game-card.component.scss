@@ -4,8 +4,8 @@ $dice-w: 40px;
 $dice-h: 40px;
 $dice-pad: 4px;
 
-$dot-h: 10px;
-$dot-w: 10px;
+$dot-h: 8px;
+$dot-w: 8px;
 
 :host {
     @extend .app-game-card;
@@ -14,13 +14,13 @@ $dot-w: 10px;
 .app-game-card {
     display: block;
     position: relative;
-    height: 256px;
-    width: 192px;
     border-radius: $border-radius;
-    box-shadow: $box-shadow;
+    border: 1px solid $gray-200;
 
     background-repeat: no-repeat;
     background-position: center center;
+
+    transform-style: preserve-3d;
 
     &#{&}--talk {
         background-color: $light-blue;
@@ -52,13 +52,31 @@ $dot-w: 10px;
         background-image: url(/assets/images/joker.svg);
     }
 
+    &#{&}--cover {
+        background-image: none;
+    }
+
+    &__front {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        border-radius: $border-radius;
+        border: 1px solid $gray-200;
+
+
+        transform: translateZ(-1px) rotateY(180deg);
+    }
+
     &__dice {
         display: flex;
         flex-wrap: wrap;
         background-color: $white;
         width: $dice-w;
         height: $dice-h;
-        border-radius: $border-radius;
+        border-radius: $border-radius-sm;
         padding: 0;
         margin: 0;
         list-style-type: none;

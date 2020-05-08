@@ -13,4 +13,8 @@ html {
 body {
     @include flex-v-max;
     @include flex-fill;
+
+    &.noscroll { 
+        overflow: hidden;
+    }      
 }

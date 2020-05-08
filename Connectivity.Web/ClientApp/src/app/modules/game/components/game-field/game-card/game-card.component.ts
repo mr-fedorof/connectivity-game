@@ -11,9 +11,10 @@ export class GameCardComponent implements OnInit {
     public diceDots: number[];
 
     @Input() public type: GameCardType;
+    @Input() public cover = false;
 
     @HostBinding('class') public get hostClass(): string {
-        return `app-game-card ${this.getTypeClass(this.type)}`;
+        return `app-game-card ${this.getTypeClass(this.type)} ${this.cover ? 'app-game-card--cover' : ''}`;
     }
 
     public ngOnInit(): void {

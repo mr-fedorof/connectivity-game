@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
 import { Player, Team } from '@modules/game/models';
 
 @Component({
@@ -14,4 +14,6 @@ export class TeamInfoComponent {
     @HostBinding('class') public get hostClass(): string {
         return `app-team-info--type-${this.index}`;
     }
+
+    @ContentChild('playerTemplate', { read: TemplateRef }) public playerTemplate: TemplateRef<any>;
 }

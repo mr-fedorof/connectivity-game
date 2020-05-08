@@ -41,6 +41,7 @@ import {
     LobbyStorage,
     PendingActionsStorage,
 } from './services';
+import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
 
 @NgModule({
     imports: [
@@ -70,7 +71,8 @@ import {
         GameCardComponent,
         TeamInfoComponent,
         DiceComponent,
-        CardResultConfirmationModalComponent
+        CardResultConfirmationModalComponent,
+        GameCardDeckComponent
     ],
     providers: [
         LobbyService,

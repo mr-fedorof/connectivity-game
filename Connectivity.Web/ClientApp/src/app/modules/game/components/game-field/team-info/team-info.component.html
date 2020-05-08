@@ -1,9 +1,20 @@
 <h5 class="app-team-info__title">{{ team.name }}</h5>
+
 <ul class="app-team-info__player-list">
     <li
         *ngFor="let player of players"
         class="app-team-info__player"
     >
-        {{ player.name }}
+        <ng-container *ngTemplateOutlet="playerTemplate; context: { player: player }"></ng-container>
     </li>
+</ul>
+
+<ul
+    *ngIf="!playerTemplate"
+    class="app-team-info__player-list"
+>
+    <li
+        *ngFor="let player of players"
+        class="app-team-info__player"
+    >{{ player.name }}</li>
 </ul>

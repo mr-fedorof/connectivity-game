@@ -1,13 +1,26 @@
-<ul class="app-game-card__dice app-game-card__dice-{{ diceDots.length }} app-game-card__dice--first">
+<ul
+    *ngIf="!cover"
+    class="app-game-card__dice app-game-card__dice-{{ diceDots.length }} app-game-card__dice--first"
+>
     <li
         *ngFor="let dot of diceDots"
         class="app-game-card__dice-dot"
     ></li>
 </ul>
 
-<ul class="app-game-card__dice app-game-card__dice-{{ diceDots.length }} app-game-card__dice--second">
+<ul
+    *ngIf="!cover"
+    class="app-game-card__dice app-game-card__dice-{{ diceDots.length }} app-game-card__dice--second"
+>
     <li
         *ngFor="let dot of diceDots"
         class="app-game-card__dice-dot"
     ></li>
 </ul>
+
+<div
+    *ngIf="!cover"
+    class="app-game-card__front"
+>
+
+</div>

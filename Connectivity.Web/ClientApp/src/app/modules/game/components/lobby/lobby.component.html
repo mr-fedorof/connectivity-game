@@ -15,7 +15,15 @@
                         [index]="i + 1"
                         [team]="team"
                         [players]="lobby.players | teamPlayers: team.id"
-                    ></app-team-info>
+                    >
+                        <ng-template
+                            #playerTemplate
+                            let-player="player"
+                        >
+                            {{ player.name }}
+                            ({{ (player.ready ? 'LOBBY.PLAYER_READY_LABEL' : 'LOBBY.PLAYER_NOT_READY_LABEL') | translate }})
+                        </ng-template>
+                    </app-team-info>
 
                     <div class="row no-gutters app-lobby__team-actions">
                         <div
@@ -65,8 +73,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <span>({{ (player.ready ? 'LOBBY.PLAYER_READY_LABEL' : 'LOBBY.PLAYER_NOT_READY_LABEL') | translate }})</span> -->
         </div>
         <div class="col-12 col-md-5 col-lg-5 col-xl-4 app-lobby__right-column">
             <h5
