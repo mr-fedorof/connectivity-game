@@ -35,7 +35,7 @@ export class GameCardService {
         return this._timerSubject.asObservable();
     }
 
-    public get visibility$(): Observable<GameCardType> {
+    public get visibilityRestoring$(): Observable<GameCardType> {
         return this._visibleCardSubject.asObservable();
     }
 

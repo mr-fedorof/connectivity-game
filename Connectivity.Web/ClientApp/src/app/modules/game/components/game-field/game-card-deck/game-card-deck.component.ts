@@ -79,7 +79,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
                 this.cdr.markForCheck();
             });
 
-        this.gameCardService.visibility$
+        this.gameCardService.visibilityRestoring$
             .pipe(
                 takeUntil(this.onDestroy),
                 map(gameCardType => gameCardType === this.type),
@@ -135,6 +135,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         this.setUndefinedState();
     }
 
+    // TODO: implement and fix for concurrent request among 6 cards
     private setBodyScrolling(enable: boolean): void {
         // if (enable) {
         //     document.body.classList.remove('noscroll');
