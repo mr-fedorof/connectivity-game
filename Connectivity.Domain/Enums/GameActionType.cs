@@ -25,6 +25,10 @@ namespace Connectivity.Domain.Enums
         RollDicePlayer,
         [EnumMember(Value = "[Player] [Sh] Take Card")]
         TakeCardPlayer,
+        [EnumMember(Value = "[Player] [Sh] Card Reading Start")]
+        CardReadingStartPlayer,
+        [EnumMember(Value = "[Player] [Sh] Card Reading Finish")]
+        CardReadingFinishPlayer,
         [EnumMember(Value = "[Player] [Sh] Card Answer Success")]
         CardAnswerSuccessPlayer,
         [EnumMember(Value = "[Player] [Sh] Card Answer Fail")]
@@ -47,5 +51,7 @@ namespace Connectivity.Domain.Enums
         StartGame,
         [EnumMember(Value = "[Game] [Sh] [Sys] Next Player")]
         NextPlayerGame,
+        [EnumMember(Value = "[Game] [Sh] [Sys] Card Reading Finish")]
+        CardReadingFinishGame,
     }
 }

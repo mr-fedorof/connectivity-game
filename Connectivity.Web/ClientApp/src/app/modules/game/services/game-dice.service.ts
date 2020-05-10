@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()
-export class DiceService {
+export class GameDiceService {
     private readonly _rollDiceSubject = new Subject<number>();
     private readonly _rollDiceFinishSubject = new Subject<void>();
 

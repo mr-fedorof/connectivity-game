@@ -5,4 +5,6 @@ export * from './lobby.storage';
 export * from './game.service';
 export * from './action.service';
 export * from './pending-actions.storage';
-export * from './dice.service';
+export * from './game-dice.service';
+export * from './game-card.service';
+export * from './game-timer.service';

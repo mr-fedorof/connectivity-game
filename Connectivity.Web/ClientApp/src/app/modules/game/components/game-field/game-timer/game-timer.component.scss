@@ -1,0 +1,29 @@
+@import 'component-common.scss';
+
+:host {    
+    @extend .app-game-timer;
+}
+
+.app-game-timer {
+    display: block;
+
+    &__icon {
+        height: 110px;
+        width: 73px;
+        background-image: url(/assets/images/timer.svg);
+        background-repeat: no-repeat;
+        /*background-size: 161px 188px;*/
+        background-position: center center;
+    }
+
+    &__counter {
+        height: 37px;
+        width: 84px;
+        color: #04101B;
+        font-family: Montserrat;
+        font-size: 30px;
+        font-weight: bold;
+        letter-spacing: 0;
+        line-height: 37px;
+    }
+}

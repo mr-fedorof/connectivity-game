@@ -11,3 +11,18 @@ export const nextPlayerGameSysAction = createAction('[Game] [Sh] [Sys] Next Play
     }
 }));
 export type NextPlayerGameSysAction = ReturnType<typeof nextPlayerGameSysAction> & Action;
+
+export const cardReadingFinishGameSysAction = createAction('[Game] [Sh] [Sys] Card Reading Finish', () => ({
+    payload: {}
+}));
+export type CardReadingFinishGameSysAction = ReturnType<typeof cardReadingFinishGameSysAction> & Action;
+
+export const startCardTaskGameSysAction = createAction('[Game] [Sh] [Sys] Start Card Task', () => ({
+    payload: {}
+}));
+export type StartCardTaskGameSysAction = ReturnType<typeof startCardTaskGameSysAction> & Action;
+
+export const finishCardTaskGameSysAction = createAction('[Game] [Sh] [Sys] Finish Card Task', () => ({
+    payload: {}
+}));
+export type FinishCardTaskGameSysAction = ReturnType<typeof finishCardTaskGameSysAction> & Action;

@@ -12,8 +12,11 @@ import {
 
 export function gameCardDeckAnimation(): AnimationTriggerMetadata {
     return trigger('gameCardDeck', [
+        state('undefined', style({})),
+
         state('idle', style({})),
         state('show-card', style({})),
+        state('hide-card', style({})),
 
         transition('idle => show-card', [
             group([
@@ -22,23 +25,31 @@ export function gameCardDeckAnimation(): AnimationTriggerMetadata {
             ])
         ]),
 
-        transition('show-card => idle', [
+        transition('show-card => hide-card', [
             group([
                 query('@gameCard', animateChild()),
                 query('@gameCardBackdrop', animateChild())
             ])
-        ])
+        ]),
+
+        transition('* => *', [])
     ]);
 }
 
 export function gameCardBackdropAnimation(): AnimationTriggerMetadata {
     return trigger('gameCardBackdrop', [
+        state('undefined', style({
+            display: 'none',
+            background: 'rgba(0, 0, 0, 0)'
+        })),
+
         state('hidden', style({
             display: 'none',
             background: 'rgba(0, 0, 0, 0)'
         })),
 
         state('shown', style({
+            display: 'block',
             background: 'rgba(0, 0, 0, 0.25)'
         })),
 
@@ -54,12 +65,22 @@ export function gameCardBackdropAnimation(): AnimationTriggerMetadata {
                 display: 'block'
             }),
             animate('0.5s')
-        ])
+        ]),
+
+        transition('* => *', [])
     ]);
 }
 
 export function gameCardAnimation(targetWidth = '480px', targetHeight = '640px'): AnimationTriggerMetadata {
     return trigger('gameCard', [
+        state('undefined', style({
+            top: '*',
+            left: '*',
+            width: '*',
+            height: '*',
+            transform: 'none'
+        })),
+
         state('on-deck', style({
             top: '*',
             left: '*',
@@ -76,7 +97,7 @@ export function gameCardAnimation(targetWidth = '480px', targetHeight = '640px')
             height: targetHeight
         })),
 
-        state('out', style({
+        state('hidden', style({
             display: 'none'
         })),
 
@@ -95,12 +116,12 @@ export function gameCardAnimation(targetWidth = '480px', targetHeight = '640px')
             }))
         ]),
 
-        transition('open => out', [
+        transition('open => hidden', [
             animate('0.5s 0ms ease-in', style({
                 top: '-100%'
             }))
         ]),
 
-        transition('out => on-deck', [])
+        transition('* => *', [])
     ]);
 }

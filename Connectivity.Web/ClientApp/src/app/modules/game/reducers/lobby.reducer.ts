@@ -2,6 +2,12 @@ import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import { addElement, removeElementWith, replaceElementWith } from '@shared/utils/array.utils';
 
 import {
+    CardReadingFinishGameSysAction,
+    cardReadingFinishGameSysAction,
+    CardReadingFinishPlayerAction,
+    cardReadingFinishPlayerAction,
+    CardReadingStartPlayerAction,
+    cardReadingStartPlayerAction,
     InitLobbyAction,
     initLobbyAction,
     JoinTeamPlayerAction,
@@ -26,6 +32,8 @@ import {
     rollDicePlayerAction,
     StartGameSysAction,
     startGameSysAction,
+    TakeCardPlayerAction,
+    takeCardPlayerAction,
     UpdateLastActionIndexLobbyAction,
     updateLastActionIndexLobbyAction,
 } from '../actions';
@@ -113,6 +121,50 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             playerTurnState: {
                 ...state.game.playerTurnState,
                 diceValue: payload.value
+            }
+        }
+    })),
+
+    on(takeCardPlayerAction, (state: Lobby, { payload }: TakeCardPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                gameCard: payload.gameCard
+            }
+        }
+    })),
+
+    on(cardReadingStartPlayerAction, (state: Lobby, { payload }: CardReadingStartPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardReadingStartedAt: payload.startedAt
+            }
+        }
+    })),
+
+    on(cardReadingFinishPlayerAction, (state: Lobby, { payload }: CardReadingFinishPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardReadingFinished: true
+            }
+        }
+    })),
+
+    on(cardReadingFinishGameSysAction, (state: Lobby, { payload }: CardReadingFinishGameSysAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardReadingFinished: true
             }
         }
     })),

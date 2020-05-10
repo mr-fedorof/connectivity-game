@@ -1,4 +1,6 @@
-﻿using Connectivity.Domain.Models;
+﻿using System;
+using Connectivity.Domain.Models;
+using Connectivity.Persistence.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectivity.Persistence
@@ -23,14 +25,28 @@ namespace Connectivity.Persistence
                 .HasNoDiscriminator();
 
             modelBuilder.Entity<Lobby>()
-                .OwnsOne(e => e.Game)
-                .OwnsOne(e => e.PlayerTurnState);
+                .OwnsOne(_ => _.Game, _ =>
+                {
+                    _.OwnsOne(_ => _.PlayerTurnState, _ =>
+                    {
+                        _.OwnsOne(_ => _.GameCard, _ =>
+                        {
+                            _.OwnsOne(_ => _.Task, _ =>
+                            {
+                                _.Property(e => e.Questions)
+                                    .HasJsonConversion();
+                                _.Property(e => e.BannedWords)
+                                    .HasJsonConversion();
+                            });
+                        });
+                    });
+                });
 
             modelBuilder.Entity<Lobby>()
-                .OwnsMany(e => e.Teams);
+                .OwnsMany(_ => _.Teams);
 
             modelBuilder.Entity<Lobby>()
-                .OwnsMany(e => e.Players);
+                .OwnsMany(_ => _.Players);
         }
     }
 }

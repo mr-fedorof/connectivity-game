@@ -10,7 +10,6 @@
     class="app-game-card-deck__card app-game-card-deck__card--top"
     [type]="type"
     [cover]="false"
-    (click)="onTopCardClick()"
 ></app-game-card>
 
 <div
@@ -24,6 +23,6 @@
         class="app-game-card-deck__card app-game-card-deck__card--active"
         [type]="type"
         [cover]="false"
-        (click)="onActiveCardClick()"
+        [front]="true"
     ></app-game-card>
 </div>

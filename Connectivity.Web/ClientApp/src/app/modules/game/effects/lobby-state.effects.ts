@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationService } from '@modules/app-core/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { EMPTY, from, of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
@@ -11,6 +11,7 @@ import {
     initLobbyAction,
     refreshPendingActionsStateAction,
     restoreLobbyAction,
+    SkipActionLobbyStateAction,
     skipActionLobbyStateAction,
     startProcessingLobbyStateAction,
     updateLastActionIndexLobbyAction,
@@ -36,12 +37,14 @@ export class LobbyStateEffects {
 
     public skipAction$ = createEffect(() => this.actions$.pipe(
         ofType(skipActionLobbyStateAction),
-        switchMap((action: Action) => from([
-            updateLastActionIndexLobbyAction(action.index),
-            addHandledActionLobbyStateAction(action),
-            refreshPendingActionsStateAction()
-        ]))
-    ));
+        tap((action: SkipActionLobbyStateAction) => {
+            this.store.dispatch(updateLastActionIndexLobbyAction(action.payload.action.index));
+            this.store.dispatch(addHandledActionLobbyStateAction(action.payload.action));
+            this.store.dispatch(refreshPendingActionsStateAction());
+        })
+    ), {
+        dispatch: false
+    });
 
     public updateLastActionIndex$ = createEffect(() => this.actions$.pipe(
         filter(isOrderedAction),

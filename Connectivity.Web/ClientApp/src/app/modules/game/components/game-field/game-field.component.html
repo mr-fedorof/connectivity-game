@@ -10,13 +10,13 @@
 
                 <div class="row justify-content-between">
                     <div class="col-auto">
-                        <app-game-card-deck [type]="1"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.Talk"></app-game-card-deck>
                     </div>
                     <div class="col-auto">
-                        <app-game-card-deck [type]="2"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.Mine"></app-game-card-deck>
                     </div>
                     <div class="col-auto">
-                        <app-game-card-deck [type]="3"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.Draw"></app-game-card-deck>
                     </div>
                 </div>
 
@@ -25,14 +25,11 @@
             <div class="col">
                 <div class="row">
                     <div class="col app-game-field__center-col-dice">
-                        <app-dice [value]="diceValue$ | async"></app-dice>
+                        <app-game-dice [value]="diceValue$ | async"></app-game-dice>
                     </div>
                     <div class="col">hz</div>
                     <div class="col">
-                        <div class="timer">
-                            <div class="timer-icon"></div>
-                            <div class="timer-count">{{ timeLeft | async }}</div>
-                        </div>
+                        <app-game-timer></app-game-timer>
                     </div>
                 </div>
             </div>
@@ -41,40 +38,23 @@
 
                 <div class="row justify-content-between">
                     <div class="col-auto">
-                        <app-game-card-deck [type]="4"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.Crocodile"></app-game-card-deck>
                     </div>
                     <div class="col-auto">
-                        <app-game-card-deck [type]="5"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.Agent"></app-game-card-deck>
                     </div>
                     <div class="col-auto">
-                        <app-game-card-deck [type]="6"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.Joker"></app-game-card-deck>
                     </div>
                 </div>
 
             </div>
 
-            <div class="col-auto app-game-field__center-col-actions">
-                <button
-                    *ngIf="(currentPlayerTurn$ | async) && !(diceValue$ | async)"
-                    type="button"
-                    class="btn btn-lg btn-primary"
-                    [disabled]="isProcessing$ | async"
-                    (click)="onRollDiceClick()"
-                >Roll the dice</button>
-                <button
-                    *ngIf="(currentPlayerTurn$ | async) && (diceValue$ | async)"
-                    type="button"
-                    class="btn btn-lg btn-primary"
-                    [disabled]="isProcessing$ | async"
-                    (click)="onTakeCardClick()"
-                >Take Card</button>
-                <button
-                    *ngIf="currentPlayerTurn$ | async"
-                    type="button"
-                    class="btn btn-lg btn-danger"
-                    [disabled]="isProcessing$ | async"
-                >Skip a move</button>
-            </div>
+            <app-game-actions
+                class="col-auto app-game-field__center-col-actions"
+                [currentPlayerTurnState]="currentPlayerTurnState$ | async"
+                [isProcessing]="isProcessing$ | async"
+            ></app-game-actions>
         </div>
     </div>
 

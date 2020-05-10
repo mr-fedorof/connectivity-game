@@ -10,18 +10,23 @@ import { actionGuards } from './action-guards';
 import {
     CardResultConfirmationModalComponent,
 } from './components/game-field/card-result-confirmation-modal/card-result-confirmation-modal.component';
-import { DiceComponent } from './components/game-field/dice/dice.component';
+import { GameActionsComponent } from './components/game-field/game-actions/game-actions.component';
+import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
+import { GameDiceComponent } from './components/game-field/game-dice/game-dice.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { GameMessagesComponent } from './components/game-field/game-messages/game-messages.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
+import { GameTimerComponent } from './components/game-field/game-timer/game-timer.component';
 import { TeamInfoComponent } from './components/game-field/team-info/team-info.component';
 import { TeamsComponent } from './components/game-field/teams/teams.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
-import { GameEffects } from './effects/game.effects';
+import { GameCardEffects } from './effects/game/game-card.effects';
+import { GameDiceEffects } from './effects/game/game-dice.effects';
+import { GameEffects } from './effects/game/game.effects';
 import { LobbyStateEffects } from './effects/lobby-state.effects';
 import { LobbyEffects } from './effects/lobby.effects';
 import { PlayerEffects } from './effects/player.effects';
@@ -33,15 +38,16 @@ import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
 import {
     ActionService,
-    DiceService,
+    GameCardService,
+    GameDiceService,
     GameHubService,
     GameService,
     GameSessionStorage,
+    GameTimerService,
     LobbyService,
     LobbyStorage,
     PendingActionsStorage,
 } from './services';
-import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
 
 @NgModule({
     imports: [
@@ -53,7 +59,9 @@ import { GameCardDeckComponent } from './components/game-field/game-card-deck/ga
             LobbyStateEffects,
             LobbyEffects,
             PlayerEffects,
-            GameEffects
+            GameEffects,
+            GameDiceEffects,
+            GameCardEffects
         ]),
         SharedModule
     ],
@@ -70,9 +78,11 @@ import { GameCardDeckComponent } from './components/game-field/game-card-deck/ga
         GameTilesComponent,
         GameCardComponent,
         TeamInfoComponent,
-        DiceComponent,
+        GameDiceComponent,
         CardResultConfirmationModalComponent,
-        GameCardDeckComponent
+        GameCardDeckComponent,
+        GameActionsComponent,
+        GameTimerComponent
     ],
     providers: [
         LobbyService,
@@ -85,7 +95,9 @@ import { GameCardDeckComponent } from './components/game-field/game-card-deck/ga
         ActionService,
         LobbyStateInitializedGuard,
         PendingActionsStorage,
-        DiceService,
+        GameDiceService,
+        GameCardService,
+        GameTimerService,
         ...actionGuardingProviders,
         ...actionGuards
     ]

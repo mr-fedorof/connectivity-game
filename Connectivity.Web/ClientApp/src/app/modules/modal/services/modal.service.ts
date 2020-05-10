@@ -11,7 +11,7 @@ export class ModalService {
 
     }
 
-    public show<T, R>(component: Type<T>, resultFn: (_: T) => R = (() => undefined)): Observable<R> {
+    public inquiry<T, R>(component: Type<T>, resultFn: (_: T) => R = (() => undefined)): Observable<R> {
         const config: ModalOptions = {};
         const modalRef: BsModalRef = this.bsModalService.show(component, config);
 

@@ -1,27 +1,27 @@
 import { AnimationEvent } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
-import { DiceService } from '@modules/game/services';
+import { GameDiceService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { takeUntil } from 'rxjs/operators';
 
-import { rollDiceAnimation } from './dice.animations';
+import { rollDiceAnimation } from './game-dice.animations';
 
 @Component({
-    selector: 'app-dice',
-    templateUrl: './dice.component.html',
-    styleUrls: ['./dice.component.scss'],
+    selector: 'app-game-dice',
+    templateUrl: './game-dice.component.html',
+    styleUrls: ['./game-dice.component.scss'],
     animations: [
         rollDiceAnimation()
     ]
 })
-export class DiceComponent extends DestroyableComponent implements OnInit {
+export class GameDiceComponent extends DestroyableComponent implements OnInit {
     public rollTo = null;
     public rollDiceAnimationState = 'roll-start';
 
     @Input() public value: number = null;
 
     constructor(
-        private readonly diceService: DiceService
+        private readonly gameDiceService: GameDiceService
     ) {
         super();
     }
@@ -31,7 +31,7 @@ export class DiceComponent extends DestroyableComponent implements OnInit {
             this.rollDiceAnimationState = `roll-to-${this.value}`;
         }
 
-        this.diceService.rollDice$
+        this.gameDiceService.rollDice$
             .pipe(
                 takeUntil(this.onDestroy)
             )
@@ -54,7 +54,7 @@ export class DiceComponent extends DestroyableComponent implements OnInit {
             case 'roll-to-4':
             case 'roll-to-5':
             case 'roll-to-6':
-                this.diceService.rollDiceFinish();
+                this.gameDiceService.rollDiceFinish();
 
                 return;
 

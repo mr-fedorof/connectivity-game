@@ -45,36 +45,3 @@
         }
     }
 }
-
-.roll-dice {
-    height: 161px;
-    width: 188px;
-    background-image: url(/assets/images/dices.svg);
-    background-repeat: no-repeat;
-    /*background-size: 161px 188px;*/
-    background-position: center center;
-}
-
-.timer {
-    margin: 0 auto;
-
-    .timer-icon {
-        height: 110px;
-        width: 73px;
-        background-image: url(/assets/images/timer.svg);
-        background-repeat: no-repeat;
-        /*background-size: 161px 188px;*/
-        background-position: center center;
-    }
-
-    .timer-count {
-        height: 37px;
-        width: 84px;
-        color: #04101B;
-        font-family: Montserrat;
-        font-size: 30px;
-        font-weight: bold;
-        letter-spacing: 0;
-        line-height: 37px;
-    }
-}
