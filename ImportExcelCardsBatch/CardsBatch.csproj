@@ -36,7 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Cards.xlsx">
+    <None Update="Cards_initial.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>    
+    <None Update="imported.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

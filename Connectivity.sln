@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Domain", "Conn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Application", "Connectivity.Application\Connectivity.Application.csproj", "{F47B0110-03C2-4F7D-965F-385C90CA771F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportExcelCardsBatch", "ImportExcelCardsBatch\ImportExcelCardsBatch.csproj", "{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardsBatch", "ImportExcelCardsBatch\CardsBatch.csproj", "{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

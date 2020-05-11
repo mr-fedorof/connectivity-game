@@ -9,7 +9,7 @@ export class GameSessionStorage {
     private readonly EXPIRATION_TIME = 2 * 60 * 60 * 1000; // 2 hours
 
     public get(lobbyId: string): GameSession | null {
-        const gameSession = getLocalStorageArrayItem<GameSession>(this.CACHE_KEY, item => item.lobbyId === lobbyId);
+        const gameSession = getLocalStorageArrayItem<GameSession>(this.CACHE_KEY, item => item?.lobbyId === lobbyId);
 
         return gameSession;
     }
@@ -18,11 +18,11 @@ export class GameSessionStorage {
         addLocalStorageArrayItem<GameSession>(
             this.CACHE_KEY,
             gameSession,
-            item => item.lobbyId === gameSession.lobbyId,
+            item => item?.lobbyId === gameSession.lobbyId,
             this.EXPIRATION_TIME);
     }
 
     public remove(lobbyId: string): void {
-        removeLocalStorageArrayItem<GameSession>(this.CACHE_KEY, item => item.lobbyId === lobbyId);
+        removeLocalStorageArrayItem<GameSession>(this.CACHE_KEY, item => item?.lobbyId === lobbyId);
     }
 }

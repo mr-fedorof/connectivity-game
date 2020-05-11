@@ -14,48 +14,49 @@ namespace ImportExcelCardsBatch
         {
             var env = args[0];
             var fileName = args[1];
+            var mode = args[2];
+            var clearOnImport = args[3] ?? "y";
 
-            Console.WriteLine($"Importing {fileName} to env {env}");
+
             Console.WriteLine($"Configuring the app");
             var serviceCollection = new ServiceCollection();
             serviceCollection.ConfigureServices(env);
 
             _container = serviceCollection.BuildServiceProvider();
             var service = _container.GetService<IGameCardService>();
-
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
 
-            Console.WriteLine($"Reading cards from {filePath}");
-            var cards = ExcelHelper.ReadCardsByType(filePath);
+            switch (mode)
+            {
+                case "import":
+                    Console.WriteLine($"Importing {fileName} to env {env}");
+ 
 
-            Console.WriteLine($"Deleting old previously saved cards from db");
-            await service.DeleteAllCardsAsync();
+                    Console.WriteLine($"Reading cards from {filePath}");
+                    var cards = ExcelHelper.ReadCards(filePath);
 
-            Console.WriteLine($"Saving {cards.Count} cards (might take some time)");
-            await service.SaveCardsAsync(cards);
-            var cardsSaved = service.GetAllCardsAsync();
-            Console.WriteLine($"Done. Max Pidor. Saved {cardsSaved.Count} cards");
+                    if (clearOnImport == "y")
+                    {
+                        Console.WriteLine($"Deleting old previously saved cards from db");
+                        await service.DeleteAllCardsAsync();
+                    }
 
-            //foreach (var card in cardsSaved)
-            //{
-            //    Console.WriteLine($"{card.Type} - {card.Task.Type}");
-            //    foreach (var task in card.Task.Questions)
-            //    {
-            //        Console.WriteLine($"\t{task}");
-            //    }
+                    Console.WriteLine($"Saving {cards.Count} cards (might take some time)");
+                    await service.SaveCardsAsync(cards);
 
-            //    if (card.Task.BannedWords?.Length > 0)
-            //    {
-            //        Console.WriteLine($"\t====");
+                    Console.WriteLine($"Done. Max Pidor. Saved {cards.Count} cards");
+                    break;
+                case "export":
+                    var cardsSaved = service.GetAllCardsAsync();
+                    ExcelHelper.WriteCards(filePath, cardsSaved);
+                    break;
+                default:
+                    throw new Exception("Max, zaebal, tolko import/export");
+            }
 
-            //        foreach (var task in card.Task.BannedWords)
-            //        {
-            //            Console.WriteLine($"\t{task}");
-            //        }
-            //    }
 
-            //    Console.WriteLine($"========");
-            //}
+
+
         }
     }
 }

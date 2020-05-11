@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Connectivity.Domain.Enums;
 using Connectivity.Domain.Models;
 using Connectivity.Domain.Models.Cards;
 
@@ -9,7 +10,9 @@ namespace Connectivity.Application.Services.Interfaces
     {
         List<Card> GetAllCardsAsync();
 
-        Task<Card> GetCardAsync(string id);
+        LobbyCards GetLobbyCards();
+
+        Task<Card> GetCardByIdAsync(string id);
 
         Task SaveCardAsync(Card card);
 

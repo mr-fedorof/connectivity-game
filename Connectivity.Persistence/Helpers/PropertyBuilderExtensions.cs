@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using System.Linq;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 
 namespace Connectivity.Persistence.Helpers
@@ -14,7 +13,17 @@ namespace Connectivity.Persistence.Helpers
             return builder
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<T>(v)); ;
+                    v => JsonConvert.DeserializeObject<T>(v));
+        }        
+        
+        [Obsolete("replace with JSON on next card import")]
+        public static PropertyBuilder<string[]> HasCsvConversion(this PropertyBuilder<string[]> builder)
+        {
+            return builder
+                .HasConversion(
+                    v => string.Join(',', v),
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
         }
+
     }
 }

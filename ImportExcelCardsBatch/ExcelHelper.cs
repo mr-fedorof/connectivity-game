@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.Models.Cards;
 using OfficeOpenXml;
@@ -9,7 +10,7 @@ namespace ImportExcelCardsBatch
 {
     public static class ExcelHelper
     {
-        public static List<Card> ReadCardsByType(string filePath)
+        public static List<Card> ReadCards(string filePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -22,14 +23,17 @@ namespace ImportExcelCardsBatch
             ImportDraw(package, cards);
             ImportCrocodile(package, cards);
             ImportWhoAmI(package, cards);
-            ImportJoker(package, cards);
+            ImportJoker(package, cards, TaskType.JokerTopsyTurvy);
+            ImportJoker(package, cards, TaskType.JokerNotMyFilm);
+            ImportJoker(package, cards, TaskType.JokerSpeakingBook);
+            ImportJoker(package, cards, TaskType.JokerNotMySong);
 
             return cards;
         }
 
         private static void ImportAlias(ExcelPackage package, List<Card> cards)
         {
-            var sheet = package.Workbook.Worksheets["Alias"];
+            var sheet = package.Workbook.Worksheets[CardType.Alias.ToString()];
             var curr = 2;
             var found = 0;
             while (true)
@@ -63,7 +67,7 @@ namespace ImportExcelCardsBatch
 
         private static void ImportTaboo(ExcelPackage package, List<Card> cards)
         {
-            var sheet = package.Workbook.Worksheets["Taboo"];
+            var sheet = package.Workbook.Worksheets[CardType.Taboo.ToString()];
             var curr = 2;
             var found = 0;
             while (true)
@@ -111,7 +115,7 @@ namespace ImportExcelCardsBatch
 
         private static void ImportDraw(ExcelPackage package, List<Card> cards)
         {
-            var sheet = package.Workbook.Worksheets["Draw"];
+            var sheet = package.Workbook.Worksheets[CardType.Draw.ToString()];
 
             var curr = 2;
             var found = 0;
@@ -147,7 +151,7 @@ namespace ImportExcelCardsBatch
 
         private static void ImportCrocodile(ExcelPackage package, List<Card> cards)
         {
-            var sheet = package.Workbook.Worksheets["Crocodile"];
+            var sheet = package.Workbook.Worksheets[CardType.Crocodile.ToString()];
             var curr = 2;
             var found = 0;
 
@@ -181,7 +185,7 @@ namespace ImportExcelCardsBatch
 
         private static void ImportWhoAmI(ExcelPackage package, List<Card> cards)
         {
-            var sheet = package.Workbook.Worksheets["Who Am I"];
+            var sheet = package.Workbook.Worksheets[CardType.WhoAmI.ToString()];
             var curr = 2;
             var found = 0;
 
@@ -213,110 +217,225 @@ namespace ImportExcelCardsBatch
             Console.WriteLine($"Found {found} Who Am I cards");
         }
 
-        private static void ImportJoker(ExcelPackage package, List<Card> cards)
+        private static void ImportJoker(ExcelPackage package, List<Card> cards, TaskType type)
         {
-            var sheet = package.Workbook.Worksheets["Joker"];
+            var sheet = package.Workbook.Worksheets[type.ToString()];
             var curr = 2;
             var found = 0;
 
-            while (true)
+            switch (type)
             {
-                if (sheet == null || string.IsNullOrEmpty(sheet.Cells[$"A{curr}"].Text) || string.IsNullOrEmpty(sheet.Cells[$"B{curr}"].Text))
-                {
+                case TaskType.JokerTopsyTurvy:
+                    while (true)
+                    {
+                        if (sheet == null || string.IsNullOrEmpty(sheet.Cells[$"A{curr}"].Text) || string.IsNullOrEmpty(sheet.Cells[$"A{curr + 1}"].Text))
+                        {
+                            break;
+                        }
+                        var card = new Card
+                        {
+                            Type = CardType.Joker,
+                            Timespan = 1,
+                            Reward = 3,
+                            Task = new CardTask
+                            {
+                                Type = TaskType.JokerTopsyTurvy,
+                                Questions = new[]
+                                {
+                                    sheet.Cells[$"A{curr}"].Text.Trim(),
+                                    sheet.Cells[$"A{curr+1}"].Text.Trim()
+                                }
+                            }
+                        };
+
+                        cards.Add(card);
+                        curr += 2;
+                        found++;
+                    }
+
                     break;
-                }
-
-                if (sheet.Cells[$"B{curr}"].Text == "Шиворот-навыворот")
-                {
-                    var card = new Card
+                
+                case TaskType.JokerNotMyFilm:
+                    while (true)
                     {
-                        Type = CardType.Joker,
-                        Timespan = 1,
-                        Reward = 3,
-                        Task = new CardTask
+                        if (sheet == null || string.IsNullOrEmpty(sheet.Cells[$"A{curr}"].Text) || string.IsNullOrEmpty(sheet.Cells[$"A{curr + 1}"].Text))
                         {
-                            Type = TaskType.JokerTopsyTurvy,
-                            Questions = new[]
-                            {
-                                sheet.Cells[$"A{curr}"].Text.Trim(),
-                                sheet.Cells[$"A{curr+1}"].Text.Trim()
-                            }
+                            break;
                         }
-                    };
-                    cards.Add(card);
+                        var card = new Card
+                        {
+                            Type = CardType.Joker,
+                            Timespan = 1,
+                            Reward = 3,
+                            Task = new CardTask
+                            {
+                                Type = TaskType.JokerNotMyFilm,
+                                Questions = new[]
+                                {
+                                    sheet.Cells[$"A{curr}"].Text.Trim(),
+                                    sheet.Cells[$"A{curr+1}"].Text.Trim()
+                                }
+                            }
+                        };
+                        cards.Add(card);
+                        curr += 2;
+                        found++;
+                    }
 
-                    curr += 2;
-                }
+                    break;
 
-                if (sheet.Cells[$"B{curr}"].Text == "Не мое кино")
-                {
-                    var card = new Card
+                case TaskType.JokerSpeakingBook:
+                    while (true)
                     {
-                        Type = CardType.Joker,
-                        Timespan = 1,
-                        Reward = 3,
-                        Task = new CardTask
+                        if (sheet == null 
+                            || string.IsNullOrEmpty(sheet.Cells[$"A{curr}"].Text) 
+                            || string.IsNullOrEmpty(sheet.Cells[$"A{curr + 1}"].Text)
+                            || string.IsNullOrEmpty(sheet.Cells[$"A{curr + 2}"].Text))
                         {
-                            Type = TaskType.JokerNotMyFilm,
-                            Questions = new[]
-                            {
-                                sheet.Cells[$"A{curr}"].Text.Trim(),
-                                sheet.Cells[$"A{curr+1}"].Text.Trim()
-                            }
+                            break;
                         }
-                    };
-                    cards.Add(card);
 
-                    curr += 2;
-                }
+                        var card = new Card
+                        {
+                            Type = CardType.Joker,
+                            Timespan = 1,
+                            Reward = 3,
+                            Task = new CardTask
+                            {
+                                Type = TaskType.JokerSpeakingBook,
+                                Questions = new[]
+                                {
+                                    sheet.Cells[$"A{curr}"].Text.Trim(),
+                                    sheet.Cells[$"A{curr+1}"].Text.Trim(),
+                                    sheet.Cells[$"A{curr+2}"].Text.Trim()
+                                }
+                            }
+                        };
+                        cards.Add(card);
 
-                if (sheet.Cells[$"B{curr}"].Text == "Говорящая книга")
-                {
-                    var card = new Card
+                        curr += 3;
+                        found++;
+                    }
+
+                    break;
+
+                case TaskType.JokerNotMySong:
+                    while (true)
                     {
-                        Type = CardType.Joker,
-                        Timespan = 1,
-                        Reward = 3,
-                        Task = new CardTask
+                        if (sheet == null 
+                            || string.IsNullOrEmpty(sheet.Cells[$"A{curr}"].Text) 
+                            || string.IsNullOrEmpty(sheet.Cells[$"A{curr + 1}"].Text))
                         {
-                            Type = TaskType.JokerSpeakingBook,
-                            Questions = new[]
-                            {
-                                sheet.Cells[$"A{curr}"].Text.Trim(),
-                                sheet.Cells[$"A{curr+1}"].Text.Trim(),
-                                sheet.Cells[$"A{curr+2}"].Text.Trim()
-                            }
+                            break;
                         }
-                    };
-                    cards.Add(card);
 
-                    curr += 3;
-                }
-
-                if (sheet.Cells[$"B{curr}"].Text == "Не моя песня")
-                {
-                    var card = new Card
-                    {
-                        Type = CardType.Joker,
-                        Timespan = 1,
-                        Reward = 3,
-                        Task = new CardTask
+                        var card = new Card
                         {
-                            Type = TaskType.JokerNotMySong,
-                            Questions = new[]
+                            Type = CardType.Joker,
+                            Timespan = 1,
+                            Reward = 3,
+                            Task = new CardTask
                             {
-                                sheet.Cells[$"A{curr}"].Text.Trim(),
-                                sheet.Cells[$"A{curr+1}"].Text.Trim()
+                                Type = TaskType.JokerNotMySong,
+                                Questions = new[]
+                                {
+                                    sheet.Cells[$"A{curr}"].Text.Trim(),
+                                    sheet.Cells[$"A{curr+1}"].Text.Trim()
+                                }
                             }
-                        }
-                    };
-                    cards.Add(card);
+                        };
+                        cards.Add(card);
 
-                    curr += 2;
-                }
-                found++;
+                        curr += 2;
+                        found++;
+                    }
+
+                    break;
             }
-            Console.WriteLine($"Found {found} Joker cards");
+
+            Console.WriteLine($"Found {found} {type} cards");
+        }
+
+        public static void WriteCards(string filePath, List<Card> cardsSaved)
+        {
+            var newFile = new FileInfo(filePath);
+            if (newFile.Exists)
+            {
+                Console.WriteLine($"File {filePath} already existed, deleting... ");
+                newFile.Delete();  // ensures we create a new workbook
+
+                newFile = new FileInfo(filePath);
+                Console.WriteLine($"New file created");
+            }
+
+            using var package = new ExcelPackage(newFile);
+
+            Export(package, cardsSaved, CardType.Alias);
+            ExportTaboo(package, cardsSaved);
+            Export(package, cardsSaved, CardType.Draw);
+            Export(package, cardsSaved, CardType.Crocodile);
+            Export(package, cardsSaved, CardType.WhoAmI);
+            ExportJoker(package, cardsSaved, TaskType.JokerTopsyTurvy);
+            ExportJoker(package, cardsSaved, TaskType.JokerNotMyFilm);
+            ExportJoker(package, cardsSaved, TaskType.JokerSpeakingBook);
+            ExportJoker(package, cardsSaved, TaskType.JokerNotMySong);
+
+            Console.WriteLine($"Done");
+            package.Save();
+        }
+
+        private static void Export(ExcelPackage package, List<Card> cards, CardType type)
+        {
+            var worksheet = package.Workbook.Worksheets.Add(type.ToString());
+            worksheet.Cells[1, 1].Value = "Question";
+
+            var questions = cards.Where(_ => _.Type == type).SelectMany(card => card.Task.Questions).ToList();
+            var idx = 2;
+            foreach (var q in questions)
+            {
+                worksheet.Cells[$"A{idx}"].Value = q;
+                idx++;
+            }
+            worksheet.Cells[$"A1:A{idx}"].AutoFitColumns(0);
+            Console.WriteLine($"Exported {idx-2} {type} questions");
+        }
+
+        private static void ExportTaboo(ExcelPackage package, List<Card> cards)
+        {
+            var worksheet = package.Workbook.Worksheets.Add(CardType.Taboo.ToString());
+            worksheet.Cells[1, 1].Value = "Question";
+            worksheet.Cells[1, 2].Value = "Banned Words";
+
+            var cardsTaboo = cards.Where(_ => _.Type == CardType.Taboo).ToList();
+            var idx = 2;
+            foreach (var card in cardsTaboo)
+            {
+                worksheet.Cells[$"A{idx}"].Value = card.Task.Questions.First();
+
+                foreach (var bw in card.Task.BannedWords)
+                {
+                    worksheet.Cells[$"B{idx}"].Value = bw;
+                    idx++;
+                }
+            }
+            worksheet.Cells[$"A1:B{idx}"].AutoFitColumns(0);
+            Console.WriteLine($"Exported {idx-2} {CardType.Taboo} questions");
+        }
+
+        private static void ExportJoker(ExcelPackage package, List<Card> cards, TaskType taskType)
+        {
+            var worksheet = package.Workbook.Worksheets.Add($"{taskType}");
+            worksheet.Cells[1, 1].Value = "Question";
+
+            var questions = cards.Where(_ => _.Task.Type == taskType).SelectMany(card => card.Task.Questions).ToList();
+            var idx = 2;
+            foreach (var q in questions)
+            {
+                worksheet.Cells[$"A{idx}"].Value = q;
+                idx++;
+            }
+            worksheet.Cells[$"A1:A{idx}"].AutoFitColumns(0);
+            Console.WriteLine($"Exported {idx - 2} {taskType} questions");
         }
     }
 }

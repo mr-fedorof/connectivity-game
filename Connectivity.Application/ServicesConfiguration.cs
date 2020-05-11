@@ -30,6 +30,7 @@ namespace Connectivity.Application
 
             // TODO: Make singleton
             services.AddScoped<ILobbyService, LobbyService>();
+            services.AddScoped<IGameCardService, GameCardService>();
         }
 
         private static IServiceCollection AddGameActionHandlers(this IServiceCollection services, Assembly assembly)

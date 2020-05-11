@@ -1,5 +1,4 @@
-﻿using System;
-using Connectivity.Domain.Models;
+﻿using Connectivity.Domain.Models;
 using Connectivity.Persistence.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,6 +46,25 @@ namespace Connectivity.Persistence
 
             modelBuilder.Entity<Lobby>()
                 .OwnsMany(_ => _.Players);
+
+
+            modelBuilder.Entity<Lobby>()
+                .OwnsOne(e => e.CardIds, _ =>
+                {
+                    _.Property(e => e.Alias)
+                        .HasJsonConversion();
+                    _.Property(e => e.Taboo)
+                        .HasJsonConversion();
+                    _.Property(e => e.Draw)
+                        .HasJsonConversion();
+                    _.Property(e => e.Crocodile)
+                        .HasJsonConversion();
+                    _.Property(e => e.WhoAmI)
+                        .HasJsonConversion();
+                    _.Property(e => e.Joker)
+                        .HasJsonConversion();
+                });
         }
     }
+
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Connectivity.Domain.Models.Cards;
 
 namespace Connectivity.Domain.Models
 {
@@ -21,5 +23,8 @@ namespace Connectivity.Domain.Models
         public IList<Team> Teams { get; set; }
 
         public IList<Player> Players { get; set; }
+
+        [JsonIgnore]
+        public LobbyCards CardIds { get; set; }
     }
 }

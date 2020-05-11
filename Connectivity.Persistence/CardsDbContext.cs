@@ -1,6 +1,7 @@
 ﻿using System;
 using Connectivity.Domain.Models;
 using Connectivity.Domain.Models.Cards;
+using Connectivity.Persistence.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectivity.Persistence
@@ -25,26 +26,14 @@ namespace Connectivity.Persistence
                 .HasNoDiscriminator();
 
             modelBuilder.Entity<Card>()
-                .OwnsOne(e => e.Task)
-                .Property(e => e.Questions)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
-            
-            modelBuilder.Entity<Card>()
-                .OwnsOne(e => e.Task)
-                .Property(e => e.BannedWords)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
-
-
-
-            //modelBuilder.Entity<CardTask>()
-            //    .OwnsMany<string>(e => e.Questions);
-            //modelBuilder.Entity<CardTask>()
-            //    .OwnsMany<string>(e => e.BannedWords);
-
+                .OwnsOne(e => e.Task,
+                    _ =>
+                    {
+                        _.Property(e => e.Questions)
+                            .HasCsvConversion();
+                        _.Property(e => e.BannedWords)
+                            .HasCsvConversion();
+                    });
         }
     }
 }
