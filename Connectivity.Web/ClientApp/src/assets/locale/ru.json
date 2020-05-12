@@ -1,34 +1,42 @@
 {
+    "MESSAGES": {
+        "CONNECTION_LOST": "Проблемы с соединением. Пытаемся восстановить.",
+        "CONNECTION_ESTABLISHED": "Соединение установлено."
+    },
     "HOME": {
         "CONNECTIVITY": "CONNECTIVITY",
-        "P1": "В безопасности",
-        "P2": "Все вместе",
-        "P3": "Играть",
-        "CREATE_LOBBY": "Создать Комнату"
+        "P1": "Stay Safe",
+        "P2": "Be connected",
+        "P3": "Just play",
+        "CREATE_LOBBY": "Создать комнату"
     },
     "HEADER": {
         "RULES": "Правила",
-        "ABOUT": "Об игре",
-        "FEEDBACK": "Отзыв",
+        "ABOUT": "О нас",
+        "FEEDBACK": "Обратная связь",
         "CONTACT": "Контакты",
-        "DONATE": "Донат",
+        "DONATE": "Поддержать проект",
         "EN": "En",
         "RU": "Ру"
     },
     "LOBBY_CREATE": {
-        "TITLE": "Создать комнату",
-        "NAME_LABEL": "Название комнаты",
+        "TITLE": "Создать Комнату",
+        "NAME_LABEL": "Название Комнаты",
         "NAME_LABEL_REQUIRED": "Введите название комнаты.",
         "TEAM_COUNT_LABEL": "Число команд",
-        "TEAM_NAME_LABEL": "Название команды №{{ index }}",
-        "TEAM_NAME_LABEL_REQUIRED": "Введите название команды №{{ index }}",
-        "CREATE_LOBBY_BTN": "Создать комнату",
+        "TEAM_NAME_LABEL": "Название команды #{{ index }}",
+        "TEAM_NAME_LABEL_REQUIRED": "Введите название команды #{{ index }}.",
+        "CREATE_LOBBY_BTN": "Создать",
         "CANCEL_BTN": "Отмена"
     },
     "LOBBY": {
         "TITLE": "Комната - {{ name }}",
-        "WAITING_TO_JOIN_LIST": "Неопределившиеся",
-        "JOIN_TEAM": "Присоединиться к команде",
-        "LEAVE_TEAM": "Покинуть команду"
+        "WAITING_TO_JOIN_LIST": "Игроки без команды",
+        "JOIN_TEAM": "Присоединиться",
+        "LEAVE_TEAM": "Покинуть команду",
+        "PLAYER_READY_LABEL": "Я готов",
+        "PLAYER_NOT_READY_LABEL": "Я не готов",
+        "IM_READY": "Я готов",
+        "IM_NOT_READY": "Я не готов"
     }
 }
