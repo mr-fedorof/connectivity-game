@@ -20,8 +20,8 @@
         "RU": "Ру"
     },
     "LOBBY_CREATE": {
-        "TITLE": "Создать Комнату",
-        "NAME_LABEL": "Название Комнаты",
+        "TITLE": "Создать",
+        "NAME_LABEL": "Название комнаты",
         "NAME_LABEL_REQUIRED": "Введите название комнаты.",
         "TEAM_COUNT_LABEL": "Число команд",
         "TEAM_NAME_LABEL": "Название команды #{{ index }}",
