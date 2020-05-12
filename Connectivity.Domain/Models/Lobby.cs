@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Connectivity.Domain.Enums;
 using Connectivity.Domain.Models.Cards;
 
 namespace Connectivity.Domain.Models
@@ -25,6 +26,6 @@ namespace Connectivity.Domain.Models
         public IList<Player> Players { get; set; }
 
         [JsonIgnore]
-        public LobbyCards CardIds { get; set; }
+        public CardDeck CardDeck { get; set; }
     }
 }

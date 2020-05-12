@@ -10,7 +10,7 @@ namespace Connectivity.Application.Services.Interfaces
     {
         List<Card> GetAllCardsAsync();
 
-        LobbyCards GetLobbyCards();
+        CardDeck ShuffleCards();
 
         Task<Card> GetCardByIdAsync(string id);
 
@@ -21,5 +21,7 @@ namespace Connectivity.Application.Services.Interfaces
         Task DeleteAllCardsAsync();
 
         Task SaveCardsAsync(List<Card> cards);
+
+        string TakeFromDeckCardIdByDiceValue(int diceValue, CardDeck cardDeck);
     }
 }

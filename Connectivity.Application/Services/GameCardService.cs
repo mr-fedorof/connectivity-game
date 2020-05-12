@@ -14,6 +14,7 @@ namespace Connectivity.Application.Services
 {
     public class GameCardService : IGameCardService
     {
+        private const int CardsInDeck = 100;
         private readonly CardsDbContext _context;
 
         public GameCardService(CardsDbContext context)
@@ -33,17 +34,17 @@ namespace Connectivity.Application.Services
             return card;
         }
 
-        public LobbyCards GetLobbyCards()
+        public CardDeck ShuffleCards()
         {
             // TODO: if count of cards need to be restricted, better to do that here
-            var lobbyCards = new LobbyCards
+            var lobbyCards = new CardDeck
             {
-                Alias = GetRandomizedCardIdsByType(CardType.Alias),
-                Taboo = GetRandomizedCardIdsByType(CardType.Taboo),
-                Draw = GetRandomizedCardIdsByType(CardType.Draw),
-                Crocodile = GetRandomizedCardIdsByType(CardType.Crocodile),
-                WhoAmI = GetRandomizedCardIdsByType(CardType.WhoAmI),
-                Joker = GetRandomizedCardIdsByType(CardType.Joker)
+                {CardType.Alias, GetRandomizedCardIdsByType(CardType.Alias)},
+                {CardType.Taboo, GetRandomizedCardIdsByType(CardType.Taboo)},
+                {CardType.Draw, GetRandomizedCardIdsByType(CardType.Draw)},
+                {CardType.Crocodile, GetRandomizedCardIdsByType(CardType.Crocodile)},
+                {CardType.WhoAmI, GetRandomizedCardIdsByType(CardType.WhoAmI)},
+                {CardType.Joker, GetRandomizedCardIdsByType(CardType.Joker)},
             };
 
             return lobbyCards;
@@ -90,7 +91,33 @@ namespace Connectivity.Application.Services
 
             cards.Shuffle();
 
-            return cards;
+            return cards.Take(CardsInDeck).ToList();
+        }
+
+        public string TakeFromDeckCardIdByDiceValue(int diceValue, CardDeck cardDeck)
+        {
+            var cardType = GetCardTypeByDice(diceValue);
+            var cardId = cardDeck.TryGetCardValue(cardType);
+
+            if (cardId != null)
+            {
+                return cardId;
+            }
+
+            var newCardDeck = GetRandomizedCardIdsByType(cardType);
+            cardDeck.Remove(cardType);
+            cardDeck.TryAdd(cardType, newCardDeck);
+
+            cardId = cardDeck.TryGetCardValue(cardType);
+
+            return cardId;
+        }
+
+
+        private CardType GetCardTypeByDice(int diceValue)
+        {
+            //TODO: add error handling or trusted cast?
+            return (CardType)diceValue;
         }
     }
 }

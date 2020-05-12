@@ -44,7 +44,7 @@ namespace Connectivity.Application.Services
                 Status = GameStatus.WaitingForPlayers
             };
 
-            lobby.CardIds = _gameCardService.GetLobbyCards();
+            lobby.CardDeck = _gameCardService.ShuffleCards();
 
             _context.Lobbies.Add(lobby);
             await _context.SaveChangesAsync();

@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Connectivity.Domain.Enums;
+using Connectivity.Domain.Models.Cards;
+using System;
 using System.Collections.Generic;
 
 namespace Connectivity.Application.Extensions
 {
-    public static class ListExtensions
+    public static class CardExtensions
     {
         private static Random _rnd = new Random();
 
-        public static T PopAt<T>(this List<T> list, int index)
-        {
-            T r = list[index];
-            list.RemoveAt(index);
-            return r;
-        }
-
         public static T Pop<T>(this List<T> list)
         {
+            if (list.Count == 0)
+            {
+                return default(T);
+            }
+
             T r = list[0];
             list.RemoveAt(0);
             return r;
@@ -32,6 +32,12 @@ namespace Connectivity.Application.Extensions
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static string TryGetCardValue(this CardDeck cardDeck, CardType cardType)
+        {
+            cardDeck.TryGetValue(cardType, out var cardIds);
+            return cardIds.Pop();
         }
     }
 }
