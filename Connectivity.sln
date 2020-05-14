@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Domain", "Conn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.Application", "Connectivity.Application\Connectivity.Application.csproj", "{F47B0110-03C2-4F7D-965F-385C90CA771F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardsBatch", "ImportExcelCardsBatch\CardsBatch.csproj", "{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectivity.CardsUpdater", "Connectivity.CardsUpdater\Connectivity.CardsUpdater.csproj", "{882908A9-A38B-48A8-B6BB-D0889F791660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,14 +63,14 @@ Global
 		{F47B0110-03C2-4F7D-965F-385C90CA771F}.master|Any CPU.Build.0 = master|Any CPU
 		{F47B0110-03C2-4F7D-965F-385C90CA771F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F47B0110-03C2-4F7D-965F-385C90CA771F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.dev|Any CPU.Build.0 = Debug|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.master|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.master|Any CPU.Build.0 = Debug|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BCD3CFB-BC1C-4247-9AF2-57A8D591D502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.dev|Any CPU.Build.0 = Debug|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.master|Any CPU.ActiveCfg = Debug|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.master|Any CPU.Build.0 = Debug|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{882908A9-A38B-48A8-B6BB-D0889F791660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,9 +6,9 @@ namespace Connectivity.Domain.Models.Cards
     {
         public string Id { get; set; }
 
-        public CardTask Task { get; set; }
-
         public CardType Type { get; set; }
+
+        public CardTask Task { get; set; }
 
         public int Timespan { get; set; }
 

@@ -6,9 +6,9 @@ using Connectivity.Domain.Enums;
 using Connectivity.Domain.Models.Cards;
 using OfficeOpenXml;
 
-namespace ImportExcelCardsBatch
+namespace Connectivity.CardsUpdater.Infrastructure
 {
-    public static class ExcelHelper
+    public static class GameCardExcelHelper
     {
         public static List<Card> ReadCards(string filePath)
         {

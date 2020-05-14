@@ -12,10 +12,14 @@ namespace Connectivity.Application.GameActions.Handlers
     public class StartGameActionHandler : GameActionHandler<EmptyPayload>
     {
         private readonly ILobbyService _lobbyService;
+        private readonly IGameCardService _gameCardService;
 
-        public StartGameActionHandler(ILobbyService lobbyService)
+        public StartGameActionHandler(
+            ILobbyService lobbyService,
+            IGameCardService gameCardService)
         {
             _lobbyService = lobbyService;
+            _gameCardService = gameCardService;
         }
 
         protected override async Task<GameAction<EmptyPayload>> HandleAsync(GameAction<EmptyPayload> gameAction)
@@ -24,6 +28,7 @@ namespace Connectivity.Application.GameActions.Handlers
             var lobby = await _lobbyService.GetLobbyAsync(gameAction.LobbyId);
 
             lobby.Game.Status = GameStatus.Playing;
+            lobby.CardDeck = await _gameCardService.GetShuffledDeckAsync();
 
             await _lobbyService.UpdateLobbyAsync(lobby);
 

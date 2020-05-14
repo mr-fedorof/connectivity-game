@@ -8,13 +8,11 @@ namespace Connectivity.Application.Services.Interfaces
 {
     public interface IGameCardService
     {
-        List<Card> GetAllCardsAsync();
-
-        CardDeck ShuffleCards();
+        Task<List<Card>> GetAllCardsAsync();
 
         Task<Card> GetCardByIdAsync(string id);
 
-        Task SaveCardAsync(Card card);
+        Task AddCardAsync(Card card);
 
         Task UpdateCardAsync(Card card);
 
@@ -22,6 +20,8 @@ namespace Connectivity.Application.Services.Interfaces
 
         Task SaveCardsAsync(List<Card> cards);
 
-        string TakeFromDeckCardIdByDiceValue(int diceValue, CardDeck cardDeck);
+        Task<CardDeck> GetShuffledDeckAsync();
+
+        Task<string> GetRandomCardFromDeckAsync(CardType cardType, CardDeck cardDeck);
     }
 }

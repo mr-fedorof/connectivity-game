@@ -18,7 +18,9 @@ export const cardReadingFinishGameSysAction = createAction('[Game] [Sh] [Sys] Ca
 export type CardReadingFinishGameSysAction = ReturnType<typeof cardReadingFinishGameSysAction> & Action;
 
 export const startCardTaskGameSysAction = createAction('[Game] [Sh] [Sys] Start Card Task', () => ({
-    payload: {}
+    payload: {
+        startedAt: null as string
+    }
 }));
 export type StartCardTaskGameSysAction = ReturnType<typeof startCardTaskGameSysAction> & Action;
 

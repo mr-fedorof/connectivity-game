@@ -24,6 +24,7 @@ import { LobbyCreateComponent } from './components/lobby-create/lobby-create.com
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
+import { GameCardTaskEffects } from './effects/game/game-card-task.effects';
 import { GameCardEffects } from './effects/game/game-card.effects';
 import { GameDiceEffects } from './effects/game/game-dice.effects';
 import { GameEffects } from './effects/game/game.effects';
@@ -61,7 +62,8 @@ import {
             PlayerEffects,
             GameEffects,
             GameDiceEffects,
-            GameCardEffects
+            GameCardEffects,
+            GameCardTaskEffects
         ]),
         SharedModule
     ],

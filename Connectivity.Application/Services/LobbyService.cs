@@ -12,15 +12,10 @@ namespace Connectivity.Application.Services
     public class LobbyService : ILobbyService
     {
         private readonly ConnectivityDbContext _context;
-        private readonly IGameCardService _gameCardService;
 
-        public LobbyService(
-            ConnectivityDbContext context,
-            IGameCardService gameCardService
-            )
+        public LobbyService(ConnectivityDbContext context)
         {
             _context = context;
-            _gameCardService = gameCardService;
         }
 
         public async Task<Lobby> GetLobbyAsync(string lobbyId)
@@ -43,8 +38,6 @@ namespace Connectivity.Application.Services
             {
                 Status = GameStatus.WaitingForPlayers
             };
-
-            lobby.CardDeck = _gameCardService.ShuffleCards();
 
             _context.Lobbies.Add(lobby);
             await _context.SaveChangesAsync();

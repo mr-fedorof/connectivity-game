@@ -1,26 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class GameTimerService {
-    private readonly _timeleftSubject = new Subject<number>();
+    private readonly _timerSubject = new BehaviorSubject<[string, number]>([null, null]);
 
-    public readonly timeleft$: Observable<number>;
-
-    constructor() {
-        this.timeleft$ = this._timeleftSubject.asObservable()
-            .pipe(
-                switchMap(seconds => timer(0, 1000)
-                    .pipe(
-                        take(seconds + 1),
-                        map(i => seconds - i)
-                    )
-                )
-            );
+    public get timer$(): Observable<[string, number]> {
+        return this._timerSubject.asObservable();
     }
 
-    public startTimer(seconds: number): void {
-        this._timeleftSubject.next(seconds);
+    public startTimer(startedAt: string, seconds: number): void {
+        this._timerSubject.next([startedAt, seconds]);
     }
 }

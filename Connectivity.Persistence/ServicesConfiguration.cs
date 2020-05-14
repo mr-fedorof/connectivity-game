@@ -15,11 +15,6 @@ namespace Connectivity.Persistence
             {
                 builder.UseCosmos(config.AccountEndpoint, config.AccountKey, config.DatabaseName);
             });
-
-            services.AddDbContext<CardsDbContext>(builder =>
-            {
-                builder.UseCosmos(config.AccountEndpoint, config.AccountKey, config.DatabaseName);
-            });
         }
     }
 }

@@ -4,9 +4,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { IActionGuard } from '../action-guarding';
-import { NextPlayerGameSysAction, nextPlayerGameSysAction, startGameSysAction } from '../actions';
+import {
+    NextPlayerGameSysAction,
+    nextPlayerGameSysAction,
+    startCardTaskGameSysAction,
+    startGameSysAction,
+} from '../actions';
 import { GameStatus } from '../enums';
-import { gameSelector, playerTurnSelector } from '../selectors/game.selectors';
+import { gameSelector, playerTurnSelector, playerTurnStateSelector } from '../selectors/game.selectors';
 
 @Injectable()
 export class StartGameSysActionGuard implements IActionGuard {
@@ -20,6 +25,21 @@ export class StartGameSysActionGuard implements IActionGuard {
     public canActivate(action: Action): Observable<boolean> {
         return this.store.select(gameSelector)
             .pipe(map(game => game.status === GameStatus.WaitingForPlayers));
+    }
+}
+
+@Injectable()
+export class StartCardTaskGameSysActionGuard implements IActionGuard {
+    public actionType = startCardTaskGameSysAction.type;
+
+    constructor(
+        private readonly store: Store
+    ) {
+    }
+
+    public canActivate(action: Action): Observable<boolean> {
+        return this.store.select(playerTurnStateSelector)
+            .pipe(map(playerTurnState => !!playerTurnState && !playerTurnState.cardTaskStartedAt));
     }
 }
 

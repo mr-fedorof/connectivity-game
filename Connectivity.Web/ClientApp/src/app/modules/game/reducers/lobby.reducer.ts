@@ -8,6 +8,12 @@ import {
     cardReadingFinishPlayerAction,
     CardReadingStartPlayerAction,
     cardReadingStartPlayerAction,
+    CardTaskFailPlayerAction,
+    cardTaskFailPlayerAction,
+    CardTaskSuccessPlayerAction,
+    cardTaskSuccessPlayerAction,
+    FinishCardTaskGameSysAction,
+    finishCardTaskGameSysAction,
     InitLobbyAction,
     initLobbyAction,
     JoinTeamPlayerAction,
@@ -30,6 +36,8 @@ import {
     restoreLobbyAction,
     RollDicePlayerAction,
     rollDicePlayerAction,
+    StartCardTaskGameSysAction,
+    startCardTaskGameSysAction,
     StartGameSysAction,
     startGameSysAction,
     TakeCardPlayerAction,
@@ -165,6 +173,50 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             playerTurnState: {
                 ...state.game.playerTurnState,
                 cardReadingFinished: true
+            }
+        }
+    })),
+
+    on(startCardTaskGameSysAction, (state: Lobby, { payload }: StartCardTaskGameSysAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardTaskStartedAt: payload.startedAt
+            }
+        }
+    })),
+
+    on(finishCardTaskGameSysAction, (state: Lobby, { payload }: FinishCardTaskGameSysAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardTaskFinished: true
+            }
+        }
+    })),
+
+    on(cardTaskSuccessPlayerAction, (state: Lobby, { payload }: CardTaskSuccessPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardTaskResult: true
+            }
+        }
+    })),
+
+    on(cardTaskFailPlayerAction, (state: Lobby, { payload }: CardTaskFailPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardTaskResult: false
             }
         }
     })),

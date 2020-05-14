@@ -81,12 +81,12 @@ export const cardReadingFinishPlayerAction = createAction('[Player] [Sh] Card Re
 }));
 export type CardReadingFinishPlayerAction = ReturnType<typeof cardReadingFinishPlayerAction> & Action;
 
-export const cardAnswerSuccessPlayerAction = createAction('[Player] [Sh] Card Answer Success', () => ({
+export const cardTaskSuccessPlayerAction = createAction('[Player] [Sh] Card Task Success', () => ({
     payload: {}
 }));
-export type CardAnswerSuccessPlayerAction = ReturnType<typeof cardAnswerSuccessPlayerAction> & Action;
+export type CardTaskSuccessPlayerAction = ReturnType<typeof cardTaskSuccessPlayerAction> & Action;
 
-export const cardAnswerFailPlayerAction = createAction('[Player] [Sh] Card Answer Fail', () => ({
+export const cardTaskFailPlayerAction = createAction('[Player] [Sh] Card Task Fail', () => ({
     payload: {}
 }));
-export type CardAnswerFailPlayerAction = ReturnType<typeof cardAnswerFailPlayerAction> & Action;
+export type CardTaskFailPlayerAction = ReturnType<typeof cardTaskFailPlayerAction> & Action;

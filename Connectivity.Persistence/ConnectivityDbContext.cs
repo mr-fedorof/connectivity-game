@@ -1,4 +1,5 @@
 ﻿using Connectivity.Domain.Models;
+using Connectivity.Domain.Models.Cards;
 using Connectivity.Persistence.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,8 @@ namespace Connectivity.Persistence
     public class ConnectivityDbContext : DbContext
     {
         public DbSet<Lobby> Lobbies { get; set; }
+        
+        public DbSet<Card> Cards { get; set; }
 
         public ConnectivityDbContext()
         {
@@ -23,42 +26,36 @@ namespace Connectivity.Persistence
                 .ToContainer("lobbies")
                 .HasNoDiscriminator();
 
-            modelBuilder.Entity<Lobby>()
-                .OwnsOne(_ => _.Game, _ =>
+            modelBuilder.Entity<Card>()
+                .ToContainer("cards")
+                .HasNoDiscriminator();
+
+            modelBuilder.Entity<Lobby>(lobby =>
+            {
+                lobby.Property(_ => _.CardDeck)
+                    .HasJsonConversion();
+
+                lobby.OwnsOne(_ => _.Game, game =>
                 {
-                    _.OwnsOne(_ => _.PlayerTurnState, _ =>
-                    {
-                        _.OwnsOne(_ => _.GameCard, _ =>
-                        {
-                            _.OwnsOne(_ => _.Task, _ =>
-                            {
-                                _.Property(e => e.Questions)
-                                    .HasJsonConversion();
-                                _.Property(e => e.BannedWords)
-                                    .HasJsonConversion();
-                            });
-                        });
-                    });
+                    game.OwnsOne(_ => _.PlayerTurnState);
                 });
 
-            modelBuilder.Entity<Lobby>()
-                .OwnsMany(_ => _.Teams);
+                lobby.OwnsMany(_ => _.Teams);
 
-            modelBuilder.Entity<Lobby>()
-                .OwnsMany(_ => _.Players);
+                lobby.OwnsMany(_ => _.Players);
+            });
 
+            modelBuilder.Entity<Card>(gameCard =>
+            {
+                gameCard.OwnsOne(_ => _.Task, gameCardTask =>
+                {
+                    gameCardTask.Property(_ => _.Questions)
+                        .HasJsonConversion();
 
-            //modelBuilder.Entity<Lobby>()
-            //    .OwnsOne(e => e, _ =>
-            //    {
-            //        _.Property(e => e.CardDeck)
-            //            .HasJsonConversion();
-            //    });
-
-            modelBuilder.Entity<Lobby>()
-                .Property(e => e.CardDeck)
-                .HasJsonConversion();
+                    gameCardTask.Property(_ => _.BannedWords)
+                        .HasJsonConversion();
+                });
+            });
         }
     }
-
 }

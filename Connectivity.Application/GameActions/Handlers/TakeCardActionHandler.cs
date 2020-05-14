@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Timers;
-using Connectivity.Application.Extensions;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.GameActions.Attributes;
 using Connectivity.Domain.GameActions.Payloads;
-using Connectivity.Domain.Models.Cards;
-using Microsoft.Extensions.Logging;
 
 namespace Connectivity.Application.GameActions.Handlers
 {
@@ -18,39 +13,42 @@ namespace Connectivity.Application.GameActions.Handlers
     {
         private readonly ILobbyService _lobbyService;
         private readonly IGameCardService _gameCardService;
-        private readonly ILogger<TakeCardActionHandler> _logger;
 
         public TakeCardActionHandler(
             ILobbyService lobbyService,
-            IGameCardService gameCardService, ILogger<TakeCardActionHandler> logger)
+            IGameCardService gameCardService)
         {
             _lobbyService = lobbyService;
             _gameCardService = gameCardService;
-            _logger = logger;
         }
 
         protected override async Task<GameAction<TakeCardPayload>> HandleAsync(GameAction<TakeCardPayload> gameAction)
         {
-            var sw = Stopwatch.StartNew();
-            sw.Start();
-            _logger.LogInformation($"Start take card");
             var lobby = await _lobbyService.GetLobbyAsync(gameAction.LobbyId);
-            _logger.LogInformation($"GetLobbyAsync elapsed {sw.Elapsed}");
 
-            sw.Restart();
-            var cardId = _gameCardService.TakeFromDeckCardIdByDiceValue(gameAction.Payload.DiceValue, lobby.CardDeck);
+            var cardType = GetCardType(gameAction.Payload.DiceValue);
+            var cardId = await _gameCardService.GetRandomCardFromDeckAsync(cardType, lobby.CardDeck);
 
-            _logger.LogInformation($"Pop card elapsed {sw.Elapsed}");
-
-            sw.Restart();
             await _lobbyService.UpdateLobbyAsync(lobby);
-            _logger.LogInformation($"UpdateLobbyAsync elapsed {sw.Elapsed}");
 
-            sw.Restart();
             gameAction.Payload.GameCard = await _gameCardService.GetCardByIdAsync(cardId);
-            _logger.LogInformation($"GetCardByIdAsync elapsed {sw.Elapsed}");
 
             return gameAction;
+        }
+
+        private CardType GetCardType(int? diceValue)
+        {
+            switch (diceValue)
+            {
+                case 1: return CardType.Alias;
+                case 2: return CardType.Taboo;
+                case 3: return CardType.Draw;
+                case 4: return CardType.Crocodile;
+                case 5: return CardType.WhoAmI;
+                case 6: return CardType.Joker;
+            }
+
+            throw new Exception("Dice has to be in [1, 6]");
         }
     }
 }

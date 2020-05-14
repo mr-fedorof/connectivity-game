@@ -29,10 +29,10 @@ namespace Connectivity.Domain.Enums
         CardReadingStartPlayer,
         [EnumMember(Value = "[Player] [Sh] Card Reading Finish")]
         CardReadingFinishPlayer,
-        [EnumMember(Value = "[Player] [Sh] Card Answer Success")]
-        CardAnswerSuccessPlayer,
-        [EnumMember(Value = "[Player] [Sh] Card Answer Fail")]
-        CardAnswerFailPlayer,
+        [EnumMember(Value = "[Player] [Sh] Card Task Success")]
+        CardTaskSuccessPlayer,
+        [EnumMember(Value = "[Player] [Sh] Card Task Fail")]
+        CardTaskFailPlayer,
 
         [SkipIndex]
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share")]
@@ -53,5 +53,9 @@ namespace Connectivity.Domain.Enums
         NextPlayerGame,
         [EnumMember(Value = "[Game] [Sh] [Sys] Card Reading Finish")]
         CardReadingFinishGame,
+        [EnumMember(Value = "[Game] [Sh] [Sys] Start Card Task")]
+        CardTaskStartGame,
+        [EnumMember(Value = "[Game] [Sh] [Sys] Finish Card Task")]
+        CardTaskFinishGame,
     }
 }

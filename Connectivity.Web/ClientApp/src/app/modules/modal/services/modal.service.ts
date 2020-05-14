@@ -12,7 +12,10 @@ export class ModalService {
     }
 
     public inquiry<T, R>(component: Type<T>, resultFn: (_: T) => R = (() => undefined)): Observable<R> {
-        const config: ModalOptions = {};
+        const config: ModalOptions = {
+            keyboard: false,
+            backdrop: 'static'
+        };
         const modalRef: BsModalRef = this.bsModalService.show(component, config);
 
         return this.bsModalService.onHide
