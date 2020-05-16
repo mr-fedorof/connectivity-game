@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using Connectivity.Domain.Enums;
 
 namespace Connectivity.Domain.GameActions
@@ -29,9 +30,9 @@ namespace Connectivity.Domain.GameActions
             set => this.Payload = value as JsonDocument;
         }
 
-        public string LobbyId { get; set; }
+        public Guid LobbyId { get; set; }
 
-        public string PlayerId { get; set; }
+        public Guid PlayerId { get; set; }
 
         public bool Long { get; set; }
 

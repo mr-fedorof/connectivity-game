@@ -1,97 +1,93 @@
 ﻿using System;
 using System.Linq;
-using Connectivity.Domain.Models;
-using Connectivity.Persistence;
 using System.Threading.Tasks;
-using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
+using Connectivity.Domain.Models;
+using Connectivity.Application.Services.Interfaces;
+using Connectivity.Domain.Models.Cards;
+using Connectivity.Persistence.DbClients;
+using MongoDB.Driver;
 
 namespace Connectivity.Application.Services
 {
     public class LobbyService : ILobbyService
     {
-        private readonly ConnectivityDbContext _context;
+        private readonly IConnectivityDbClient _dbClient;
 
-        public LobbyService(ConnectivityDbContext context)
+        public LobbyService(IConnectivityDbClient dbClient)
         {
-            _context = context;
+            _dbClient = dbClient;
         }
 
-        public async Task<Lobby> GetLobbyAsync(string lobbyId)
+        public async Task<Lobby> GetLobbyAsync(Guid lobbyId)
         {
-            var lobby = await _context.Lobbies.FirstOrDefaultAsync(o => o.Id == lobbyId);
+            var cursor = await _dbClient.Lobbies.FindAsync(_ => _.Id == lobbyId);
+            var lobby = await cursor.FirstOrDefaultAsync();
 
             return lobby;
         }
 
         public async Task<Lobby> CreateLobbyAsync(Lobby lobby)
         {
-            lobby.Id = Guid.NewGuid().ToString();
-
+            lobby.Id = Guid.NewGuid();
+            
             foreach (var team in lobby.Teams)
             {
-                team.Id = Guid.NewGuid().ToString();
+                team.Id = Guid.NewGuid();
             }
-
+            
             lobby.Game = new Game
             {
                 Status = GameStatus.WaitingForPlayers
             };
-
-            _context.Lobbies.Add(lobby);
-            await _context.SaveChangesAsync();
-
-            return lobby;
-        }
-
-        public async Task<Lobby> UpdateLobbyAsync(Lobby lobby)
-        {
-            _context.Lobbies.Update(lobby);
             
-            await _context.SaveChangesAsync();
-
+            await _dbClient.Lobbies.InsertOneAsync(lobby);
+            
             return lobby;
         }
 
-        public async Task<Player> JoinLobbyAsync(string lobbyId, Player player)
+        public async Task<Player> JoinLobbyAsync(Guid lobbyId, Player player)
         {
             var lobby = await GetLobbyAsync(lobbyId);
-
-            var playerInLobby = lobby.Players.FirstOrDefault(p =>
+            
+            var playerInLobby = lobby.Players.FirstOrDefault(p => 
                 string.Equals(p.Name, player.Name, StringComparison.InvariantCultureIgnoreCase));
-
+            
             if (playerInLobby != null)
             {
                 return playerInLobby;
             }
 
-            player.Id = Guid.NewGuid().ToString();
+            if (lobby.Game?.Status != GameStatus.WaitingForPlayers)
+            {
+                throw new Exception("Action is restricted. The waiting for players status is required.");
+            }
+            
+            player.Id = Guid.NewGuid();
 
-            lobby.Players.Add(player);
-
-            _context.Lobbies.Update(lobby);
-            await _context.SaveChangesAsync();
+            await _dbClient.Lobbies.UpdateOneAsync(
+                _ => _.Id == lobbyId,
+                Builders<Lobby>.Update.Push(_ => _.Players, player)
+            );
 
             return player;
         }
 
-        public async Task LeaveLobbyAsync(string lobbyId, string playerId)
+        public async Task LeaveLobbyAsync(Guid lobbyId, Guid playerId)
         {
             var lobby = await GetLobbyAsync(lobbyId);
-
-            var playerInLobby = lobby.Players.FirstOrDefault(p =>
-                string.Equals(p.Id, playerId, StringComparison.InvariantCultureIgnoreCase));
-
+            
+            var playerInLobby = lobby.Players.FirstOrDefault(_ => _.Id == playerId);
+            
             if (playerInLobby == null)
             {
                 return;
             }
 
-            lobby.Players.Remove(playerInLobby);
-
-            _context.Lobbies.Update(lobby);
-            await _context.SaveChangesAsync();
+            await _dbClient.Lobbies.UpdateOneAsync(
+                _ => _.Id == lobbyId,
+                Builders<Lobby>.Update.PullFilter(_ => _.Players, _ => _.Id == playerId)
+            );
         }
     }
 }

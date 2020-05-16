@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.Models;
@@ -15,7 +16,7 @@ namespace Connectivity.Application.Hubs
             _gameHubService = gameHubService;
         }
 
-        public async Task<LobbyConnectResult> ConnectToLobby(string lobbyId)
+        public async Task<LobbyConnectResult> ConnectToLobby(Guid lobbyId)
         {
             var result = await _gameHubService.ConnectToLobbyAsync(Context.ConnectionId, lobbyId);
 

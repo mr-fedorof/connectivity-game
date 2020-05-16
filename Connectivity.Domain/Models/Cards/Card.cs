@@ -1,10 +1,11 @@
-﻿using Connectivity.Domain.Enums;
+﻿using System;
+using Connectivity.Domain.Enums;
 
 namespace Connectivity.Domain.Models.Cards
 {
     public class Card
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public CardType Type { get; set; }
 

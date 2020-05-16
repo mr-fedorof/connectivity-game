@@ -1,4 +1,5 @@
-﻿using Connectivity.Domain.Enums;
+﻿using System;
+using Connectivity.Domain.Enums;
 
 namespace Connectivity.Domain.GameActions
 {
@@ -8,9 +9,9 @@ namespace Connectivity.Domain.GameActions
 
         public object Payload { get; set; }
 
-        public string LobbyId { get; set; }
+        public Guid LobbyId { get; set; }
 
-        public string PlayerId { get; set; }
+        public Guid PlayerId { get; set; }
 
         public bool Long { get; set; }
 

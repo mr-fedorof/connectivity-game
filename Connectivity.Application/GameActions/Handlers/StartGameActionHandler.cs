@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.GameActions;
@@ -11,26 +10,25 @@ namespace Connectivity.Application.GameActions.Handlers
     [GameActionType(GameActionType.StartGame)]
     public class StartGameActionHandler : GameActionHandler<EmptyPayload>
     {
-        private readonly ILobbyService _lobbyService;
-        private readonly IGameCardService _gameCardService;
+        private readonly IGameService _gameService;
+        private readonly IGameCardDeckService _cardDeckService;
 
         public StartGameActionHandler(
-            ILobbyService lobbyService,
-            IGameCardService gameCardService)
+            IGameService gameService,
+            IGameCardDeckService cardDeckService)
         {
-            _lobbyService = lobbyService;
-            _gameCardService = gameCardService;
+            _gameService = gameService;
+            _cardDeckService = cardDeckService;
         }
 
         protected override async Task<GameAction<EmptyPayload>> HandleAsync(GameAction<EmptyPayload> gameAction)
         {
-            // TODO: Concurrency 
-            var lobby = await _lobbyService.GetLobbyAsync(gameAction.LobbyId);
+            // TODO: Add check if status is already in Playing status
 
-            lobby.Game.Status = GameStatus.Playing;
-            lobby.CardDeck = await _gameCardService.GetShuffledDeckAsync();
+            var cardDeck = await _cardDeckService.GetShuffledDeckAsync();
 
-            await _lobbyService.UpdateLobbyAsync(lobby);
+            await _gameService.SetGameStatusAsync(gameAction.LobbyId, GameStatus.Playing);
+            await _gameService.SetCardDeckAsync(gameAction.LobbyId, cardDeck);
 
             return gameAction;
         }

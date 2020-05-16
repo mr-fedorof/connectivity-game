@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Connectivity.Application.GameActions.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace Connectivity.Application.GameActions
             Directory.CreateDirectory(_path);
         }
 
-        public int CurrentIndex(string lobbyId)
+        public int CurrentIndex(Guid lobbyId)
         {
             lock (_syncObject)
             {
@@ -34,7 +35,7 @@ namespace Connectivity.Application.GameActions
             }
         }
 
-        public int NextIndex(string lobbyId)
+        public int NextIndex(Guid lobbyId)
         {
             lock (_syncObject)
             {

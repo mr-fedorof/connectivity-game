@@ -1,7 +1,9 @@
-﻿namespace Connectivity.Domain.GameActions.Payloads
+﻿using System;
+
+namespace Connectivity.Domain.GameActions.Payloads
 {
     public class LeavePlayerPayload
     {
-        public string PlayerId { get; set; }
+        public Guid PlayerId { get; set; }
     }
 }

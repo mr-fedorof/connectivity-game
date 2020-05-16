@@ -7,14 +7,15 @@ using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.GameActions.Attributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Connectivity.Application
 {
     public static class ServicesConfiguration
     {
-        public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration, bool devMode)
+        public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
-            if (devMode)
+            if (environment.IsDevelopment())
             {
                 services.AddSingleton<IGameActionIndexer, GameActionIndexerInFile>();
             }
@@ -24,13 +25,13 @@ namespace Connectivity.Application
             }
 
             services.AddSingleton<IGameActionDispatcher, GameActionDispatcher>();
-            // TODO: Make singleton
             services.AddScoped<IGameHubService, GameHubService>();
             services.AddGameActionHandlers(typeof(IGameActionHandler).Assembly);
 
-            // TODO: Make singleton
-            services.AddScoped<ILobbyService, LobbyService>();
-            services.AddScoped<IGameCardService, GameCardService>();
+            services.AddSingleton<ILobbyService, LobbyService>();
+            services.AddSingleton<IGameService, GameService>();
+            services.AddSingleton<IGameCardService, GameCardService>();
+            services.AddSingleton<IGameCardDeckService, GameCardDeckService>();
         }
 
         private static IServiceCollection AddGameActionHandlers(this IServiceCollection services, Assembly assembly)
@@ -41,7 +42,7 @@ namespace Connectivity.Application
 
             foreach (var gameActionHandler in gameActionHandlers)
             {
-                services.AddScoped(gameActionHandler);
+                services.AddSingleton(gameActionHandler);
             }
 
             return services;

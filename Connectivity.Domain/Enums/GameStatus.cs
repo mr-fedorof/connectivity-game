@@ -4,7 +4,6 @@
     {
         WaitingForPlayers = 0,
         Playing = 1,
-        Pause = 1,
-        Finish = 1
+        Finish = 2
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Connectivity.Domain.Converters;
 using Connectivity.Application.Hubs;
 using Connectivity.Domain;
+using Connectivity.Persistence.Infrastructure;
+using Microsoft.Extensions.Options;
 
 namespace Connectivity.WebApi
 {
@@ -29,18 +31,13 @@ namespace Connectivity.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JsonSerializerOptions>(options =>
-            {
-                ConfigureJsonSerializerOptions(options);
-
-                AppDefaults.JsonOptions = options;
-            });
+            services.Configure<JsonSerializerOptions>(ConfigureJsonSerializerOptions);
 
             services.AddSingleton<IServiceCollection>(services);
 
             services.AddApplicationInsightsTelemetry();
-            services.AddCosmosDB(Configuration);
-            services.AddApplicationServices(Configuration, Environment.IsDevelopment());
+            services.AddDbConfiguration(Configuration);
+            services.AddApplicationServices(Configuration, Environment);
 
             services.AddCors(options =>
             {
@@ -70,7 +67,7 @@ namespace Connectivity.WebApi
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment() || Environment.IsEnvironment("dev"))
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -86,7 +83,7 @@ namespace Connectivity.WebApi
                 endpoints.MapHub<GameHub>("hub/game");
             });
 
-            InitializeConnectivityDbContext(app.ApplicationServices);
+            InitializeAppDefaults(app.ApplicationServices);
         }
 
         private void ConfigureJsonSerializerOptions(JsonSerializerOptions options)
@@ -96,15 +93,9 @@ namespace Connectivity.WebApi
             options.Converters.Add(new JsonConverterJsonDocument());
         }
 
-        private void InitializeConnectivityDbContext(IServiceProvider serviceProvider)
+        private void InitializeAppDefaults(IServiceProvider serviceProvider)
         {
-            var serviceScopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-
-            using var serviceScope = serviceScopeFactory.CreateScope();
-
-            var dbContext = serviceScope.ServiceProvider.GetService<ConnectivityDbContext>();
-
-            dbContext.Database.EnsureCreated();
+            AppDefaults.JsonOptions = serviceProvider.GetRequiredService<IOptions<JsonSerializerOptions>>().Value;
         }
     }
 }

@@ -1,8 +1,14 @@
-﻿namespace Connectivity.Domain.Models
+﻿using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace Connectivity.Domain.Models
 {
     public class Player
     {
-        public string Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.String)]
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

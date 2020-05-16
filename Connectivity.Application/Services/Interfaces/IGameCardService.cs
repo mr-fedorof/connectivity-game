@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.Models;
@@ -10,7 +11,7 @@ namespace Connectivity.Application.Services.Interfaces
     {
         Task<List<Card>> GetAllCardsAsync();
 
-        Task<Card> GetCardByIdAsync(string id);
+        Task<Card> GetCardByIdAsync(Guid id);
 
         Task AddCardAsync(Card card);
 
@@ -19,9 +20,5 @@ namespace Connectivity.Application.Services.Interfaces
         Task DeleteAllCardsAsync();
 
         Task SaveCardsAsync(List<Card> cards);
-
-        Task<CardDeck> GetShuffledDeckAsync();
-
-        Task<string> GetRandomCardFromDeckAsync(CardType cardType, CardDeck cardDeck);
     }
 }

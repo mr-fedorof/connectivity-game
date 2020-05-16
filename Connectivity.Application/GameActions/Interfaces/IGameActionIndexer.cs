@@ -1,9 +1,11 @@
-﻿namespace Connectivity.Application.GameActions.Interfaces
+﻿using System;
+
+namespace Connectivity.Application.GameActions.Interfaces
 {
     public interface IGameActionIndexer
     {
-        int CurrentIndex(string lobbyId);
+        int CurrentIndex(Guid lobbyId);
 
-        int NextIndex(string lobbyId);
+        int NextIndex(Guid lobbyId);
     }
 }

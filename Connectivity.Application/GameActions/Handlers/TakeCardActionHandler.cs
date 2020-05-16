@@ -11,32 +11,35 @@ namespace Connectivity.Application.GameActions.Handlers
     [GameActionType(GameActionType.TakeCardPlayer)]
     public class TakeCardActionHandler : GameActionHandler<TakeCardPayload>
     {
+        private readonly IGameService _gameService;
         private readonly ILobbyService _lobbyService;
+
         private readonly IGameCardService _gameCardService;
+        private readonly IGameCardDeckService _gameCardDeckService;
 
         public TakeCardActionHandler(
             ILobbyService lobbyService,
-            IGameCardService gameCardService)
+            IGameCardService gameCardService,
+            IGameCardDeckService gameCardDeckService, IGameService gameService)
         {
             _lobbyService = lobbyService;
             _gameCardService = gameCardService;
+            _gameCardDeckService = gameCardDeckService;
+            _gameService = gameService;
         }
 
         protected override async Task<GameAction<TakeCardPayload>> HandleAsync(GameAction<TakeCardPayload> gameAction)
         {
-            var lobby = await _lobbyService.GetLobbyAsync(gameAction.LobbyId);
-
             var cardType = GetCardType(gameAction.Payload.DiceValue);
-            var cardId = await _gameCardService.GetRandomCardFromDeckAsync(cardType, lobby.CardDeck);
 
-            await _lobbyService.UpdateLobbyAsync(lobby);
+            var card = await _gameService.GetCardFromDeckAsync(gameAction.LobbyId, cardType);
 
-            gameAction.Payload.GameCard = await _gameCardService.GetCardByIdAsync(cardId);
+            gameAction.Payload.GameCard = card;
 
             return gameAction;
         }
 
-        private CardType GetCardType(int? diceValue)
+        private static CardType GetCardType(int? diceValue)
         {
             switch (diceValue)
             {

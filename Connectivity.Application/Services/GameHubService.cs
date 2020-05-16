@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Connectivity.Application.GameActions.Interfaces;
@@ -10,7 +11,6 @@ using Connectivity.Domain.GameActions.Attributes;
 using Connectivity.Domain.Helpers;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Options;
 
 namespace Connectivity.Application.Services
 {
@@ -22,23 +22,20 @@ namespace Connectivity.Application.Services
         private readonly IGameActionIndexer _gameActionIndexer;
         private readonly IGameActionDispatcher _gameActionDispatcher;
         private readonly ILobbyService _lobbyService;
-        private readonly JsonSerializerOptions _jsonOptions;
 
         public GameHubService(
             IHubContext<GameHub> hubContext,
             IGameActionDispatcher gameActionDispatcher,
             IGameActionIndexer gameActionIndexer,
-            ILobbyService lobbyService,
-            IOptions<JsonSerializerOptions> jsonSerializerOptions)
+            ILobbyService lobbyService)
         {
             _gameActionDispatcher = gameActionDispatcher;
             _gameActionIndexer = gameActionIndexer;
             _lobbyService = lobbyService;
             _hubContext = hubContext;
-            _jsonOptions = jsonSerializerOptions.Value;
         }
 
-        public async Task<LobbyConnectResult> ConnectToLobbyAsync(string currentConnectionId, string lobbyId)
+        public async Task<LobbyConnectResult> ConnectToLobbyAsync(string currentConnectionId, Guid lobbyId)
         {
             var lobby = await _lobbyService.GetLobbyAsync(lobbyId);
             if (lobby == null)
@@ -52,7 +49,7 @@ namespace Connectivity.Application.Services
                 GlobalActionIndex = _gameActionIndexer.CurrentIndex(lobbyId)
             };
 
-            await _hubContext.Groups.AddToGroupAsync(currentConnectionId, lobbyId);
+            await _hubContext.Groups.AddToGroupAsync(currentConnectionId, lobbyId.ToString());
 
             return lobbyConnectResult; 
         }
@@ -74,8 +71,8 @@ namespace Connectivity.Application.Services
                 : -1;
 
             var targetClients = currentConnectionId != null
-                ? _hubContext.Clients.GroupExcept(gameAction.LobbyId, currentConnectionId)
-                : _hubContext.Clients.Group(gameAction.LobbyId);
+                ? _hubContext.Clients.GroupExcept(gameAction.LobbyId.ToString(), currentConnectionId)
+                : _hubContext.Clients.Group(gameAction.LobbyId.ToString());
 
             await targetClients.SendAsync(GameHubMethod.GameAction.ToString(), outGameAction);
 

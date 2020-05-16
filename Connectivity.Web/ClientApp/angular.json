@@ -47,7 +47,7 @@
                     "fileReplacements": [
                         {
                             "replace": "src/environments/environment.ts",
-                            "with": "src/environments/environment.prod.ts"
+                            "with": "src/environments/environment.production.ts"
                         }
                     ],
                     "optimization": true,
@@ -60,7 +60,7 @@
                     "vendorChunk": false,
                     "buildOptimizer": true
                 },
-                "dev": {
+                "staging": {
                     "budgets": [
                         {
                             "type": "anyComponentStyle",
@@ -70,7 +70,7 @@
                     "fileReplacements": [
                         {
                             "replace": "src/environments/environment.ts",
-                            "with": "src/environments/environment.dev.ts"
+                            "with": "src/environments/environment.staging.ts"
                         }
                     ],
                     "optimization": true,
@@ -93,6 +93,9 @@
           "configurations": {
             "production": {
               "browserTarget": "connectivity-web:build:production"
+            },
+            "staging": {
+              "browserTarget": "connectivity-web:build:staging"
             }
           }
         },
@@ -129,7 +132,7 @@
             "tsConfig": "src/tsconfig.server.json"
           },
           "configurations": {
-            "dev": {
+            "staging": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

@@ -16,7 +16,7 @@ namespace Connectivity.Application.GameActions
             _cache = cache;
         }
 
-        public int CurrentIndex(string lobbyId)
+        public int CurrentIndex(Guid lobbyId)
         {
             lock (_syncObject)
             {
@@ -26,7 +26,7 @@ namespace Connectivity.Application.GameActions
             }
         }
 
-        public int NextIndex(string lobbyId)
+        public int NextIndex(Guid lobbyId)
         {
             lock (_syncObject)
             {

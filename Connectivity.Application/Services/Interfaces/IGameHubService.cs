@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.Models;
 
@@ -6,7 +7,7 @@ namespace Connectivity.Application.Services.Interfaces
 {
     public interface IGameHubService
     {
-        Task<LobbyConnectResult> ConnectToLobbyAsync(string currentConnectionId, string lobbyId);
+        Task<LobbyConnectResult> ConnectToLobbyAsync(string currentConnectionId, Guid lobbyId);
 
         Task<GameAction> ProcessGameActionAsync(string currentConnectionId, GameAction gameAction);
 

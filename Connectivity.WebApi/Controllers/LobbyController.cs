@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.Enums;
@@ -26,7 +27,7 @@ namespace Connectivity.WebApi.Controllers
         }
 
         [HttpGet("{lobbyId}")]
-        public async Task<IActionResult> GetLobby(string lobbyId)
+        public async Task<IActionResult> GetLobby(Guid lobbyId)
         {
             var lobby = await _lobbyService.GetLobbyAsync(lobbyId);
             if (lobby == null)
@@ -38,7 +39,7 @@ namespace Connectivity.WebApi.Controllers
         }
 
         [HttpGet("{lobbyId}/exists")]
-        public async Task<IActionResult> LobbyExists(string lobbyId)
+        public async Task<IActionResult> LobbyExists(Guid lobbyId)
         {
             var lobby = await _lobbyService.GetLobbyAsync(lobbyId);
             if (lobby == null)
@@ -50,7 +51,7 @@ namespace Connectivity.WebApi.Controllers
         }
 
         [HttpGet("{lobbyId}/player/{playerId}/exists")]
-        public async Task<IActionResult> PlayerExists(string lobbyId, string playerId)
+        public async Task<IActionResult> PlayerExists(Guid lobbyId, Guid playerId)
         {
             var lobby = await _lobbyService.GetLobbyAsync(lobbyId);
             if (lobby?.Players?.Any(p => p.Id == playerId) != true)
@@ -70,7 +71,7 @@ namespace Connectivity.WebApi.Controllers
         }
 
         [HttpPost("{lobbyId}/join")]
-        public async Task<IActionResult> JoinLobby(string lobbyId, [FromBody] Player player)
+        public async Task<IActionResult> JoinLobby(Guid lobbyId, [FromBody] Player player)
         {
             var createdPlayer = await _lobbyService.JoinLobbyAsync(lobbyId, player);
 
@@ -91,7 +92,7 @@ namespace Connectivity.WebApi.Controllers
         }
 
         [HttpPost("{lobbyId}/player/{playerId}/leave")]
-        public async Task<IActionResult> LeaveLobby(string lobbyId, string playerId)
+        public async Task<IActionResult> LeaveLobby(Guid lobbyId, Guid playerId)
         {
             await _lobbyService.LeaveLobbyAsync(lobbyId, playerId);
 

@@ -11,8 +11,8 @@ import { LobbyCreateForm } from './lobby-create-form';
 @Component({
     selector: 'app-lobby-create',
     templateUrl: './lobby-create.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./lobby-create.component.scss']
+    styleUrls: ['./lobby-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbyCreateComponent extends DestroyableComponent implements OnInit, OnDestroy {
     public form: LobbyCreateForm;
