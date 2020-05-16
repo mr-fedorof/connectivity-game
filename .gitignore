@@ -343,8 +343,3 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 src/MeteoGroup.Weather.Wms.Api/aws-logger-errors.txt
-
-# Connectivity.CardsUpdater
-!/Connectivity.CardsUpdater/bin
-/Connectivity.CardsUpdater/bin/*
-!/Connectivity.CardsUpdater/bin/Latest
