@@ -23,8 +23,8 @@ steps:
   displayName: 'Build and publish $(projectName) as $(targetConfiguration) for $(Build.SourceBranchName)'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts to drop/$(Build.SourceBranchName)'
+  displayName: 'Publish Artifacts to drop/$(targetConfiguration)'
   inputs:
-    PathtoPublish: '$(projectName)/bin/$(Build.SourceBranchName)/netcoreapp3.0/publish'
-    ArtifactName: 'drop/$(Build.SourceBranchName)'
+    PathtoPublish: '$(projectName)/bin/$(targetConfiguration)/netcoreapp3.0/publish'
+    ArtifactName: 'drop/$(targetConfiguration)'
     publishLocation: 'Container'
