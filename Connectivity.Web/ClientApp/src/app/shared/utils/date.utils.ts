@@ -16,3 +16,12 @@ export function diffInSec(
 
     return diff;
 }
+
+export function leftTime(
+    actualDiff: number,
+    maxDiff: number
+): number {
+    return actualDiff > maxDiff
+        ? 0
+        : maxDiff - actualDiff;
+}

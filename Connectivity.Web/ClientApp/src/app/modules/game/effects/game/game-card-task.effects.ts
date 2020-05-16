@@ -20,7 +20,7 @@ import { ActionService, GameTimerService } from '@modules/game/services';
 import { ModalService } from '@modules/modal/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { diffInSec } from '@shared/utils/date.utils';
+import { diffInSec, leftTime } from '@shared/utils/date.utils';
 import { timer } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -49,7 +49,7 @@ export class GameCardTaskEffects {
         withLatestFrom(this.store.select(playerTurnStateSelector)),
         filter(([action, playerTurnState]) => isCardTaskActive(playerTurnState)),
         tap(([action, playerTurnState]) => {
-            this.gameTimerService.startTimer(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan);
+            this.gameTimerService.startTimer(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan * 60);
         })
     ), {
         dispatch: false
@@ -67,9 +67,7 @@ export class GameCardTaskEffects {
 
         switchMap(([action, playerTurnState]) => {
             const diff = diffInSec(new Date(), playerTurnState.cardTaskStartedAt);
-            const delay = diff > playerTurnState.gameCard.timespan
-                ? 0
-                : playerTurnState.gameCard.timespan - diff;
+            const delay = leftTime(diff, playerTurnState.gameCard.timespan * 60);
 
             return timer(delay * 1000);
         }),

@@ -7,6 +7,8 @@ pool:
 
 variables:
   projectName: 'Connectivity.WebApi'
+  isMasterBranch: $[eq(variables['Build.SourceBranchName'], 'master')]
+  targetConfiguration: $[if(variables.isMasterBranch, 'Production', 'Staging')]
 
 steps:
 - task: NuGetToolInstaller@1
@@ -15,8 +17,8 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- script: dotnet publish $(projectName) --configuration $(Build.SourceBranchName)
-  displayName: 'Build and publish the api for $(Build.SourceBranchName) ck'
+- script: dotnet publish $(projectName) --configuration $(targetConfiguration)
+  displayName: 'Build and publish $(projectName) as $(targetConfiguration) for $(Build.SourceBranchName)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts to drop/$(Build.SourceBranchName)'

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { isReadingCard } from '@modules/game/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { diffInSec } from '@shared/utils/date.utils';
+import { diffInSec, leftTime } from '@shared/utils/date.utils';
 import { timer } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -91,9 +91,7 @@ export class GameCardEffects {
         filter(([action, playerTurnState]) => isReadingCard(playerTurnState)),
         switchMap(([action, playerTurnState]) => {
             const diff = diffInSec(new Date(), playerTurnState.cardReadingStartedAt);
-            const delay = diff > CARD_READING_TIME
-                ? 0
-                : CARD_READING_TIME - diff;
+            const delay = leftTime(diff, CARD_READING_TIME);
 
             return timer(delay * 1000);
         }),
