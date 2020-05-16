@@ -7,8 +7,10 @@ pool:
 
 variables:
   projectName: 'Connectivity.Web'
-  isMasterBranch: $[eq(variables['Build.SourceBranchName'], 'master')]
-  targetConfiguration: $[if(variables.isMasterBranch, 'Production', 'Staging')]
+  ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+    targetConfiguration: 'Production'
+  ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
+    targetConfiguration: 'Staging'
 
 steps:
 - task: NuGetToolInstaller@1
