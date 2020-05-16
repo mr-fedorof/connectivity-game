@@ -14,8 +14,6 @@ namespace Connectivity.CLI
             if (args.Length != 3 && args.Length != 4)
             {
                 Console.WriteLine("Wrong format");
-                Console.WriteLine("Use the following format");
-                Console.WriteLine("[target env: dev/master] [file_name] [operation: import/export] [clear db: y/n]");
 
                 return;
             }
