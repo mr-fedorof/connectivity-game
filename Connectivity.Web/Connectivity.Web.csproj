@@ -11,7 +11,7 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <StartupObject></StartupObject>
-    <Configurations>Debug;Release;Staging</Configurations>
+    <Configurations>Debug;Release;Local;Development;Production</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,10 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Connectivity.Domain\Connectivity.Domain.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -38,8 +42,9 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration=staging"  Condition=" '$(Configuration)' == 'Staging' "/>
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration=production"  Condition=" '$(Configuration)' == 'Production' "/>
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration=local" Condition=" '$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Local' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration=development" Condition=" '$(Configuration)' == 'Development' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration=production" Condition=" '$(Configuration)' == 'Production' Or '$(Configuration)' == 'Release' " />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
     <!-- Include the newly-built files in the publish output -->

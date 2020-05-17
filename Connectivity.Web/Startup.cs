@@ -1,3 +1,4 @@
+using Connectivity.Domain.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,7 @@ namespace Connectivity.Web
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (Environment.IsLocal())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -45,7 +46,7 @@ namespace Connectivity.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            if (!Environment.IsDevelopment())
+            if (!Environment.IsLocal())
             {
                 app.UseSpaStaticFiles();
             }
@@ -62,7 +63,7 @@ namespace Connectivity.Web
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (Environment.IsDevelopment())
+                if (Environment.IsLocal())
                 {
                     spa.UseProxyToSpaDevelopmentServer(Configuration["ClientAppProxy"]);
                 }

@@ -60,7 +60,7 @@
                     "vendorChunk": false,
                     "buildOptimizer": true
                 },
-                "staging": {
+                "development": {
                     "budgets": [
                         {
                             "type": "anyComponentStyle",
@@ -70,7 +70,7 @@
                     "fileReplacements": [
                         {
                             "replace": "src/environments/environment.ts",
-                            "with": "src/environments/environment.staging.ts"
+                            "with": "src/environments/environment.development.ts"
                         }
                     ],
                     "optimization": true,
@@ -82,27 +82,38 @@
                     "extractLicenses": true,
                     "vendorChunk": false,
                     "buildOptimizer": true
+                },
+                "local": {
+                    "fileReplacements": [
+                        {
+                            "replace": "src/environments/environment.ts",
+                            "with": "src/environments/environment.local.ts"
+                        }
+                    ]
                 }
             }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "connectivity-web:build"
+            "browserTarget": "connectivity-web:build:local"
           },
           "configurations": {
             "production": {
               "browserTarget": "connectivity-web:build:production"
             },
-            "staging": {
-              "browserTarget": "connectivity-web:build:staging"
+            "development": {
+              "browserTarget": "connectivity-web:build:development"
+            },
+            "local": {
+              "browserTarget": "connectivity-web:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "connectivity-web:build"
+            "browserTarget": "connectivity-web:build:local"
           }
         },
         "test": {
@@ -132,14 +143,6 @@
             "tsConfig": "src/tsconfig.server.json"
           },
           "configurations": {
-            "staging": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": true
-            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -147,6 +150,16 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false
+            },
+            "development": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": true
+            },
+            "local": {
             }
           }
         }

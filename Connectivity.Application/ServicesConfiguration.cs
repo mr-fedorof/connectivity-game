@@ -4,6 +4,7 @@ using Connectivity.Application.GameActions;
 using Connectivity.Application.GameActions.Interfaces;
 using Connectivity.Application.Services;
 using Connectivity.Application.Services.Interfaces;
+using Connectivity.Domain.Extensions;
 using Connectivity.Domain.GameActions.Attributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ namespace Connectivity.Application
     {
         public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
-            if (environment.IsDevelopment())
+            if (environment.IsLocal())
             {
                 services.AddSingleton<IGameActionIndexer, GameActionIndexerInFile>();
             }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <StartupObject></StartupObject>
-    <Configurations>Debug;Release;Staging</Configurations>
+    <Configurations>Debug;Release;Local;Development;Production</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

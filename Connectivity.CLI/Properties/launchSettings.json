@@ -1,8 +1,20 @@
 {
   "profiles": {
-    "ImportExcelCardsBatch": {
+    ".Net Core (Local)": {
+      "commandName": "Project",
+      "commandLineArgs": "Local Files/Cards_initial.xlsx import y",
+      "environmentVariables": {
+      }
+    },
+    ".Net Core (Development)": {
       "commandName": "Project",
       "commandLineArgs": "Development Files/Cards_initial.xlsx import y",
+      "environmentVariables": {
+      }
+    },
+    ".Net Core (Production)": {
+      "commandName": "Project",
+      "commandLineArgs": "Production Files/Cards_initial.xlsx import y",
       "environmentVariables": {
       }
     }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Connectivity.Domain.Converters;
 using Connectivity.Application.Hubs;
 using Connectivity.Domain;
+using Connectivity.Domain.Extensions;
 using Connectivity.Persistence.Infrastructure;
 using Microsoft.Extensions.Options;
 
@@ -67,7 +68,7 @@ namespace Connectivity.WebApi
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (Environment.IsLocal())
             {
                 app.UseDeveloperExceptionPage();
             }

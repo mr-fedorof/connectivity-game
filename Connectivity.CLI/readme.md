@@ -11,8 +11,8 @@ Connectivity.CLI environment path_to_file command clear_db_flag
 
 ### Environment:
 Defines target environment
-1. Development
-2. Staging
+1. Local
+2. Development
 3. Production
 
 ### Path to file:
