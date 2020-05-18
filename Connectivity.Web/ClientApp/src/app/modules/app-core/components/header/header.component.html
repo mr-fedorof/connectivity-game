@@ -62,19 +62,19 @@
     [@showHide]="isExpanded ? 'shown' : 'hidden'"
 >
     <ul class="app-header__sub-nav-items">
-        <li class="app-header__sub-nav-item d-md-none">
-            <a
-                class="app-header__sub-nav-link"
-                [routerLink]="['/rules']"
-                translate
-            >HEADER.RULES</a>
-        </li>
         <li class="app-header__sub-nav-item">
             <a
                 class="app-header__sub-nav-link"
                 [routerLink]="['/about']"
                 translate
             >HEADER.ABOUT</a>
+        </li>
+        <li class="app-header__sub-nav-item d-md-none">
+            <a
+                class="app-header__sub-nav-link"
+                [routerLink]="['/rules']"
+                translate
+            >HEADER.RULES</a>
         </li>
         <li class="app-header__sub-nav-item">
             <a

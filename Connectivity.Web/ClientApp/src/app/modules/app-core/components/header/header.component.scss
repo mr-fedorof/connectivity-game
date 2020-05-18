@@ -81,8 +81,8 @@ $hamburger-types: (squeeze);
         }
 
         &-item {
-            &:not(:last-child) {
-                margin-bottom: $spacer-16;
+            &:not(:first-child) {
+                margin-top: $spacer-16;
             }
         }
 
