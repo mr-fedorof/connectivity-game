@@ -1,4 +1,5 @@
-﻿using Connectivity.Domain.Models;
+﻿using System.Threading.Tasks;
+using Connectivity.Domain.Models;
 using Connectivity.Domain.Models.Cards;
 using MongoDB.Driver;
 
@@ -9,5 +10,7 @@ namespace Connectivity.Persistence.DbClients
         public IMongoCollection<Lobby> Lobbies { get; }
 
         public IMongoCollection<Card> GameCards { get; }
+
+        public Task InitializeAsync();
     }
 }

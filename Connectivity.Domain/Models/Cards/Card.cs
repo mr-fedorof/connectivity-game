@@ -1,10 +1,14 @@
 ﻿using System;
 using Connectivity.Domain.Enums;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Connectivity.Domain.Models.Cards
 {
     public class Card
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.String)]
         public Guid Id { get; set; }
 
         public CardType Type { get; set; }

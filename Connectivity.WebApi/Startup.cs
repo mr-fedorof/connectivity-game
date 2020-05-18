@@ -11,6 +11,7 @@ using Connectivity.Domain.Converters;
 using Connectivity.Application.Hubs;
 using Connectivity.Domain;
 using Connectivity.Domain.Extensions;
+using Connectivity.Persistence.DbClients;
 using Connectivity.Persistence.Infrastructure;
 using Microsoft.Extensions.Options;
 
@@ -85,6 +86,7 @@ namespace Connectivity.WebApi
             });
 
             InitializeAppDefaults(app.ApplicationServices);
+            InitializeConnectivityDbClient(app.ApplicationServices);
         }
 
         private void ConfigureJsonSerializerOptions(JsonSerializerOptions options)
@@ -97,6 +99,17 @@ namespace Connectivity.WebApi
         private void InitializeAppDefaults(IServiceProvider serviceProvider)
         {
             AppDefaults.JsonOptions = serviceProvider.GetRequiredService<IOptions<JsonSerializerOptions>>().Value;
+        }
+
+        private void InitializeConnectivityDbClient(IServiceProvider serviceProvider)
+        {
+            var serviceScopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
+
+            using var serviceScope = serviceScopeFactory.CreateScope();
+
+            var dbClient = serviceScope.ServiceProvider.GetService<IConnectivityDbClient>();
+
+            dbClient.InitializeAsync().Wait();
         }
     }
 }

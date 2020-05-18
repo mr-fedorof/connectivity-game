@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.CLI.Infrastructure;
+using Connectivity.Persistence.DbClients;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Connectivity.CLI
@@ -30,7 +31,11 @@ namespace Connectivity.CLI
             }
 
             Console.WriteLine("Initialization...");
+
             var serviceProvider = BuildServiceProvider(targetEnvironment);
+
+            InitializeConnectivityDbClient(serviceProvider);
+
             Console.WriteLine("Initialized");
 
             var gameCardService = serviceProvider.GetService<IGameCardService>();
@@ -86,6 +91,17 @@ namespace Connectivity.CLI
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             return serviceProvider;
+        }
+
+        private static void InitializeConnectivityDbClient(IServiceProvider serviceProvider)
+        {
+            var serviceScopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
+
+            using var serviceScope = serviceScopeFactory.CreateScope();
+
+            var dbClient = serviceScope.ServiceProvider.GetService<IConnectivityDbClient>();
+
+            dbClient.InitializeAsync().Wait();
         }
     }
 }
