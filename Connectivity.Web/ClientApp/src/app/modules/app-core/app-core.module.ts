@@ -18,7 +18,7 @@ import { NavigationService } from './services';
     imports: [
         AppRoutingModule,
         SharedModule,
-        AlertModule
+        AlertModule,
     ],
     declarations: [
         AppComponent,
@@ -28,14 +28,14 @@ import { NavigationService } from './services';
         AboutComponent,
         FeedbackComponent,
         ContactComponent,
-        DonateComponent
+        DonateComponent,
     ],
     providers: [
         NavigationService,
-        LocalizationReadyGuard
+        LocalizationReadyGuard,
     ],
     exports: [
-        AppComponent
-    ]
+        AppComponent,
+    ],
 })
 export class AppCoreModule { }

@@ -36,7 +36,7 @@ import { delay, filter, retryWhen, skipUntil, switchMap, takeUntil, tap, withLat
     selector: 'app-lobby-state',
     template: '<router-outlet *ngIf="isReady$ | async"></router-outlet>',
     styleUrls: ['./lobby-state.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LobbyStateComponent extends DestroyableComponent implements OnInit, OnDestroy {
     private lobbyId: string;
@@ -60,6 +60,7 @@ export class LobbyStateComponent extends DestroyableComponent implements OnInit,
     }
 
     public ngOnInit(): void {
+        // tslint:disable-next-line: no-lifecycle-call
         this.actionService.ngOnInit();
 
         this.isReady$ = this.lobbyStateInitializedGuard.canLoad();
@@ -151,6 +152,7 @@ export class LobbyStateComponent extends DestroyableComponent implements OnInit,
         this.store.dispatch(resetAppAction());
         this.gameHubService.stop();
 
+        // tslint:disable-next-line: no-lifecycle-call
         this.actionService.ngOnDestroy();
     }
 

@@ -6,24 +6,24 @@ import { GlobalSpinnerService } from './services/global-spinner.service';
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
     ],
     declarations: [
         SpinnerComponent,
-        GlobalSpinnerComponent
+        GlobalSpinnerComponent,
     ],
     exports: [
         SpinnerComponent,
-        GlobalSpinnerComponent
-    ]
+        GlobalSpinnerComponent,
+    ],
 })
 export class SpinnerModule {
     public static forRoot(config?: any): ModuleWithProviders {
         return {
             ngModule: SpinnerModule,
             providers: [
-                GlobalSpinnerService
-            ]
+                GlobalSpinnerService,
+            ],
         };
     }
 }

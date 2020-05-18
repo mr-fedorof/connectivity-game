@@ -5,5 +5,5 @@ export enum GameCardType {
     Draw = 3,
     Crocodile = 4,
     Agent = 5,
-    Joker = 6
+    Joker = 6,
 }

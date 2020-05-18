@@ -12,7 +12,7 @@ import { LobbyCreateForm } from './lobby-create-form';
     selector: 'app-lobby-create',
     templateUrl: './lobby-create.component.html',
     styleUrls: ['./lobby-create.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LobbyCreateComponent extends DestroyableComponent implements OnInit, OnDestroy {
     public form: LobbyCreateForm;
@@ -43,8 +43,8 @@ export class LobbyCreateComponent extends DestroyableComponent implements OnInit
         const lobby = new Lobby({
             name: lobbyFormValue.name,
             teams: lobbyFormValue.teams.map(name => new Team({
-                name
-            }))
+                name,
+            })),
         });
 
         this.lobbyService.createLobby(lobby)

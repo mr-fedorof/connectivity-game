@@ -14,5 +14,5 @@ export class GameSession implements IGameSession {
 
 export const initialGameSession: IGameSession = {
     lobbyId: null,
-    playerId: null
+    playerId: null,
 };

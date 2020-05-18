@@ -20,7 +20,7 @@ import { AppComponent } from './modules/app-core/components/app/app.component';
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
         BrowserAnimationsModule,
         StoreModule.forRoot({
-            router: routerReducer
+            router: routerReducer,
         }),
         EffectsModule.forRoot([]),
         HttpClientModule,
@@ -30,9 +30,9 @@ import { AppComponent } from './modules/app-core/components/app/app.component';
         AppCoreModule,
         AlertModule.forRoot(),
         BsModalModule.forRoot(),
-        ModalModule
+        ModalModule,
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

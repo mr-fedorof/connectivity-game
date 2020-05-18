@@ -36,7 +36,7 @@ export class GameCardTaskEffects {
             this.actionService.applyAction(startCardTaskGameSysAction());
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public gameCardTaskTimer$ = createEffect(() => this.actions$.pipe(
@@ -52,7 +52,7 @@ export class GameCardTaskEffects {
             this.gameTimerService.startTimer(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan * 60);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public gameCardTaskFinish$ = createEffect(() => this.actions$.pipe(
@@ -75,7 +75,7 @@ export class GameCardTaskEffects {
             this.actionService.applyAction(finishCardTaskGameSysAction());
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public gameCardTaskResult$ = createEffect(() => this.actions$.pipe(
@@ -98,7 +98,7 @@ export class GameCardTaskEffects {
             }
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public nextPlayer$ = createEffect(() => this.actions$.pipe(
@@ -118,7 +118,7 @@ export class GameCardTaskEffects {
             this.actionService.applyAction(nextPlayerGameSysAction(nextPlayerTurnId));
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     constructor(

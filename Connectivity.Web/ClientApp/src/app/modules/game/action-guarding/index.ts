@@ -5,5 +5,5 @@ export * from './action-guard.service';
 export * from './action-guards.token';
 
 export const actionGuardingProviders = [
-    ActionGuardService
+    ActionGuardService,
 ];

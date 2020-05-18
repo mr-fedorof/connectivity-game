@@ -18,12 +18,12 @@ export class GameEffects {
             this.navigationService.goToGame(lobby.id);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     constructor(
         private readonly actions$: Actions,
         private readonly store: Store,
-        private readonly navigationService: NavigationService,
+        private readonly navigationService: NavigationService
     ) { }
 }

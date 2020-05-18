@@ -36,7 +36,6 @@
         "NEXT": "Go"
     },
     "LOBBY": {
-        "TITLE": "Lobby - {{ name }}",
         "TEAMS": "Teams",
         "WAITING_TO_JOIN_LIST": "Players without the team",
         "JOIN_TEAM": "Join the team",

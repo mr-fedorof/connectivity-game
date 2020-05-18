@@ -11,8 +11,8 @@ import { rollDiceAnimation } from './game-dice.animations';
     templateUrl: './game-dice.component.html',
     styleUrls: ['./game-dice.component.scss'],
     animations: [
-        rollDiceAnimation()
-    ]
+        rollDiceAnimation(),
+    ],
 })
 export class GameDiceComponent extends DestroyableComponent implements OnInit {
     public rollTo = null;

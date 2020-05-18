@@ -32,8 +32,8 @@ export const initialLobby: ILobby = {
     game: {
         status: GameStatus.WaitingForPlayers,
         playerTurnId: null,
-        playerTurnState: {}
+        playerTurnState: {},
     },
     players: [],
-    lastActionIndex: null
+    lastActionIndex: null,
 };

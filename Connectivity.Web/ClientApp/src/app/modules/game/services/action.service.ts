@@ -210,7 +210,7 @@ export class ActionService extends DestroyableService {
         map(([action, gameSession]: [Action, GameSession]) => ({
             ...action,
             lobbyId: gameSession.lobbyId,
-            playerId: gameSession.playerId
+            playerId: gameSession.playerId,
         }))
     );
 

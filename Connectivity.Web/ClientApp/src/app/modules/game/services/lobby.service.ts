@@ -38,7 +38,7 @@ export class LobbyService {
                 tap((action: NewPlayerAction) => {
                     const gameSession = new GameSession({
                         playerId: action.payload.player.id,
-                        lobbyId
+                        lobbyId,
                     });
 
                     this.gameSessionStorage.add(gameSession);

@@ -5,6 +5,6 @@ import { routes } from './game-routes';
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
 export class GameRoutingModule { }

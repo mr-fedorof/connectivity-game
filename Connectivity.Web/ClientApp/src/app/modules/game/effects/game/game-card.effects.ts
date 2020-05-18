@@ -46,7 +46,7 @@ export class GameCardEffects {
             this.gameCardService.startTimer(currentPlayerTurnState.gameCard.type, currentPlayerTurnState.cardReadingStartedAt);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public gameCardHide$ = createEffect(() => this.actions$.pipe(
@@ -78,7 +78,7 @@ export class GameCardEffects {
             this.gameCardService.makeVisible(currentPlayerTurnState.gameCard.type);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public gameCardReadingFinish$ = createEffect(() => this.actions$.pipe(
@@ -99,7 +99,7 @@ export class GameCardEffects {
             this.actionService.applyAction(cardReadingFinishGameSysAction());
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     constructor(

@@ -11,8 +11,8 @@ import { shareReplay, startWith } from 'rxjs/operators';
     styleUrls: ['./header.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
-        showHideAnimation('500ms')
-    ]
+        showHideAnimation('500ms'),
+    ],
 })
 export class HeaderComponent implements OnInit {
     public isExpanded = false;

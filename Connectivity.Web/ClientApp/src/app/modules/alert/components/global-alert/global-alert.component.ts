@@ -14,8 +14,8 @@ import { Alert } from '../../models';
     styleUrls: ['./global-alert.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
-        showHideAnimation()
-    ]
+        showHideAnimation(),
+    ],
 })
 export class GlobalAlertComponent extends DestroyableComponent {
     public showHideTrigger = false;

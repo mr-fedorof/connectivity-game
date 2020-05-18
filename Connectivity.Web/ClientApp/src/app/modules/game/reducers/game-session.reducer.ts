@@ -7,11 +7,11 @@ const _gameSessionReducer: ActionReducer<GameSession> = createReducer(
     initialGameSession,
 
     on(resetAppAction, (state: GameSession, { payload }: ResetAppAction): GameSession => ({
-        ...initialGameSession
+        ...initialGameSession,
     })),
 
     on(initGameSessionAction, (state: GameSession, { payload }: InitGameSessionAction): GameSession => ({
-        ...payload.gameSession
+        ...payload.gameSession,
     }))
 );
 

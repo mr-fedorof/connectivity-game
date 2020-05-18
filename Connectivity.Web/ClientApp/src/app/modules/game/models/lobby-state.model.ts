@@ -25,5 +25,5 @@ export const initialLobbyState: ILobbyState = {
     isProcessing: false,
     globalActionIndex: null,
     handledActions: [],
-    pendingActions: []
+    pendingActions: [],
 };

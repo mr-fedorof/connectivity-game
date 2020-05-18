@@ -8,5 +8,5 @@ export enum GameCardTaskType {
     JokerTopsyTurvy = 6,
     JokerNotMyFilm = 7,
     JokerSpeakingBook = 8,
-    JokerNotMySong = 9
+    JokerNotMySong = 9,
 }

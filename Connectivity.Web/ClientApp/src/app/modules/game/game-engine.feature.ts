@@ -16,5 +16,5 @@ export const GAME_ENGINE_FEATURE_NAME = 'GAME_ENGINE';
 export const gameEngineFeatureReducers: ActionReducerMap<IGameEngineFeature> = {
     lobby: lobbyReducer,
     gameSession: gameSessionReducer,
-    lobbyState: lobbyStateReducer
+    lobbyState: lobbyStateReducer,
 };

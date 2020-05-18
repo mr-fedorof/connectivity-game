@@ -29,8 +29,8 @@ import { gameCardAnimation, gameCardBackdropAnimation, gameCardDeckAnimation } f
     animations: [
         gameCardDeckAnimation(),
         gameCardBackdropAnimation(),
-        gameCardAnimation()
-    ]
+        gameCardAnimation(),
+    ],
 })
 export class GameCardDeckComponent extends DestroyableComponent implements OnInit {
     public coverCards: number[] = range(8);

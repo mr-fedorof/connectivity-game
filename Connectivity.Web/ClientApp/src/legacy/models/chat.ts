@@ -1,4 +1,4 @@
 export interface ChatModel {
-    data: [],
-    label: string
+    data: [];
+    label: string;
 }

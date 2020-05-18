@@ -8,22 +8,22 @@ import { GlobalAlertService } from './services/global-alert.service';
 @NgModule({
     imports: [
         CommonModule,
-        LocalizationModule
+        LocalizationModule,
     ],
     declarations: [
-        GlobalAlertComponent
+        GlobalAlertComponent,
     ],
     exports: [
-        GlobalAlertComponent
-    ]
+        GlobalAlertComponent,
+    ],
 })
 export class AlertModule {
     public static forRoot(): ModuleWithProviders<AlertModule> {
         return {
             ngModule: AlertModule,
             providers: [
-                GlobalAlertService
-            ]
+                GlobalAlertService,
+            ],
         };
     }
 }

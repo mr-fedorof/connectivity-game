@@ -31,7 +31,7 @@ import { GameEffects } from './effects/game/game.effects';
 import { LobbyStateEffects } from './effects/lobby-state.effects';
 import { LobbyEffects } from './effects/lobby.effects';
 import { PlayerEffects } from './effects/player.effects';
-import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
+import { gameEngineFeatureReducers, GAME_ENGINE_FEATURE_NAME } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { LobbyStateInitializedGuard } from './guard/lobby-state-initialized.guard';
@@ -63,9 +63,9 @@ import {
             GameEffects,
             GameDiceEffects,
             GameCardEffects,
-            GameCardTaskEffects
+            GameCardTaskEffects,
         ]),
-        SharedModule
+        SharedModule,
     ],
     declarations: [
         GameFieldComponent,
@@ -84,7 +84,7 @@ import {
         CardResultConfirmationModalComponent,
         GameCardDeckComponent,
         GameActionsComponent,
-        GameTimerComponent
+        GameTimerComponent,
     ],
     providers: [
         LobbyService,
@@ -101,7 +101,7 @@ import {
         GameCardService,
         GameTimerService,
         ...actionGuardingProviders,
-        ...actionGuards
-    ]
+        ...actionGuards,
+    ],
 })
 export class GameModule { }

@@ -16,7 +16,7 @@ import { PlayerIdentificationForm } from './player-identification-form';
     selector: 'app-player-identification',
     templateUrl: './player-identification.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./player-identification.component.scss']
+    styleUrls: ['./player-identification.component.scss'],
 })
 export class PlayerIdentificationComponent extends DestroyableComponent implements OnInit, OnDestroy {
     public lobbyId: string;
@@ -55,7 +55,7 @@ export class PlayerIdentificationComponent extends DestroyableComponent implemen
         }
 
         const player = new Player({
-            name: this.form.value.name
+            name: this.form.value.name,
         });
 
         this.lobbyService.joinLobby(this.lobbyId, player)

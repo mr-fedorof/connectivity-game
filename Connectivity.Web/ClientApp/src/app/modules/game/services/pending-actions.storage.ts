@@ -27,7 +27,7 @@ export class PendingActionsStorage {
             this.CACHE_KEY,
             {
                 lobbyId,
-                actions
+                actions,
             },
             item => item.lobbyId === lobbyId,
             this.EXPIRATION_TIME);

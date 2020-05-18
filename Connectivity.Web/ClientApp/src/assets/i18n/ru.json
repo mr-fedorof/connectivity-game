@@ -29,8 +29,14 @@
         "CREATE_LOBBY_BTN": "Создать",
         "CANCEL_BTN": "Отмена"
     },
+    "PLAYER_IDENTIFICATION": {
+        "TITLE": "Игрок",
+        "NAME": "Ваше имя",
+        "NAME_REQUIRED": "Введите ваше имя",
+        "NEXT": "Далее"
+    },
     "LOBBY": {
-        "TITLE": "Комната - {{ name }}",
+        "TEAMS": "Команды",
         "WAITING_TO_JOIN_LIST": "Игроки без команды",
         "JOIN_TEAM": "Присоединиться",
         "LEAVE_TEAM": "Покинуть команду",

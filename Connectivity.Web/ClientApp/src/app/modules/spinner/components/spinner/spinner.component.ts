@@ -10,7 +10,7 @@ import { showHideSpinnerAnimation } from '../../spiner.animations';
     selector: 'app-spinner',
     templateUrl: './spinner.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [showHideSpinnerAnimation()]
+    animations: [showHideSpinnerAnimation()],
 })
 export class SpinnerComponent extends DestroyableComponent implements ISpinner, OnDestroy {
     private readonly state = new BehaviorSubject<boolean>(false);

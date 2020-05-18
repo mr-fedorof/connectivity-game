@@ -4,8 +4,8 @@ import { ModalService } from './services';
 
 @NgModule({
     providers: [
-        ModalService
-    ]
+        ModalService,
+    ],
 })
 export class ModalModule {
 }

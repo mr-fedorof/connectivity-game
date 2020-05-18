@@ -42,7 +42,7 @@ export class PlayerEffects {
             this.actionService.applyAction(startGameSysAction());
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     constructor(

@@ -1,3 +1,3 @@
 export enum GameHubEvent {
-    gameAction = 'GameAction'
+    gameAction = 'GameAction',
 }

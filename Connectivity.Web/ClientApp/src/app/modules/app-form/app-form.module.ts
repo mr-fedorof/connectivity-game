@@ -10,17 +10,17 @@ import { AutofocusDirective } from './directives/auto-focus.directive';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        LocalizationModule
+        LocalizationModule,
     ],
     declarations: [
         ControlValidationComponent,
-        AutofocusDirective
+        AutofocusDirective,
     ],
     exports: [
         ReactiveFormsModule,
         ControlValidationComponent,
-        AutofocusDirective
-    ]
+        AutofocusDirective,
+    ],
 })
 export class AppFormModule {
 }

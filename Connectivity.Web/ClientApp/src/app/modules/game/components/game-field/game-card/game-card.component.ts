@@ -15,7 +15,7 @@ import { gameCardTypeToDice } from '../../../helpers';
     selector: 'app-game-card',
     templateUrl: './game-card.component.html',
     styleUrls: ['./game-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCardComponent extends DestroyableComponent implements OnInit {
     public diceDots: number[];

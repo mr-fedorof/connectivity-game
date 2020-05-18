@@ -32,7 +32,7 @@ export class LobbyStateEffects {
             this.navigationService.doInternalLobbyNavigation(lobby);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public skipAction$ = createEffect(() => this.actions$.pipe(
@@ -43,7 +43,7 @@ export class LobbyStateEffects {
             this.store.dispatch(refreshPendingActionsStateAction());
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public updateLastActionIndex$ = createEffect(() => this.actions$.pipe(

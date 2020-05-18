@@ -3,28 +3,28 @@ import { animate, AnimationTriggerMetadata, state, style, transition, trigger } 
 export function rollDiceAnimation(durationMs = 300): AnimationTriggerMetadata {
     return trigger('rollDiceAnimation', [
         state('roll-start', style({
-            transform: 'translateZ(0)'
+            transform: 'translateZ(0)',
         })),
         state('roll-pre-end', style({
-            transform: 'translateZ(200px)'
+            transform: 'translateZ(200px)',
         })),
         state('roll-to-1', style({
-            transform: 'translateZ(0) rotateX(0) rotateY(0)'
+            transform: 'translateZ(0) rotateX(0) rotateY(0)',
         })),
         state('roll-to-2', style({
-            transform: 'translateZ(0) rotateX(270deg) rotateY(0)'
+            transform: 'translateZ(0) rotateX(270deg) rotateY(0)',
         })),
         state('roll-to-3', style({
-            transform: 'translateZ(0) rotateX(0) rotateY(270deg)'
+            transform: 'translateZ(0) rotateX(0) rotateY(270deg)',
         })),
         state('roll-to-4', style({
-            transform: 'translateZ(0) rotateX(0) rotateY(90deg)'
+            transform: 'translateZ(0) rotateX(0) rotateY(90deg)',
         })),
         state('roll-to-5', style({
-            transform: 'translateZ(0) rotateX(90deg) rotateY(0)'
+            transform: 'translateZ(0) rotateX(90deg) rotateY(0)',
         })),
         state('roll-to-6', style({
-            transform: 'translateZ(0) rotateX(180deg) rotateY(0)'
+            transform: 'translateZ(0) rotateX(180deg) rotateY(0)',
         })),
 
         transition('roll-start => roll-pre-end', animate('1000ms ease-in')),
@@ -41,6 +41,6 @@ export function rollDiceAnimation(durationMs = 300): AnimationTriggerMetadata {
         transition('roll-to-3 => roll-pre-end', animate('500ms ease-in')),
         transition('roll-to-4 => roll-pre-end', animate('500ms ease-in')),
         transition('roll-to-5 => roll-pre-end', animate('500ms ease-in')),
-        transition('roll-to-6 => roll-pre-end', animate('500ms ease-in'))
+        transition('roll-to-6 => roll-pre-end', animate('500ms ease-in')),
     ]);
 }

@@ -14,13 +14,13 @@ export class PlayerIdentificationForm extends AppFormGroup {
                 null,
                 null,
                 {
-                    required: 'PLAYER_IDENTIFICATION.NAME_REQUIRED'
+                    required: 'PLAYER_IDENTIFICATION.NAME_REQUIRED',
                 },
                 {
                     required: true,
-                    maxLength: 25
+                    maxLength: 25,
                 }
-            )
+            ),
         });
     }
 }

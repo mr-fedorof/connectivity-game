@@ -6,7 +6,7 @@ import { ActionService } from '@modules/game/services';
 @Component({
     selector: 'app-game-actions',
     templateUrl: './game-actions.component.html',
-    styleUrls: ['./game-actions.component.scss']
+    styleUrls: ['./game-actions.component.scss'],
 })
 export class GameActionsComponent {
     @Input() public currentPlayerTurnState: PlayerTurnState = null;

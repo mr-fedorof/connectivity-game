@@ -4,7 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
     selector: 'app-card-result-confirmation-modal',
     templateUrl: './card-result-confirmation-modal.component.html',
-    styleUrls: ['./card-result-confirmation-modal.component.scss']
+    styleUrls: ['./card-result-confirmation-modal.component.scss'],
 })
 export class CardResultConfirmationModalComponent {
     public confirmed: boolean = null;

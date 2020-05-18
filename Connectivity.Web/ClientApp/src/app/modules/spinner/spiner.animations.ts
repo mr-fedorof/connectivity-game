@@ -4,12 +4,12 @@ export function showHideSpinnerAnimation(durationMs = 300): AnimationTriggerMeta
     return trigger('showHideSpinner', [
         state('false', style({
             opacity: '*',
-            display: '*'
+            display: '*',
         })),
         state('true', style({
             display: 'none',
-            opacity: 0
+            opacity: 0,
         })),
-        transition('false <=> true', animate(`${durationMs}ms ease-in-out`))
+        transition('false <=> true', animate(`${durationMs}ms ease-in-out`)),
     ]);
 }

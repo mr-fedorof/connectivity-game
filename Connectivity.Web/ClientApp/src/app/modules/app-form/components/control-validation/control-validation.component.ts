@@ -7,8 +7,8 @@ import { IAppAbstractControl } from '@modules/app-form/models/app-abstract-contr
     changeDetection: ChangeDetectionStrategy.Default,
     styleUrls: ['./control-validation.component.scss'],
     host: {
-        class: 'app-control-validation'
-    }
+        class: 'app-control-validation',
+    },
 })
 export class ControlValidationComponent implements OnInit {
     @Input() public control: IAppAbstractControl;

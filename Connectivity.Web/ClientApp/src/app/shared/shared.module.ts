@@ -15,7 +15,7 @@ import { SpinnerModule } from '@modules/spinner';
         AppFormModule,
         CommunicationModule,
         SpinnerModule,
-        LocalizationModule
+        LocalizationModule,
     ],
     exports: [
         CommonModule,
@@ -24,8 +24,8 @@ import { SpinnerModule } from '@modules/spinner';
         AppFormModule,
         CommunicationModule,
         SpinnerModule,
-        LocalizationModule
-    ]
+        LocalizationModule,
+    ],
 })
 export class SharedModule {
 }

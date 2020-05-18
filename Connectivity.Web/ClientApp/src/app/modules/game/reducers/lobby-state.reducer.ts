@@ -30,34 +30,34 @@ const _lobbyStateReducer: ActionReducer<LobbyState> = createReducer(
     initialLobbyState,
 
     on(resetAppAction, (state: LobbyState, { payload }: ResetAppAction): LobbyState => ({
-        ...initialLobbyState
+        ...initialLobbyState,
     })),
 
     on(initLobbyStateAction, (state: LobbyState, { payload }: InitLobbyStateAction): LobbyState => ({
         ...state,
         initialized: true,
-        globalActionIndex: payload.globalActionIndex
+        globalActionIndex: payload.globalActionIndex,
     })),
 
     on(updateGlobalIndexLobbyStateAction, (state: LobbyState, { payload }: UpdateGlobalIndexLobbyStateAction): LobbyState => ({
         ...state,
-        globalActionIndex: payload.globalActionIndex
+        globalActionIndex: payload.globalActionIndex,
     })),
 
     on(startProcessingLobbyStateAction, (state: LobbyState, { payload }: StartProcessingLobbyStateAction): LobbyState => ({
         ...state,
-        isProcessing: true
+        isProcessing: true,
     })),
 
     on(finishProcessingLobbyStateAction, (state: LobbyState, { payload }: FinishProcessingLobbyStateAction): LobbyState => ({
         ...state,
-        isProcessing: false
+        isProcessing: false,
     })),
 
     on(addPendingActionLobbyStateAction, (state: LobbyState, { payload }: AddPendingActionLobbyStateAction): LobbyState => {
         const newState = {
             ...state,
-            pendingActions: [...state.pendingActions, payload.action]
+            pendingActions: [...state.pendingActions, payload.action],
         };
 
         return newState;
@@ -66,7 +66,7 @@ const _lobbyStateReducer: ActionReducer<LobbyState> = createReducer(
     on(addPendingActionsLobbyStateAction, (state: LobbyState, { payload }: AddPendingActionsLobbyStateAction): LobbyState => {
         const newState = {
             ...state,
-            pendingActions: [...state.pendingActions, ...payload.actions]
+            pendingActions: [...state.pendingActions, ...payload.actions],
         };
 
         return newState;
@@ -75,7 +75,7 @@ const _lobbyStateReducer: ActionReducer<LobbyState> = createReducer(
     on(removePendingActionLobbyStateAction, (state: LobbyState, { payload }: RemovePendingActionLobbyStateAction): LobbyState => {
         const newState = {
             ...state,
-            pendingActions: removeElement(state.pendingActions, payload.action, gameActionComparator)
+            pendingActions: removeElement(state.pendingActions, payload.action, gameActionComparator),
         };
 
         return newState;
@@ -83,7 +83,7 @@ const _lobbyStateReducer: ActionReducer<LobbyState> = createReducer(
 
     on(refreshPendingActionsStateAction, (state: LobbyState, { payload }: RefreshPendingActionsStateAction): LobbyState => ({
         ...state,
-        pendingActions: [...state.pendingActions]
+        pendingActions: [...state.pendingActions],
     })),
 
     on(addHandledActionLobbyStateAction, (state: LobbyState, { payload }: AddHandledActionLobbyStateAction): LobbyState => {
@@ -95,7 +95,7 @@ const _lobbyStateReducer: ActionReducer<LobbyState> = createReducer(
 
         const newState = {
             ...state,
-            handledActions
+            handledActions,
         };
 
         return newState;

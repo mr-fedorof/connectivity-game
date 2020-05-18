@@ -53,63 +53,63 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
     initialLobby,
 
     on(resetAppAction, (state: Lobby, { payload }: ResetAppAction): Lobby => ({
-        ...initialLobby
+        ...initialLobby,
     })),
 
     on(initLobbyAction, (state: Lobby, { payload }: InitLobbyAction): Lobby => ({
-        ...payload.lobby
+        ...payload.lobby,
     })),
 
     on(restoreLobbyAction, (state: Lobby, { payload }: RestoreLobbyAction): Lobby => ({
         ...state,
-        ...payload.lobby
+        ...payload.lobby,
     })),
 
     on(updateLastActionIndexLobbyAction, (state: Lobby, { payload }: UpdateLastActionIndexLobbyAction): Lobby => ({
         ...state,
-        lastActionIndex: payload.lastActionIndex
+        lastActionIndex: payload.lastActionIndex,
     })),
 
     on(newPlayerAction, (state: Lobby, { payload }: NewPlayerAction): Lobby => ({
         ...state,
-        players: addElement(state.players, payload.player, playerComparator)
+        players: addElement(state.players, payload.player, playerComparator),
     })),
 
     on(leavePlayerAction, (state: Lobby, { payload }: LeavePlayerAction): Lobby => ({
         ...state,
-        players: removeElementWith(state.players, p => p.id === payload.playerId)
+        players: removeElementWith(state.players, p => p.id === payload.playerId),
     })),
 
     on(joinTeamPlayerAction, (state: Lobby, { payload }: JoinTeamPlayerAction): Lobby => ({
         ...state,
         players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
-            teamId: payload.teamId
-        }))
+            teamId: payload.teamId,
+        })),
     })),
 
     on(leaveTeamPlayerAction, (state: Lobby, { payload }: LeaveTeamPlayerAction): Lobby => ({
         ...state,
         players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
-            teamId: null
-        }))
+            teamId: null,
+        })),
     })),
 
     on(readyPlayerAction, (state: Lobby, { payload }: ReadyPlayerAction): Lobby => ({
         ...state,
         players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
-            ready: true
-        }))
+            ready: true,
+        })),
     })),
 
     on(notReadyPlayerAction, (state: Lobby, { payload }: NotReadyPlayerAction): Lobby => ({
         ...state,
         players: replaceElementWith(state.players, p => p.id === payload.playerId, p => ({
             ...p,
-            ready: false
-        }))
+            ready: false,
+        })),
     })),
 
     on(startGameSysAction, (state: Lobby, { payload }: StartGameSysAction): Lobby => ({
@@ -118,8 +118,8 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             status: GameStatus.Playing,
             playerTurnId: state.players[0].id,
-            playerTurnState: {}
-        }
+            playerTurnState: {},
+        },
     })),
 
     on(rollDicePlayerAction, (state: Lobby, { payload }: RollDicePlayerAction): Lobby => ({
@@ -128,9 +128,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                diceValue: payload.value
-            }
-        }
+                diceValue: payload.value,
+            },
+        },
     })),
 
     on(takeCardPlayerAction, (state: Lobby, { payload }: TakeCardPlayerAction): Lobby => ({
@@ -139,9 +139,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                gameCard: payload.gameCard
-            }
-        }
+                gameCard: payload.gameCard,
+            },
+        },
     })),
 
     on(cardReadingStartPlayerAction, (state: Lobby, { payload }: CardReadingStartPlayerAction): Lobby => ({
@@ -150,9 +150,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardReadingStartedAt: payload.startedAt
-            }
-        }
+                cardReadingStartedAt: payload.startedAt,
+            },
+        },
     })),
 
     on(cardReadingFinishPlayerAction, (state: Lobby, { payload }: CardReadingFinishPlayerAction): Lobby => ({
@@ -161,9 +161,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardReadingFinished: true
-            }
-        }
+                cardReadingFinished: true,
+            },
+        },
     })),
 
     on(cardReadingFinishGameSysAction, (state: Lobby, { payload }: CardReadingFinishGameSysAction): Lobby => ({
@@ -172,9 +172,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardReadingFinished: true
-            }
-        }
+                cardReadingFinished: true,
+            },
+        },
     })),
 
     on(startCardTaskGameSysAction, (state: Lobby, { payload }: StartCardTaskGameSysAction): Lobby => ({
@@ -183,9 +183,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardTaskStartedAt: payload.startedAt
-            }
-        }
+                cardTaskStartedAt: payload.startedAt,
+            },
+        },
     })),
 
     on(finishCardTaskGameSysAction, (state: Lobby, { payload }: FinishCardTaskGameSysAction): Lobby => ({
@@ -194,9 +194,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardTaskFinished: true
-            }
-        }
+                cardTaskFinished: true,
+            },
+        },
     })),
 
     on(cardTaskSuccessPlayerAction, (state: Lobby, { payload }: CardTaskSuccessPlayerAction): Lobby => ({
@@ -205,9 +205,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardTaskResult: true
-            }
-        }
+                cardTaskResult: true,
+            },
+        },
     })),
 
     on(cardTaskFailPlayerAction, (state: Lobby, { payload }: CardTaskFailPlayerAction): Lobby => ({
@@ -216,9 +216,9 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             ...state.game,
             playerTurnState: {
                 ...state.game.playerTurnState,
-                cardTaskResult: false
-            }
-        }
+                cardTaskResult: false,
+            },
+        },
     })),
 
     on(nextPlayerGameSysAction, (state: Lobby, { payload }: NextPlayerGameSysAction): Lobby => ({
@@ -226,8 +226,8 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
         game: {
             ...state.game,
             playerTurnId: payload.nextPlayerTurnId,
-            playerTurnState: {}
-        }
+            playerTurnState: {},
+        },
     }))
 );
 

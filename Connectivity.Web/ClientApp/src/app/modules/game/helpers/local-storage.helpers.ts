@@ -41,7 +41,7 @@ export function addLocalStorageArrayItem<T>(cacheKey: string, item: T, predicate
 
     const newEntry = {
         item,
-        expiry
+        expiry,
     };
     entries.push(newEntry);
 

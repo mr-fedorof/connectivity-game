@@ -5,7 +5,7 @@ import { Player, Team } from '@modules/game/models';
     selector: 'app-teams',
     templateUrl: './teams.component.html',
     styleUrls: ['./teams.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamsComponent {
     @Input() public teams: Team[];

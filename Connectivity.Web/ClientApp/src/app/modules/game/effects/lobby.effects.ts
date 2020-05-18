@@ -35,7 +35,7 @@ export class LobbyEffects {
             this.actionService.applyAction(shareLobbyResponseAction(action.playerId, lobby, lobbyState), true);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public shareLobbyResponse$ = createEffect(() => this.actions$.pipe(
@@ -74,7 +74,7 @@ export class LobbyEffects {
             this.actionService.applyAction(shareActionsLobbyResponseAction(action.playerId, requestedActions), true);
         })
     ), {
-        dispatch: false
+        dispatch: false,
     });
 
     public shareActionsLobbyResponse$ = createEffect(() => this.actions$.pipe(

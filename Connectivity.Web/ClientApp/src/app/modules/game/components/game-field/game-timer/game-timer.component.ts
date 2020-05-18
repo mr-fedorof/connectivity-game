@@ -8,7 +8,7 @@ import { filter, map, startWith, switchMap, takeUntil, takeWhile } from 'rxjs/op
 @Component({
     selector: 'app-game-timer',
     templateUrl: './game-timer.component.html',
-    styleUrls: ['./game-timer.component.scss']
+    styleUrls: ['./game-timer.component.scss'],
 })
 export class GameTimerComponent extends DestroyableComponent implements OnInit {
     public timeleft$: Observable<number>;

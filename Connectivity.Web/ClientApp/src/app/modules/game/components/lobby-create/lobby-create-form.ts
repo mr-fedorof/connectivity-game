@@ -23,20 +23,20 @@ export class LobbyCreateForm extends AppFormGroup {
                 null,
                 null,
                 {
-                    required: 'LOBBY_CREATE.NAME_LABEL_REQUIRED'
+                    required: 'LOBBY_CREATE.NAME_LABEL_REQUIRED',
                 },
                 {
                     required: true,
-                    maxLength: 25
+                    maxLength: 25,
                 }
             ),
             teamCount: new AppFormControl(2),
             teams: new AppFormArray(
                 [
                     this.createTeamControl(1),
-                    this.createTeamControl(2)
+                    this.createTeamControl(2),
                 ]
-            )
+            ),
         });
 
         this.teamCount.valueChanges
@@ -61,11 +61,11 @@ export class LobbyCreateForm extends AppFormGroup {
             null,
             null,
             {
-                required: 'LOBBY_CREATE.TEAM_NAME_LABEL_REQUIRED'
+                required: 'LOBBY_CREATE.TEAM_NAME_LABEL_REQUIRED',
             },
             {
                 required: true,
-                maxLength: 25
+                maxLength: 25,
             }
         );
 

@@ -8,11 +8,11 @@ import { translateHttpLoaderFactory } from './translate-http-loader.factory';
 
 @NgModule({
     imports: [
-        TranslateModule
+        TranslateModule,
     ],
     exports: [
-        TranslateModule
-    ]
+        TranslateModule,
+    ],
 })
 export class LocalizationModule {
     public static forRoot(config?: ILocalizationModuleConfig): ModuleWithProviders<LocalizationModule> {
@@ -24,12 +24,12 @@ export class LocalizationModule {
                     loader: {
                         provide: TranslateLoader,
                         useFactory: translateHttpLoaderFactory,
-                        deps: [HttpClient]
+                        deps: [HttpClient],
                     },
-                    ...config || {}
+                    ...config || {},
                 }).providers,
-                LocalizationService
-            ]
+                LocalizationService,
+            ],
         };
     }
 }

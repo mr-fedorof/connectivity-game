@@ -3,8 +3,8 @@ import { SignalRService } from './services';
 
 @NgModule({
     providers: [
-        SignalRService
-    ]
+        SignalRService,
+    ],
 })
 export class CommunicationModule {
 }

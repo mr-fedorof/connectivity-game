@@ -12,30 +12,30 @@ export const routes: Routes = [
     {
         path: 'lobby/:lobbyId',
         canActivate: [
-            LobbyExistsGuard
+            LobbyExistsGuard,
         ],
         children: [
             {
                 path: 'player-identification',
-                component: PlayerIdentificationComponent
+                component: PlayerIdentificationComponent,
             },
             {
                 path: '',
                 component: LobbyStateComponent,
                 canActivate: [
-                    GameSessionExistsGuard
+                    GameSessionExistsGuard,
                 ],
                 children: [
                     {
                         path: '',
-                        component: LobbyComponent
+                        component: LobbyComponent,
                     },
                     {
                         path: 'game',
-                        component: GameFieldComponent
-                    }
-                ]
-            }
-        ]
-    }
+                        component: GameFieldComponent,
+                    },
+                ],
+            },
+        ],
+    },
 ];

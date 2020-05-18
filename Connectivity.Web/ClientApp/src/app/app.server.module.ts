@@ -7,6 +7,6 @@ import { AppComponent } from './modules/app-core/components/app/app.component';
 
 @NgModule({
     imports: [AppModule, ServerModule, ModuleMapLoaderModule],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppServerModule { }

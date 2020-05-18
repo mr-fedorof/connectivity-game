@@ -38,7 +38,7 @@
 //     }
 
 //     ngOnInit() {
-        
+
 //     }
 
 //     joinRoom() {
@@ -169,4 +169,4 @@
 //         (<HTMLInputElement>document.getElementById("messageInput")).value = '';
 //     }
 // }
-
+

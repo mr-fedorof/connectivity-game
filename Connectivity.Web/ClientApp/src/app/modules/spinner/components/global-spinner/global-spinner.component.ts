@@ -13,7 +13,7 @@ import { SpinnerComponent } from '../spinner/spinner.component';
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [showHideSpinnerAnimation()]
+    animations: [showHideSpinnerAnimation()],
 })
 export class GlobalSpinnerComponent extends SpinnerComponent implements OnDestroy {
     @HostBinding('class.vs-global-spinner') public componentClass = true;

@@ -13,5 +13,5 @@ export const actionGuards = [
     { provide: ACTION_GUARDS, useClass: StartCardTaskGameSysActionGuard, multi: true },
     { provide: ACTION_GUARDS, useClass: NextPlayerGameSysActionGuard, multi: true },
 
-    { provide: ACTION_GUARDS, useClass: CardReadingStartPlayerActionGuard, multi: true }
+    { provide: ACTION_GUARDS, useClass: CardReadingStartPlayerActionGuard, multi: true },
 ];
