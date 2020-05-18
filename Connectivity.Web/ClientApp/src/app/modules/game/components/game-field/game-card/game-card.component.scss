@@ -81,6 +81,12 @@ $dot-w: 8px;
                 text-align: center;
                 font-size: $font-size-32;
             }
+
+            &-sub-title {
+                color: $orange;
+                text-align: center;
+                font-size: $font-size-24;
+            }
         }
 
         &-content {

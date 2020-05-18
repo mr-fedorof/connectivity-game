@@ -1,7 +1,7 @@
 import { AnimationEvent } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { cardReadingFinishPlayerAction, takeAnotherCardPlayerAction } from '@modules/game/actions';
-import { GameCardType } from '@modules/game/enums';
+import { GameCardTaskType, GameCardType } from '@modules/game/enums';
 import { GameCard } from '@modules/game/models';
 import { ActionService, GameCardService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -109,6 +109,21 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
                 return 'GAME_CARD.AGENT';
             case GameCardType.Joker:
                 return 'GAME_CARD.JOKER';
+            default:
+                return '';
+        }
+    }
+
+    private getCarTaskName(type: GameCardTaskType): string {
+        switch (type) {
+            case GameCardTaskType.JokerNotMyFilm:
+                return 'GAME_TASK.NOT_MY_FILM';
+            case GameCardTaskType.JokerNotMySong:
+                return 'GAME_TASK.NOT_MY_SONG';
+            case GameCardTaskType.JokerSpeakingBook:
+                return 'GAME_TASK.SPEAKING_BOOK';
+            case GameCardTaskType.JokerTopsyTurvy:
+                return 'GAME_TASK.TOPSY_TURVY';
             default:
                 return '';
         }

@@ -23,10 +23,13 @@
     class="app-game-card__front"
 >
     <div class="app-game-card__front-header">
-        <h3
-            class="app-game-card__front-header-title"
-            translate
-        >{{ getCardName(gameCard?.type) }}</h3>
+        <h3 class="app-game-card__front-header-title">{{ getCardName(gameCard?.type) | translate }}</h3>
+        <h4
+            *ngIf="getCarTaskName(gameCard?.task.type)"
+            class="app-game-card__front-header-sub-title"
+        >
+            {{ getCarTaskName(gameCard.task.type) | translate }}
+        </h4>
     </div>
 
     <div

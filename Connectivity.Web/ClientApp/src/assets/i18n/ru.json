@@ -61,5 +61,11 @@
         "JOKER": "Joker",
         "GOT_IT": "Объяснять",
         "SKIP_CARD": "Другую карту"
+    },
+    "GAME_TASK": {
+        "NOT_MY_FILM": "Не моё кино",
+        "NOT_MY_SONG": "Не моя песня",
+        "SPEAKING_BOOK": "Говорящая книга",
+        "TOPSY_TURVY": "Шиворот-навыворот"
     }
 }

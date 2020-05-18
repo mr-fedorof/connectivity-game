@@ -61,5 +61,11 @@
         "JOKER": "Joker",
         "GOT_IT": "Got it",
         "SKIP_CARD": "Another card"
+    },
+    "GAME_TASK": {
+        "NOT_MY_FILM": "Not my film",
+        "NOT_MY_SONG": "Not my song",
+        "SPEAKING_BOOK": "Speaking book",
+        "TOPSY_TURVY": "Topsy turvy"
     }
 }
