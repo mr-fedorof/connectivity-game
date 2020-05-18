@@ -70,6 +70,8 @@ namespace Connectivity.Application.Services
                 ? _gameActionIndexer.NextIndex(gameAction.LobbyId)
                 : -1;
 
+            outGameAction.CreatedAt = DateTime.UtcNow;
+
             var targetClients = currentConnectionId != null
                 ? _hubContext.Clients.GroupExcept(gameAction.LobbyId.ToString(), currentConnectionId)
                 : _hubContext.Clients.Group(gameAction.LobbyId.ToString());

@@ -7,10 +7,9 @@
 .app-game-messages {
     display: flex;
     flex-direction: column;
-    background: $white;
+    border: 4px solid $gray-200;
     border-radius: $border-radius;
-    box-shadow: $box-shadow;
-    height: 192px;
+    min-height: 192px;
 
     &__title {
         padding: $spacer-8 $spacer-16;
@@ -23,8 +22,13 @@
             overflow-y: auto;
             flex-grow: 1;
         }
-
         tbody {
+            tr {
+                &:nth-of-type(odd) {
+                    background-color: $white;
+                }
+            }
+
             td {
                 padding: $spacer-8 $spacer-16;
 

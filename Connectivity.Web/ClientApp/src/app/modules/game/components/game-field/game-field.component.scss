@@ -34,8 +34,12 @@
         display: flex;
         flex-direction: column;
 
+        &-game-teams {
+            margin-bottom: $spacer-x3;
+        }
+
         &-game-messages {
-            margin-top: auto;
+            flex-grow: 1;
         }
 
         &-actions {

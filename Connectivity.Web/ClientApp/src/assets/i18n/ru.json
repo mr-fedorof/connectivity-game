@@ -67,5 +67,10 @@
         "NOT_MY_SONG": "Не моя песня",
         "SPEAKING_BOOK": "Говорящая книга",
         "TOPSY_TURVY": "Шиворот-навыворот"
+    },
+    "GAME_MESSAGES": {
+        "PLAYER_TURN": "Ходит {{ player }} из команды {{ team }}. Бросьте кубик.",
+        "PLAYER_ROLLED_THE_DICE": "{{ player }} выбрасывает число {{ value }}. Возьмите карту.",
+        "PLAYER_SKIPPED_THE_TURN": "{{ player }} из команды {{ team }} решает пропустить ход."
     }
 }

@@ -67,5 +67,10 @@
         "NOT_MY_SONG": "Not my song",
         "SPEAKING_BOOK": "Speaking book",
         "TOPSY_TURVY": "Topsy turvy"
+    },
+    "GAME_MESSAGES": {
+        "PLAYER_TURN": "It's turn for {{ player }} from {{ team }}. Roll the dice.",
+        "PLAYER_ROLLED_THE_DICE": "{{ player }} got {{ value }}. Take the card.",
+        "PLAYER_SKIPPED_THE_TURN": "{{ player }} from {{ team }} decided to skip the turn."
     }
 }

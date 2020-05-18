@@ -19,6 +19,7 @@ namespace Connectivity.Domain.GameActions
             PlayerId = gameAction.PlayerId;
             Long = gameAction.Long;
             Index = gameAction.Index;
+            CreatedAt = gameAction.CreatedAt;
         }
 
         public GameActionType Type { get; set; }
@@ -38,5 +39,7 @@ namespace Connectivity.Domain.GameActions
         public bool Long { get; set; }
 
         public int? Index { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
     }
 }

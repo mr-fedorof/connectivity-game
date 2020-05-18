@@ -58,10 +58,11 @@
     </div>
 
     <div class="col-3 app-game-field__right-col">
-        <app-teams
+        <app-game-teams
+            class="app-game-field__right-col-game-teams"
             [teams]="teams$ | async"
             [players]="players$ | async"
-        ></app-teams>
+        ></app-game-teams>
 
         <app-game-messages class="app-game-field__right-col-game-messages"></app-game-messages>
 

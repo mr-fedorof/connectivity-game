@@ -9,3 +9,4 @@ export * from './lobby-connect-result.model';
 export * from './player-turn-state.model';
 export * from './game-card.model';
 export * from './game-card-task.model';
+export * from './game-message.model';

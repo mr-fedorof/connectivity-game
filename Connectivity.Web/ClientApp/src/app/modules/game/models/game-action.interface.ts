@@ -8,5 +8,6 @@ declare module '@ngrx/store' {
         playerId?: string;
         index?: number;
         long?: boolean;
+        createdAt?: string;
     }
 }

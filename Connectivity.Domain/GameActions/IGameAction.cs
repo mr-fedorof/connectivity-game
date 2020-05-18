@@ -16,5 +16,7 @@ namespace Connectivity.Domain.GameActions
         public bool Long { get; set; }
 
         public int? Index { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
     }
 }

@@ -1,42 +1,10 @@
 <h5 class="app-game-messages__title">System messages</h5>
 <div class="app-game-messages__messages-container">
-    <table class="table table-borderless table-striped app-game-messages__messages">
+    <table class="table table-borderless app-game-messages__messages">
         <tbody>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
-            </tr>
-            <tr>
-                <td>13:02</td>
-                <td>Goes player max</td>
+            <tr *ngFor="let gameMessage of gameMessages">
+                <td>{{ gameMessage.createdAt | date: 'h:mm' }}</td>
+                <td>{{ gameMessage.text }}</td>
             </tr>
         </tbody>
     </table>

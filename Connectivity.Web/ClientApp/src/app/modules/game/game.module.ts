@@ -16,10 +16,10 @@ import { GameCardComponent } from './components/game-field/game-card/game-card.c
 import { GameDiceComponent } from './components/game-field/game-dice/game-dice.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { GameMessagesComponent } from './components/game-field/game-messages/game-messages.component';
+import { GameTeamsComponent } from './components/game-field/game-teams/game-teams.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
 import { GameTimerComponent } from './components/game-field/game-timer/game-timer.component';
 import { TeamInfoComponent } from './components/game-field/team-info/team-info.component';
-import { TeamsComponent } from './components/game-field/teams/teams.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
@@ -43,6 +43,7 @@ import {
     GameCardService,
     GameDiceService,
     GameHubService,
+    GameMessageService,
     GameService,
     GameSessionStorage,
     GameTimerService,
@@ -78,7 +79,7 @@ import {
         TeamPlayersPipe,
         FreePlayersPipe,
         GameMessagesComponent,
-        TeamsComponent,
+        GameTeamsComponent,
         GameTilesComponent,
         GameCardComponent,
         TeamInfoComponent,
@@ -102,6 +103,7 @@ import {
         GameDiceService,
         GameCardService,
         GameTimerService,
+        GameMessageService,
         ...actionGuardingProviders,
         ...actionGuards,
     ],
