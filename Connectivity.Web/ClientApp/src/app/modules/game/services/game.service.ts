@@ -14,7 +14,6 @@ export class GameService {
     constructor(
         private readonly store: Store
     ) {
-
         this.lobby$ = this.store.select(lobbySelector)
             .pipe(
                 filter(lobby => !!lobby.id),

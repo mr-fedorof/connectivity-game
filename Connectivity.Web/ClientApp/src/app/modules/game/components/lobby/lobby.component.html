@@ -1,14 +1,14 @@
 <ng-container *ngIf="lobby$ | async as lobby">
     <h2 class="app-lobby__title">{{ lobby.name }}</h2>
-    <div class="row">
+    <div class="row app-lobby__layout-grid">
         <div class="col-12 col-md-7 col-lg-7 col-xl-8 app-lobby__left-column">
             <h5
                 translate
                 class="app-lobby__teams-title"
             >LOBBY.TEAMS</h5>
-            <div class="row">
+            <div class="row app-lobby__teams-grid">
                 <div
-                    class="col-12 col-xl-6 app-lobby__team"
+                    class="col app-lobby__team"
                     *ngFor="let team of lobby.teams; let i = index"
                 >
                     <app-team-info
@@ -88,10 +88,11 @@
         </div>
         <div class="col-12 app-lobby__actions">
             <button
+                translate
                 type="button"
                 class="btn btn-secondary"
                 (click)="onLeaveLobbyClick()"
-            >Leave Lobby</button>
+            >LOBBY.LEAVE_LOBBY</button>
         </div>
     </div>
 </ng-container>

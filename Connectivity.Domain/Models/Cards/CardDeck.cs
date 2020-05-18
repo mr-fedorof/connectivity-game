@@ -63,7 +63,14 @@ namespace Connectivity.Domain.Models.Cards
 
         public Guid? TakeCard(CardType cardType)
         {
-            return this[cardType]?.Pop();
+            var list = this[cardType];
+
+            if (list == null || list.Count == 0)
+            {
+                return null;
+            }
+
+            return list.Pop();
         }
     }
 }

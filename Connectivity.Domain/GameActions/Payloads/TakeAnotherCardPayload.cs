@@ -4,7 +4,7 @@ using Connectivity.Domain.Models.Cards;
 
 namespace Connectivity.Domain.GameActions.Payloads
 {
-    public class TakeCardPayload
+    public class TakeAnotherCardPayload
     {
         public CardType GameCardType { get; set; }
 

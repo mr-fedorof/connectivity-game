@@ -40,6 +40,8 @@ import {
     startCardTaskGameSysAction,
     StartGameSysAction,
     startGameSysAction,
+    TakeAnotherCardPlayerAction,
+    takeAnotherCardPlayerAction,
     TakeCardPlayerAction,
     takeCardPlayerAction,
     UpdateLastActionIndexLobbyAction,
@@ -140,6 +142,18 @@ const _lobbyReducer: ActionReducer<Lobby> = createReducer(
             playerTurnState: {
                 ...state.game.playerTurnState,
                 gameCard: payload.gameCard,
+            },
+        },
+    })),
+
+    on(takeAnotherCardPlayerAction, (state: Lobby, { payload }: TakeAnotherCardPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                gameCard: payload.gameCard,
+                cardReadingStartedAt: null,
             },
         },
     })),

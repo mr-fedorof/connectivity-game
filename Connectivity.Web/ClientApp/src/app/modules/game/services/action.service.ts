@@ -73,6 +73,8 @@ export class ActionService extends DestroyableService {
     public readonly actions$: Observable<Action>;
     public readonly waitingForActions$: Observable<number>;
 
+    public readonly isProcessing$: Observable<boolean>;
+
     constructor(
         private readonly store: Store,
         private readonly gameHubService: GameHubService,
@@ -81,6 +83,8 @@ export class ActionService extends DestroyableService {
         private readonly actionGuardService: ActionGuardService
     ) {
         super();
+
+        this.isProcessing$ = this.store.select(isProcessingSelector);
 
         this.storeActions$
             .pipe(takeUntil(this.onDestroy))

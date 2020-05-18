@@ -43,6 +43,17 @@
         "PLAYER_READY_LABEL": "Ready",
         "PLAYER_NOT_READY_LABEL": "Not ready",
         "IM_READY": "I'm ready",
-        "IM_NOT_READY": "I'm not ready"
+        "IM_NOT_READY": "I'm not ready",
+        "LEAVE_LOBBY": "Leave Lobby"
+    },
+    "GAME_CARD": {
+        "TALK": "Talk",
+        "MINE": "Mine",
+        "DRAW": "Draw",
+        "CROCODILE": "Crocodile",
+        "AGENT": "Agent",
+        "JOKER": "Joker",
+        "GOT_IT": "Got it",
+        "SKIP_CARD": "Another card"
     }
 }

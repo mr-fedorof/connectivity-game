@@ -20,5 +20,5 @@ export const routes: Routes = [
         loadChildren: () => import('@modules/game/game.module')
             .then(m => m.GameModule),
     },
-    { path: '**', component: HomeComponent },
+    { path: '**', redirectTo: '' },
 ];

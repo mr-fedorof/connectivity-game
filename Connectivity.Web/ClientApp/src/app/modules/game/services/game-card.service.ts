@@ -9,11 +9,13 @@ import { GameCard } from '../models';
 export class GameCardService {
     private readonly _showCardSubject = new Subject<GameCard>();
     private readonly _showCardFinishSubject = new Subject<GameCardType>();
+    private readonly _showAnotherCardSubject = new Subject<GameCard>();
+    private readonly _showAnotherCardFinishSubject = new Subject<GameCardType>();
     private readonly _closeCardSubject = new Subject<GameCardType>();
     private readonly _closeCardFinishSubject = new Subject<GameCardType>();
 
     private readonly _timerSubject = new BehaviorSubject<[GameCardType, string]>([null, null]);
-    private readonly _visibleCardSubject = new BehaviorSubject<GameCardType>(null);
+    private readonly _visibleCardSubject = new BehaviorSubject<GameCard>(null);
 
     public get showCard$(): Observable<GameCard> {
         return this._showCardSubject.asObservable();
@@ -21,6 +23,14 @@ export class GameCardService {
 
     public get showCardFinish$(): Observable<GameCardType> {
         return this._showCardFinishSubject.asObservable();
+    }
+
+    public get showAnotherCard$(): Observable<GameCard> {
+        return this._showAnotherCardSubject.asObservable();
+    }
+
+    public get showAnotherCardFinish$(): Observable<GameCardType> {
+        return this._showAnotherCardFinishSubject.asObservable();
     }
 
     public get closeCard$(): Observable<GameCardType> {
@@ -35,7 +45,7 @@ export class GameCardService {
         return this._timerSubject.asObservable();
     }
 
-    public get visibilityRestoring$(): Observable<GameCardType> {
+    public get visibilityRestoring$(): Observable<GameCard> {
         return this._visibleCardSubject.asObservable();
     }
 
@@ -48,6 +58,17 @@ export class GameCardService {
 
     public showCardFinish(gameCardType: GameCardType): void {
         this._showCardFinishSubject.next(gameCardType);
+    }
+
+    public showAnotherCard(gameCard: GameCard): Observable<GameCardType> {
+        this._showAnotherCardSubject.next(gameCard);
+
+        return this.showAnotherCardFinish$
+            .pipe(filter(t => t === gameCard.type));
+    }
+
+    public showAnotherCardFinish(gameCardType: GameCardType): void {
+        this._showAnotherCardFinishSubject.next(gameCardType);
     }
 
     public closeCard(gameCardType: GameCardType): Observable<GameCardType> {
@@ -65,7 +86,7 @@ export class GameCardService {
         this._timerSubject.next([gameCardType, startedAt]);
     }
 
-    public makeVisible(gameCardType: GameCardType): void {
-        this._visibleCardSubject.next(gameCardType);
+    public makeVisible(gameCard: GameCard): void {
+        this._visibleCardSubject.next(gameCard);
     }
 }

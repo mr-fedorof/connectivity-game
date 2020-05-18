@@ -15,7 +15,7 @@
                 translate
             >HEADER.RULES</a>
         </li>
-        <li class="app-header__nav-item">
+        <li class="app-header__nav-item d-none d-md-inline">
             <a
                 class="app-header__nav-link"
                 [routerLink]="['/donate']"
@@ -59,7 +59,7 @@
 
 <nav
     class="app-header__sub-nav"
-    [@showHide]="isExpanded ? 'show' : 'hide'"
+    [@showHide]="isExpanded ? 'shown' : 'hidden'"
 >
     <ul class="app-header__sub-nav-items">
         <li class="app-header__sub-nav-item d-md-none">
@@ -89,6 +89,13 @@
                 [routerLink]="['/contact']"
                 translate
             >HEADER.CONTACT</a>
+        </li>
+        <li class="app-header__nav-item d-md-none">
+            <a
+                class="app-header__nav-link"
+                [routerLink]="['/donate']"
+                translate
+            >HEADER.DONATE</a>
         </li>
     </ul>
 </nav>

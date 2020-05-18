@@ -35,6 +35,7 @@ import { gameCardAnimation, gameCardBackdropAnimation, gameCardDeckAnimation } f
 export class GameCardDeckComponent extends DestroyableComponent implements OnInit {
     public coverCards: number[] = range(8);
     public activeGameCard: GameCard;
+    public nextActiveGameCard: GameCard;
 
     @Input() public type: GameCardType;
 
@@ -46,6 +47,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
     public gameCardDeckState = 'undefined';
     public gameCardBackdropState = 'undefined';
     public gameCardState = 'undefined';
+    public gameCardContentState = 'undefined';
 
     constructor(
         private readonly cdr: ChangeDetectorRef,
@@ -69,6 +71,19 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
                 this.cdr.markForCheck();
             });
 
+        this.gameCardService.showAnotherCard$
+            .pipe(
+                takeUntil(this.onDestroy),
+                filter(gameCard => gameCard.type === this.type),
+                tap(gameCard => {
+                    this.nextActiveGameCard = gameCard;
+                })
+            )
+            .subscribe(() => {
+                this.gameCardContentState = 'hidden';
+                this.cdr.markForCheck();
+            });
+
         this.gameCardService.closeCard$
             .pipe(
                 takeUntil(this.onDestroy),
@@ -82,7 +97,13 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         this.gameCardService.visibilityRestoring$
             .pipe(
                 takeUntil(this.onDestroy),
-                map(gameCardType => gameCardType === this.type),
+                map(gameCard => {
+                    const visible = gameCard?.type === this.type;
+
+                    this.activeGameCard = visible ? gameCard : null;
+
+                    return visible;
+                }),
                 distinctUntilChanged()
             )
             .subscribe(visible => {
@@ -112,6 +133,19 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
             this.setCardOnDeckState();
 
             this.gameCardService.closeCardFinish(this.type);
+        }
+    }
+
+    public onGameCardContentAnimationDone(event: AnimationEvent): void {
+        if (event.toState === 'hidden') {
+            this.gameCardContentState = 'visible';
+            this.activeGameCard = this.nextActiveGameCard;
+        }
+
+        if (event.fromState === 'hidden' && event.toState === 'visible') {
+            this.gameCardService.showAnotherCardFinish(this.type);
+
+            this.actionService.applyAction(cardReadingStartPlayerAction());
         }
     }
 
@@ -156,23 +190,27 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         this.gameCardDeckState = 'idle';
         this.gameCardBackdropState = 'hidden';
         this.gameCardState = 'on-deck';
+        this.gameCardContentState = 'visible';
     }
 
     private setShowCardState(): void {
         this.gameCardDeckState = 'show-card';
         this.gameCardBackdropState = 'shown';
         this.gameCardState = 'open';
+        this.gameCardContentState = 'visible';
     }
 
     private setHideCardState(): void {
         this.gameCardDeckState = 'hide-card';
         this.gameCardBackdropState = 'hidden';
         this.gameCardState = 'hidden';
+        this.gameCardContentState = 'visible';
     }
 
     private setUndefinedState(): void {
         this.gameCardDeckState = 'undefined';
         this.gameCardBackdropState = 'undefined';
         this.gameCardState = 'undefined';
+        this.gameCardContentState = 'undefined';
     }
 }

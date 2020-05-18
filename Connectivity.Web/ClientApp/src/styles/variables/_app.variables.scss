@@ -56,6 +56,10 @@ $spacer-32: $spacer * 2;    // 32
 $spacer-40: $spacer * 2.5;  // 40
 $spacer-48: $spacer * 3;    // 48
 
+$spacer-x2: $spacer*2;
+$spacer-x3: $spacer*3;
+$spacer-x6: $spacer*6;
+
 $spacers: ();
 $spacers: map-merge(
     (

@@ -24,5 +24,8 @@
         [type]="type"
         [cover]="false"
         [front]="true"
+        [gameCard]="activeGameCard"
+        [gameCardContentState]="gameCardContentState"
+        (gameCardContentAnimationDone)="onGameCardContentAnimationDone($event)"
     ></app-game-card>
 </div>

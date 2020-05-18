@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { rollDicePlayerAction, takeCardPlayerAction } from '@modules/game/actions';
+import { diceToGameCardType } from '@modules/game/helpers';
 import { PlayerTurnState } from '@modules/game/models';
 import { ActionService } from '@modules/game/services';
 
@@ -22,6 +23,6 @@ export class GameActionsComponent {
     }
 
     public onTakeCardClick(): void {
-        this.actionService.applyAction(takeCardPlayerAction(this.currentPlayerTurnState.diceValue));
+        this.actionService.applyAction(takeCardPlayerAction(diceToGameCardType(this.currentPlayerTurnState.diceValue)));
     }
 }

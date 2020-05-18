@@ -18,3 +18,22 @@ export function gameCardTypeToDice(type: GameCardType): number {
             return 0;
     }
 }
+
+export function diceToGameCardType(dice: number): GameCardType {
+    switch (dice) {
+        case 1:
+            return GameCardType.Talk;
+        case 2:
+            return GameCardType.Mine;
+        case 3:
+            return GameCardType.Draw;
+        case 4:
+            return GameCardType.Crocodile;
+        case 5:
+            return GameCardType.Agent;
+        case 6:
+            return GameCardType.Joker;
+        default:
+            return null;
+    }
+}

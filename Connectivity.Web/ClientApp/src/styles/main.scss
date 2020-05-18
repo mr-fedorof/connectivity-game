@@ -15,13 +15,13 @@
 @import '~bootstrap/scss/bootstrap-grid';
 @import '~bootstrap/scss/type';
 @import '~bootstrap/scss/buttons';
+@import './buttons';
 @import '~bootstrap/scss/tables';
 @import '~bootstrap/scss/modal';
-// TODO: Customize forms
 @import '~bootstrap/scss/forms';
 
 @import './utilities';
 
 @import './layout';
 @import './spinner';
-@import './buttons';
+

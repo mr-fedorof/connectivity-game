@@ -6,33 +6,57 @@
 
 .app-lobby {
     background: $white;
-    margin: $spacer*3 $spacer*6;
-    padding: $spacer-48;
+    margin: $spacer-x3 $spacer-x6;
+    padding: $spacer-x3;
     border: 1px solid $gray-200;
     border-radius: $border-radius-sm;
 
     @include media-breakpoint-down(md) {
-        padding: $spacer-32;
-        margin: $spacer-16;
+        padding: $spacer-x2;
+        margin: $spacer;
+    }
+
+    &__layout-grid {
+        margin-right: -$spacer-x6/2;
+        margin-left: -$spacer-x6/2;
+    
+        > .col,
+        > [class*="col-"] {
+            padding-right: $spacer-x6/2;
+            padding-left: $spacer-x6/2;
+        }
     }
 
     &__title {
-        margin-bottom: $spacer-32;
+        margin-bottom: $spacer-x3;
         color: $cian;
     }
 
     &__teams {
         &-title {
-            margin-bottom: $spacer-16;
+            margin-bottom: $spacer;
             color: $cian;
+        }
+
+        &-grid {
+            margin-right: -$spacer-x3/2;
+            margin-left: -$spacer-x3/2;
+        
+            > .col,
+            > [class*="col-"] {
+                padding-right: $spacer-x3/2;
+                padding-left: $spacer-x3/2;
+            }
         }
     }
 
     &__team {
-        margin-bottom: $spacer-32;
+        margin-bottom: $spacer-x3;
+        min-width: 350px;
+        flex-basis: 50%;
 
         &-actions {
-            margin-top: $spacer-16;
+            margin-top: $spacer;
         }
 
         &-action {
@@ -44,12 +68,12 @@
 
     &__players {
         &-title {
-            margin-bottom: $spacer-16;
+            margin-bottom: $spacer;
             color: $cian;
         }
 
         &-list {
-            margin: 0 0 $spacer-32;
+            margin: 0 0 $spacer-x2;
             padding: 0;
             list-style-type: none;
         }
@@ -59,13 +83,6 @@
         cursor: default;
         margin: 0 0 $spacer-8;
         font-size: $font-size-20;
-        //font-weight: $font-weight-bold;
-        // border: 1px solid $gray-200;
-        // border-radius: $border-radius;
-
-        // &:hover {
-        //     border: 1px solid $gray-300;
-        // }
     }
 
     &__actions {

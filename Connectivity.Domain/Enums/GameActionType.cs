@@ -25,6 +25,8 @@ namespace Connectivity.Domain.Enums
         RollDicePlayer,
         [EnumMember(Value = "[Player] [Sh] Take Card")]
         TakeCardPlayer,
+        [EnumMember(Value = "[Player] [Sh] Take Another Card")]
+        TakeAnotherCardPlayer,
         [EnumMember(Value = "[Player] [Sh] Card Reading Start")]
         CardReadingStartPlayer,
         [EnumMember(Value = "[Player] [Sh] Card Reading Finish")]

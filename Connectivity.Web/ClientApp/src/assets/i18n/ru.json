@@ -43,6 +43,11 @@
         "PLAYER_READY_LABEL": "Я готов",
         "PLAYER_NOT_READY_LABEL": "Я не готов",
         "IM_READY": "Я готов",
-        "IM_NOT_READY": "Я не готов"
+        "IM_NOT_READY": "Я не готов",
+        "LEAVE_LOBBY": "Покинуть комнату"
+    },
+    "GAME_CARD": {
+        "GOT_IT": "Объяснять",
+        "SKIP_CARD": "Другую карту"
     }
 }

@@ -22,7 +22,7 @@ export class GlobalAlertComponent extends DestroyableComponent {
     public alert: Alert | null;
 
     @HostBinding('@showHide') public get showHide(): string {
-        return this.showHideTrigger ? 'show' : 'hide';
+        return this.showHideTrigger ? 'shown' : 'hidden';
     }
 
     @HostBinding('class.error') public get errorTypeClass(): boolean {

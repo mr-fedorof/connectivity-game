@@ -1,5 +1,6 @@
 import { Action, createAction } from '@ngrx/store';
 
+import { GameCardType } from '../enums';
 import { GameCard, Player } from '../models';
 
 export const newPlayerAction = createAction('[Player] [Sh] New', (player: Player) => ({
@@ -61,13 +62,22 @@ export const rollDicePlayerAction = createAction('[Player] [Sh] Roll Dice', () =
 }));
 export type RollDicePlayerAction = ReturnType<typeof rollDicePlayerAction> & Action;
 
-export const takeCardPlayerAction = createAction('[Player] [Sh] Take Card', (diceValue: number) => ({
+export const takeCardPlayerAction = createAction('[Player] [Sh] Take Card', (gameCardType: GameCardType) => ({
     payload: {
-        diceValue,
+        gameCardType,
         gameCard: null as GameCard,
     },
 }));
 export type TakeCardPlayerAction = ReturnType<typeof takeCardPlayerAction> & Action;
+
+export const takeAnotherCardPlayerAction = createAction('[Player] [Sh] Take Another Card', (gameCardType: GameCardType) => ({
+    payload: {
+        gameCardType,
+        gameCard: null as GameCard,
+    },
+    long: true,
+}));
+export type TakeAnotherCardPlayerAction = ReturnType<typeof takeAnotherCardPlayerAction> & Action;
 
 export const cardReadingStartPlayerAction = createAction('[Player] [Sh] Card Reading Start', () => ({
     payload: {

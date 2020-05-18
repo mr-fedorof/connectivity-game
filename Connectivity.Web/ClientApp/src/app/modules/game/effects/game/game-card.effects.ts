@@ -14,6 +14,8 @@ import {
     initLobbyAction,
     restoreLobbyAction,
     startProcessingLobbyStateAction,
+    TakeAnotherCardPlayerAction,
+    takeAnotherCardPlayerAction,
     TakeCardPlayerAction,
     takeCardPlayerAction,
 } from '../../actions';
@@ -29,6 +31,14 @@ export class GameCardEffects {
         currentPlayerTurnFilter(this.store),
 
         switchMap((action: TakeCardPlayerAction) => this.gameCardService.showCard(action.payload.gameCard)),
+        map(() => finishProcessingLobbyStateAction())
+    ));
+
+    public anotherGameCardShow$ = createEffect(() => this.actions$.pipe(
+        ofType<TakeAnotherCardPlayerAction>(takeAnotherCardPlayerAction),
+        currentPlayerTurnFilter(this.store),
+
+        switchMap((action: TakeAnotherCardPlayerAction) => this.gameCardService.showAnotherCard(action.payload.gameCard)),
         map(() => finishProcessingLobbyStateAction())
     ));
 
@@ -75,7 +85,7 @@ export class GameCardEffects {
         withLatestFrom(this.store.select(currentPlayerTurnStateSelector)),
         filter(([action, currentPlayerTurnState]) => isReadingCard(currentPlayerTurnState)),
         tap(([action, currentPlayerTurnState]) => {
-            this.gameCardService.makeVisible(currentPlayerTurnState.gameCard.type);
+            this.gameCardService.makeVisible(currentPlayerTurnState.gameCard);
         })
     ), {
         dispatch: false,
@@ -87,14 +97,20 @@ export class GameCardEffects {
             restoreLobbyAction,
             cardReadingStartPlayerAction
         ),
+
         withLatestFrom(this.store.select(playerTurnStateSelector)),
         filter(([action, playerTurnState]) => isReadingCard(playerTurnState)),
+
         switchMap(([action, playerTurnState]) => {
             const diff = diffInSec(new Date(), playerTurnState.cardReadingStartedAt);
             const delay = leftTime(diff, CARD_READING_TIME);
 
             return timer(delay * 1000);
         }),
+
+        withLatestFrom(this.store.select(playerTurnStateSelector)),
+        filter(([t, playerTurnState]) => isReadingCard(playerTurnState)),
+
         tap(() => {
             this.actionService.applyAction(cardReadingFinishGameSysAction());
         })

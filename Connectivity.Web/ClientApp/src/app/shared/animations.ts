@@ -2,17 +2,29 @@ import { animate, AnimationTriggerMetadata, state, style, transition, trigger } 
 
 export function showHideAnimation(duration = '150ms'): AnimationTriggerMetadata {
     return trigger('showHide', [
-        state('show', style({
+        state('shown', style({
             height: '*',
             opacity: '*',
+            display: 'block',
         })),
-        state('hide', style({
+        state('hidden', style({
             height: 0,
             opacity: 0,
+            display: 'none',
         })),
-        transition(
-            'hide <=> show',
-            animate(`${duration} 0ms ease-in-out`)
-        ),
+
+        transition('hidden => shown', [
+            style({
+                display: 'block',
+            }),
+            animate(`${duration} 0ms ease-in-out`),
+        ]),
+
+        transition('shown => hidden', [
+            style({
+                display: 'block',
+            }),
+            animate(`${duration} 0ms ease-in-out`),
+        ]),
     ]);
 }

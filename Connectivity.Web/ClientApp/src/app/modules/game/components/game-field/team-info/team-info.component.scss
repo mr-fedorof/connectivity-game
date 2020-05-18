@@ -11,8 +11,7 @@
     min-height: 130px;
 
     &#{&}--type-1 {
-        border: 4px solid darken($light-blue, 15%);
-        // background-color: #BA59A7;
+        border: 4px solid $orange;
         background-image: url(/assets/images/teamA.svg);
         background-repeat: no-repeat;
         background-size: 149px 164px;
@@ -20,8 +19,7 @@
     }
 
     &#{&}--type-2 {
-        border: 4px solid darken($olive, 15%);
-        // background-color: #0978E3;
+        border: 4px solid $cian;
         background-image: url(/assets/images/teamB.svg);
         background-repeat: no-repeat;
         background-size: 153px 145px;
@@ -29,8 +27,7 @@
     }
 
     &#{&}--type-3 {
-        border: 4px solid darken($purple, 15%);
-        // background-color: #7BC24F;
+        border: 4px solid $cian;
         background-image: url(/assets/images/teamC.svg);
         background-repeat: no-repeat;
         background-size: 145px 135px;
@@ -38,8 +35,7 @@
     }
 
     &#{&}--type-4 {
-        border: 4px solid darken($cian, 15%);
-        // background-color: $orange;
+        border: 4px solid $orange;
         background-image: url(/assets/images/teamD.svg);
         background-repeat: no-repeat;
         background-size: 146px 143px;
