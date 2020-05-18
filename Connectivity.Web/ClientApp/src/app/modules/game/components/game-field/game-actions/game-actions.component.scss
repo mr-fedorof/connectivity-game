@@ -1,0 +1,14 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-game-actions;
+}
+
+.app-game-actions {
+    display: flex;
+
+    &__action {
+        margin-left: $spacer-8;
+        margin-right: $spacer-8;
+    }
+}

@@ -1,24 +1,26 @@
 <button
     *ngIf="currentPlayerTurnState && !currentPlayerTurnState.diceValue"
     type="button"
-    class="btn btn-lg btn-primary"
+    class="btn btn-lg btn-primary app-game-actions__action"
     [disabled]="isProcessing"
     (click)="onRollDiceClick()"
->Roll the dice</button>
+    translate
+>GAME.ROLL_THE_DICE</button>
 
 <button
     *ngIf="currentPlayerTurnState && currentPlayerTurnState.diceValue && !currentPlayerTurnState.cardReadingStartedAt"
     type="button"
-    class="btn btn-lg btn-primary"
+    class="btn btn-lg btn-primary app-game-actions__action"
     [disabled]="isProcessing"
     (click)="onTakeCardClick()"
->Take Card</button>
+    translate
+>GAME.TAKE_CARD</button>
 
 <button
     *ngIf="currentPlayerTurnState"
     type="button"
-    class="btn btn-lg btn-danger"
+    class="btn btn-lg btn-danger app-game-actions__action"
     [disabled]="isProcessing"
->Skip a move</button>
-
-{{ currentPlayerTurnState | json }}
+    (click)="onSkipMoveClick()"
+    translate
+>GAME.SKIP_THE_MOVE</button>

@@ -100,3 +100,8 @@ export const cardTaskFailPlayerAction = createAction('[Player] [Sh] Card Task Fa
     payload: {},
 }));
 export type CardTaskFailPlayerAction = ReturnType<typeof cardTaskFailPlayerAction> & Action;
+
+export const skipMovePlayerAction = createAction('[Player] [Sh] Skip Move', () => ({
+    payload: {},
+}));
+export type SkipMovePlayerAction = ReturnType<typeof skipMovePlayerAction> & Action;

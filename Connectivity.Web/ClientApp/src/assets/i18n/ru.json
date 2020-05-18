@@ -46,7 +46,19 @@
         "IM_NOT_READY": "Я не готов",
         "LEAVE_LOBBY": "Покинуть комнату"
     },
+    "GAME": {
+        "ROLL_THE_DICE": "Бросить кубик",
+        "TAKE_CARD": "Взять карту",
+        "SKIP_THE_MOVE": "Пропустить ход",
+        "LEAVE": "Покинуть игру"
+    },
     "GAME_CARD": {
+        "TALK": "Talk",
+        "MINE": "Mine",
+        "DRAW": "Draw",
+        "CROCODILE": "Crocodile",
+        "AGENT": "Agent",
+        "JOKER": "Joker",
         "GOT_IT": "Объяснять",
         "SKIP_CARD": "Другую карту"
     }

@@ -35,8 +35,8 @@ export const isProcessingSelector: MemoizedSelector<IGameEngineFeature, boolean>
 export const indexedActionsSelector: MemoizedSelector<IGameEngineFeature, Action[]> = createSelector(
     lobbyStateSelector,
     (lobbyState: LobbyState) => [
-        ...lobbyState.handledActions,
-        ...lobbyState.pendingActions,
+        ...lobbyState.handledActions || [],
+        ...lobbyState.pendingActions || [],
     ].filter(isOrderedAction)
 );
 

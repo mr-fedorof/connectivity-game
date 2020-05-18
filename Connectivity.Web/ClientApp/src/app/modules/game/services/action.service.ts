@@ -293,7 +293,7 @@ export class ActionService extends DestroyableService {
         for (let i = lastActionArrayIndex; i < handledActions.length; i++) {
             const handledAction = handledActions[i];
 
-            if (handledAction.type === action.type) {
+            if (handledAction?.type === action.type) {
                 return true;
             }
         }

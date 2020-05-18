@@ -46,6 +46,12 @@
         "IM_NOT_READY": "I'm not ready",
         "LEAVE_LOBBY": "Leave Lobby"
     },
+    "GAME": {
+        "ROLL_THE_DICE": "Roll the dice",
+        "TAKE_CARD": "Take Card",
+        "SKIP_THE_MOVE": "Skip the move",
+        "LEAVE": "Leave the Game"
+    },
     "GAME_CARD": {
         "TALK": "Talk",
         "MINE": "Mine",

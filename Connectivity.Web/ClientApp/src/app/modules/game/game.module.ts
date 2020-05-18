@@ -27,11 +27,12 @@ import { PlayerIdentificationComponent } from './components/player-identificatio
 import { GameCardTaskEffects } from './effects/game/game-card-task.effects';
 import { GameCardEffects } from './effects/game/game-card.effects';
 import { GameDiceEffects } from './effects/game/game-dice.effects';
+import { GamePlayerEffects } from './effects/game/game-player.effects';
 import { GameEffects } from './effects/game/game.effects';
 import { LobbyStateEffects } from './effects/lobby-state.effects';
 import { LobbyEffects } from './effects/lobby.effects';
 import { PlayerEffects } from './effects/player.effects';
-import { gameEngineFeatureReducers, GAME_ENGINE_FEATURE_NAME } from './game-engine.feature';
+import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { LobbyStateInitializedGuard } from './guard/lobby-state-initialized.guard';
@@ -61,6 +62,7 @@ import {
             LobbyEffects,
             PlayerEffects,
             GameEffects,
+            GamePlayerEffects,
             GameDiceEffects,
             GameCardEffects,
             GameCardTaskEffects,
