@@ -1,7 +1,7 @@
 import { Action, createAction } from '@ngrx/store';
 
 import { GameCardType } from '../enums';
-import { GameCard, Player } from '../models';
+import { GameCard, Player, DrawPayload } from '../models';
 
 export const newPlayerAction = createAction('[Player] [Sh] New', (player: Player) => ({
     payload: {
@@ -105,3 +105,8 @@ export const skipMovePlayerAction = createAction('[Player] [Sh] Skip Move', () =
     payload: {},
 }));
 export type SkipMovePlayerAction = ReturnType<typeof skipMovePlayerAction> & Action;
+
+export const drawAction = createAction('[Player] [Sh] Draw', (drawPayload: DrawPayload) => ({
+    payload: drawPayload,
+}));
+export type DrawAction = ReturnType<typeof drawAction> & Action;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.GameActions;
+using Connectivity.Domain.GameActions.Payloads;
 using Connectivity.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 
@@ -28,6 +29,13 @@ namespace Connectivity.Application.Hubs
             var result = await _gameHubService.ProcessGameActionAsync(Context.ConnectionId, gameAction);
 
             return result;
+        }
+
+        //TODO: probably this will be better for draw
+        public void DrawMove(DrawPayload p)
+        {
+            // Call the client method to draw the line.
+            Clients.Others.SendAsync("DrawMove", p);
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

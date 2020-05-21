@@ -58,20 +58,20 @@
     </div>
 
     <div class="col-3 app-game-field__right-col">
-        <app-game-teams
-            class="app-game-field__right-col-game-teams"
-            [teams]="teams$ | async"
-            [players]="players$ | async"
-        ></app-game-teams>
+        <app-game-teams class="app-game-field__right-col-game-teams"
+                        [teams]="teams$ | async"
+                        [players]="players$ | async"></app-game-teams>
+
+        <app-game-risovach class="app-game-field__right-col-game-messages"></app-game-risovach>
 
         <app-game-messages class="app-game-field__right-col-game-messages"></app-game-messages>
 
         <div class="app-game-field__right-col-actions">
-            <button
-                type="button"
-                class="btn btn-lg btn-secondary"
-                translate
-            >GAME.LEAVE</button>
+            <button type="button"
+                    class="btn btn-lg btn-secondary"
+                    translate>
+                GAME.LEAVE
+            </button>
         </div>
     </div>
 </div>

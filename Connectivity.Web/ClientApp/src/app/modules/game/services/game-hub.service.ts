@@ -58,6 +58,18 @@ export class GameHubService {
         return this.client.invoke(GameHubEvent.gameAction, action);
     }
 
+    // TODO: temp draw here
+    public drawMove(p): Observable<Action> {
+        return this.client.invoke('DrawMove', p);
+    }
+
+    // TODO: temp draw here
+    public addDrawListener(): Observable<Action> {
+        return this.client.listen('DrawMove').pipe(
+            map(([action]) => action as Action)
+        );
+    }
+
     public stop(): Observable<void> {
         if (!this.isActive) {
             return of(false) as any as Observable<void>;

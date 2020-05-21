@@ -16,6 +16,7 @@ import { GameCardComponent } from './components/game-field/game-card/game-card.c
 import { GameDiceComponent } from './components/game-field/game-dice/game-dice.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { GameMessagesComponent } from './components/game-field/game-messages/game-messages.component';
+import { GameRisovachComponent } from './components/game-field/game-risovach/game-risovach.component';
 import { GameTeamsComponent } from './components/game-field/game-teams/game-teams.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
 import { GameTimerComponent } from './components/game-field/game-timer/game-timer.component';
@@ -44,6 +45,7 @@ import {
     GameDiceService,
     GameHubService,
     GameMessageService,
+    GameRisovachService,
     GameService,
     GameSessionStorage,
     GameTimerService,
@@ -79,6 +81,7 @@ import {
         TeamPlayersPipe,
         FreePlayersPipe,
         GameMessagesComponent,
+        GameRisovachComponent,
         GameTeamsComponent,
         GameTilesComponent,
         GameCardComponent,
@@ -104,6 +107,7 @@ import {
         GameCardService,
         GameTimerService,
         GameMessageService,
+        GameRisovachService,
         ...actionGuardingProviders,
         ...actionGuards,
     ],

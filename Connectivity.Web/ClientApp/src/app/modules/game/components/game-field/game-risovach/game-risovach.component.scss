@@ -1,0 +1,45 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-game-risovach;
+}
+
+.app-game-risovach {
+    display: flex;
+    flex-direction: column;
+    border: 4px solid $gray-200;
+    border-radius: $border-radius;
+    min-height: 192px;
+
+    &__title {
+        padding: $spacer-8 $spacer-16;
+    }
+
+    &__container {
+        overflow-y: auto;
+        flex-grow: 1;
+        margin: 0 auto;
+    }
+
+    canvas {
+        background: #f8f8f8;
+        padding: 0;
+        display: block;
+        cursor: crosshair;
+    }
+
+    .pen-width {
+        margin: 1px 6px;
+        background-color: #000000;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .pen-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+}
+
