@@ -1,3 +1,5 @@
+import { uniq } from 'lodash';
+
 import { GameStatus } from '../enums';
 import { Game } from './game.model';
 import { Player } from './player.model';
@@ -37,3 +39,14 @@ export const initialLobby: ILobby = {
     players: [],
     lastActionIndex: null,
 };
+
+export function isReadyToStartGame(lobby: Lobby): boolean {
+    const isAllPlayersJoinedTeams: boolean = lobby.players.every(p => !!p.teamId);
+    const isAllPlayersReady: boolean = lobby.players.every(p => !!p.ready);
+    const isAtLeastTwoTeams: boolean = uniq(lobby.players.map(p => p.teamId)).length >= 2;
+
+    return lobby.game.status === GameStatus.WaitingForPlayers
+        && isAllPlayersJoinedTeams
+        && isAllPlayersReady
+        && isAtLeastTwoTeams;
+}

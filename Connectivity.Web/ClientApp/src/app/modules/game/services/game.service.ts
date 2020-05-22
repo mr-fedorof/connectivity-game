@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, shareReplay } from 'rxjs/operators';
 
 import { Lobby, Player } from '../models';
@@ -8,6 +8,8 @@ import { currentPlayerSelector, lobbySelector } from '../selectors/lobby.selecto
 
 @Injectable()
 export class GameService {
+    private readonly _readyToStartTimerSubject = new BehaviorSubject<[string, number]>([null, null]);
+
     public readonly currentPlayer$: Observable<Player>;
     public readonly lobby$: Observable<Lobby>;
 
@@ -25,5 +27,13 @@ export class GameService {
                 filter(player => !!player?.id),
                 shareReplay(1)
             );
+    }
+
+    public get readyToStartTimer$(): Observable<[string, number]> {
+        return this._readyToStartTimerSubject.asObservable();
+    }
+
+    public readyToStart(startedAt: string, seconds: number): void {
+        this._readyToStartTimerSubject.next([startedAt, seconds]);
     }
 }

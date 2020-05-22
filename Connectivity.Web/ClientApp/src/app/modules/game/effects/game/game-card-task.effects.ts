@@ -12,7 +12,7 @@ import {
 } from '@modules/game/actions';
 import {
     CardResultConfirmationModalComponent,
-} from '@modules/game/components/game-field/card-result-confirmation-modal/card-result-confirmation-modal.component';
+} from '@modules/game/components/game-field/modals/card-result-confirmation-modal/card-result-confirmation-modal.component';
 import { currentPlayerTurnFilter } from '@modules/game/helpers/pipe.helpers';
 import { isCardTaskActive, isCardTaskFinished, isCardTaskResulted } from '@modules/game/models';
 import { nextPlayerTurnSelector, playerTurnStateSelector } from '@modules/game/selectors/game.selectors';

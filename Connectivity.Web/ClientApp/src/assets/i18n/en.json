@@ -72,5 +72,11 @@
         "PLAYER_TURN": "It's turn for {{ player }} from {{ team }}. Roll the dice.",
         "PLAYER_ROLLED_THE_DICE": "{{ player }} got {{ value }}. Take the card.",
         "PLAYER_SKIPPED_THE_TURN": "{{ player }} from {{ team }} decided to skip the turn."
+    },
+    "GAME_STARTING": {
+        "TITLE": "Game",
+        "MESSAGE_1": "All players are ready",
+        "MESSAGE_2": "Game is starting after: {{ time }} sec",
+        "NOT_READY": "I'm not ready"
     }
 }

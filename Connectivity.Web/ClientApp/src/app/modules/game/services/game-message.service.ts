@@ -29,8 +29,12 @@ export class GameMessageService {
     }
 
     private compileGameMessage(action: Action, lobby: Lobby): GameMessage {
-        const player: Player = lobby.players.find(p => p.id === lobby.game.playerTurnId);
-        const team: Team = lobby.teams.find(t => t.id === player.teamId);
+        const player: Player = !!lobby.game?.playerTurnId
+            ? lobby.players.find(p => p.id === lobby.game.playerTurnId)
+            : null;
+        const team: Team = !!player
+            ? lobby.teams.find(t => t.id === player.teamId)
+            : null;
 
         switch (action.type) {
             case startGameSysAction.type:

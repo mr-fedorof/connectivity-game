@@ -56,6 +56,10 @@ namespace Connectivity.Domain.Enums
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share Actions Response")]
         ShareActionsLobbyResponse,
 
+        [EnumMember(Value = "[Game] [Sh] [Sys] Ready To Start")]
+        ReadyToStartGame,
+        [EnumMember(Value = "[Game] [Sh] [Sys] Not Ready To Start")]
+        NotReadyToStartGame,
         [EnumMember(Value = "[Game] [Sh] [Sys] Start")]
         StartGame,
         [EnumMember(Value = "[Game] [Sh] [Sys] Next Player")]

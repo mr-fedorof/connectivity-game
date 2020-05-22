@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from '@modules/app-core/services';
-import {
-    joinTeamPlayerAction,
-    leaveTeamPlayerAction,
-    longPlayerAction,
-    notReadyPlayerAction,
-    readyPlayerAction,
-} from '@modules/game/actions';
+import { joinTeamPlayerAction, leaveTeamPlayerAction, notReadyPlayerAction, readyPlayerAction } from '@modules/game/actions';
 import { Lobby, Player } from '@modules/game/models';
 import { ActionService, GameService, LobbyService } from '@modules/game/services';
 import { GlobalSpinnerService } from '@modules/spinner';
@@ -68,10 +62,6 @@ export class LobbyComponent extends DestroyableComponent implements OnInit {
             .subscribe(() => {
                 this.navigationService.goToHome();
             });
-    }
-
-    public onLongActionClick(): void {
-        this.actionService.applyAction(longPlayerAction());
     }
 
     public onPlayerReadyClick(playerId: string): void {

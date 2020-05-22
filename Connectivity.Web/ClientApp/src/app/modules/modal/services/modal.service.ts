@@ -23,4 +23,17 @@ export class ModalService {
                 map(() => resultFn(modalRef.content))
             );
     }
+
+    public show<T>(component: Type<T>): void {
+        const config: ModalOptions = {
+            keyboard: false,
+            backdrop: 'static',
+        };
+
+        this.bsModalService.show(component, config);
+    }
+
+    public hideTopmost(): void {
+        this.bsModalService.hide(1);
+    }
 }

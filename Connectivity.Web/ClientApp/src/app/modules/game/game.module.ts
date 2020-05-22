@@ -7,9 +7,6 @@ import { SharedModule } from '@shared/shared.module';
 
 import { actionGuardingProviders } from './action-guarding';
 import { actionGuards } from './action-guards';
-import {
-    CardResultConfirmationModalComponent,
-} from './components/game-field/card-result-confirmation-modal/card-result-confirmation-modal.component';
 import { GameActionsComponent } from './components/game-field/game-actions/game-actions.component';
 import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
@@ -20,11 +17,15 @@ import { GameRisovachComponent } from './components/game-field/game-risovach/gam
 import { GameTeamsComponent } from './components/game-field/game-teams/game-teams.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
 import { GameTimerComponent } from './components/game-field/game-timer/game-timer.component';
-import { TeamInfoComponent } from './components/game-field/team-info/team-info.component';
+import {
+    CardResultConfirmationModalComponent,
+} from './components/game-field/modals/card-result-confirmation-modal/card-result-confirmation-modal.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
+import { GameStartingModalComponent } from './components/lobby/game-starting-modal/game-starting-modal.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
+import { TeamInfoComponent } from './components/team-info/team-info.component';
 import { GameCardTaskEffects } from './effects/game/game-card-task.effects';
 import { GameCardEffects } from './effects/game/game-card.effects';
 import { GameDiceEffects } from './effects/game/game-dice.effects';
@@ -91,6 +92,7 @@ import {
         GameCardDeckComponent,
         GameActionsComponent,
         GameTimerComponent,
+        GameStartingModalComponent,
     ],
     providers: [
         LobbyService,
