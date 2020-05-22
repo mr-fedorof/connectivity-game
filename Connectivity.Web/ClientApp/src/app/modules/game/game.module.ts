@@ -17,9 +17,6 @@ import { GameRisovachComponent } from './components/game-field/game-risovach/gam
 import { GameTeamsComponent } from './components/game-field/game-teams/game-teams.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
 import { GameTimerComponent } from './components/game-field/game-timer/game-timer.component';
-import {
-    CardResultConfirmationModalComponent,
-} from './components/game-field/modals/card-result-confirmation-modal/card-result-confirmation-modal.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
 import { GameStartingModalComponent } from './components/lobby/game-starting-modal/game-starting-modal.component';
@@ -36,6 +33,7 @@ import { TeamPlayersPipe } from './pipes/team-players.pipe';
 import {
     ActionService,
     GameCardService,
+    GameDialogService,
     GameDiceService,
     GameHubService,
     GameMessageService,
@@ -72,7 +70,6 @@ import {
         GameCardComponent,
         TeamInfoComponent,
         GameDiceComponent,
-        CardResultConfirmationModalComponent,
         GameCardDeckComponent,
         GameActionsComponent,
         GameTimerComponent,
@@ -94,6 +91,7 @@ import {
         GameTimerService,
         GameMessageService,
         GameRisovachService,
+        GameDialogService,
         ...actionGuardingProviders,
         ...actionGuards,
     ],

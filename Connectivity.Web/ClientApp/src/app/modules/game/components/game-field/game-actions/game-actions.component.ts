@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { rollDicePlayerAction, skipMovePlayerAction, takeCardPlayerAction } from '@modules/game/actions';
 import { diceToGameCardType } from '@modules/game/helpers';
 import { PlayerTurnState } from '@modules/game/models';
@@ -8,6 +8,7 @@ import { ActionService } from '@modules/game/services';
     selector: 'app-game-actions',
     templateUrl: './game-actions.component.html',
     styleUrls: ['./game-actions.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameActionsComponent {
     @Input() public currentPlayerTurnState: PlayerTurnState = null;

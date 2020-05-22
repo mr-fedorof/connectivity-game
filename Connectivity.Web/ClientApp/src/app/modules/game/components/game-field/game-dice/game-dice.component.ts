@@ -1,5 +1,5 @@
 import { AnimationEvent } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { GameDiceService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { rollDiceAnimation } from './game-dice.animations';
     selector: 'app-game-dice',
     templateUrl: './game-dice.component.html',
     styleUrls: ['./game-dice.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         rollDiceAnimation(),
     ],

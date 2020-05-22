@@ -5,7 +5,7 @@ import { filter, map } from 'rxjs/operators';
 
 @Injectable()
 export class ModalService {
-    private readonly _hideRequestSubject: Subject<Type<any>> = new Subject<Type<any>>();
+    private readonly _hideRequestSubject: Subject<string> = new Subject<string>();
 
     constructor(
         private readonly bsModalService: BsModalService
@@ -26,24 +26,32 @@ export class ModalService {
             );
     }
 
-    public show<T>(component: Type<T>): void {
+    public show<T>(component: Type<T>): BsModalRef {
         const config: ModalOptions = {
             keyboard: false,
             backdrop: 'static',
         };
 
-        this.bsModalService.show(component, config);
+        return this.bsModalService.show(component, config);
     }
 
-    public hide<T>(modalType: Type<T>): void {
-        this._hideRequestSubject.next(modalType);
+    public hide(typeOrKey: Type<any> | string): void {
+        this._hideRequestSubject.next(this.getKey(typeOrKey));
     }
 
-    public getHideRequest<T>(modalType: Type<T>): Observable<void> {
+    public getHideRequest(typeOrKey: Type<any> | string): Observable<void> {
+        const targetKey = this.getKey(typeOrKey);
+
         return this._hideRequestSubject.asObservable()
             .pipe(
-                filter(t => t.name === modalType.name),
+                filter(key => key === targetKey),
                 map(() => null)
             );
+    }
+
+    private getKey(typeOrKey: Type<any> | string): string {
+        return typeof typeOrKey === 'string'
+            ? typeOrKey
+            : typeOrKey.name;
     }
 }

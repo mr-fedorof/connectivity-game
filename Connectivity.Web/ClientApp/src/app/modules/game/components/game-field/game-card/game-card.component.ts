@@ -18,10 +18,10 @@ import { gameCardContentAnimation } from './game-card.animations';
     selector: 'app-game-card',
     templateUrl: './game-card.component.html',
     styleUrls: ['./game-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         gameCardContentAnimation(),
     ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCardComponent extends DestroyableComponent implements OnInit {
     public diceDots: number[];
@@ -76,26 +76,7 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
         this.gameCardContentAnimationDone.emit(event);
     }
 
-    private getTypeClass(type: GameCardType): string {
-        switch (type) {
-            case GameCardType.Talk:
-                return 'app-game-card--talk';
-            case GameCardType.Mine:
-                return 'app-game-card--mine';
-            case GameCardType.Draw:
-                return 'app-game-card--draw';
-            case GameCardType.Crocodile:
-                return 'app-game-card--crocodile';
-            case GameCardType.Agent:
-                return 'app-game-card--agent';
-            case GameCardType.Joker:
-                return 'app-game-card--joker';
-            default:
-                return '';
-        }
-    }
-
-    private getCardName(type: GameCardType): string {
+    public getCardName(type: GameCardType): string {
         switch (type) {
             case GameCardType.Talk:
                 return 'GAME_CARD.TALK';
@@ -114,7 +95,7 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
         }
     }
 
-    private getCarTaskName(type: GameCardTaskType): string {
+    public getCarTaskName(type: GameCardTaskType): string {
         switch (type) {
             case GameCardTaskType.JokerNotMyFilm:
                 return 'GAME_TASK.NOT_MY_FILM';
@@ -124,6 +105,25 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
                 return 'GAME_TASK.SPEAKING_BOOK';
             case GameCardTaskType.JokerTopsyTurvy:
                 return 'GAME_TASK.TOPSY_TURVY';
+            default:
+                return '';
+        }
+    }
+
+    private getTypeClass(type: GameCardType): string {
+        switch (type) {
+            case GameCardType.Talk:
+                return 'app-game-card--talk';
+            case GameCardType.Mine:
+                return 'app-game-card--mine';
+            case GameCardType.Draw:
+                return 'app-game-card--draw';
+            case GameCardType.Crocodile:
+                return 'app-game-card--crocodile';
+            case GameCardType.Agent:
+                return 'app-game-card--agent';
+            case GameCardType.Joker:
+                return 'app-game-card--joker';
             default:
                 return '';
         }

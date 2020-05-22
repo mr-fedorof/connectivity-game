@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { GameCardType } from '@modules/game/enums';
 import { Player, PlayerTurnState, Team } from '@modules/game/models';
 import { currentPlayerTurnStateSelector, diceValueSelector } from '@modules/game/selectors/game.selectors';
@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
     selector: 'app-game-field',
     templateUrl: './game-field.component.html',
     styleUrls: ['./game-field.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameFieldComponent extends DestroyableComponent implements OnInit {
     public readonly GameCardType = GameCardType;

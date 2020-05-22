@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameTimerService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
     selector: 'app-game-timer',
     templateUrl: './game-timer.component.html',
     styleUrls: ['./game-timer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameTimerComponent extends DestroyableComponent implements OnInit {
     public timeleft$: Observable<number>;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationService } from '@modules/app-core/services';
 import { joinTeamPlayerAction, leaveTeamPlayerAction, notReadyPlayerAction, readyPlayerAction } from '@modules/game/actions';
 import { Lobby, Player } from '@modules/game/models';
@@ -12,6 +12,7 @@ import { tap } from 'rxjs/operators';
     selector: 'app-lobby',
     templateUrl: './lobby.component.html',
     styleUrls: ['./lobby.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LobbyComponent extends DestroyableComponent implements OnInit {
     public lobby: Lobby;
