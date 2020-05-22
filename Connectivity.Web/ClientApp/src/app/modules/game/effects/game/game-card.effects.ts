@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { isReadingCard } from '@modules/game/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { diffInSec, leftTime } from '@shared/utils/date.utils';
-import { timer } from 'rxjs';
+import { leftTimeDelay } from '@shared/utils/date.utils';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
@@ -42,7 +41,7 @@ export class GameCardEffects {
         map(() => finishProcessingLobbyStateAction())
     ));
 
-    public gameCardStartTimer$ = createEffect(() => this.actions$.pipe(
+    public gameCardTimerStart$ = createEffect(() => this.actions$.pipe(
         ofType(
             initLobbyAction,
             restoreLobbyAction,
@@ -51,13 +50,11 @@ export class GameCardEffects {
         currentPlayerTurnFilter(this.store),
 
         withLatestFrom(this.store.select(currentPlayerTurnStateSelector)),
-        filter(([action, currentPlayerTurnState]) => isReadingCard(currentPlayerTurnState)),
-        tap(([action, currentPlayerTurnState]) => {
+        filter(([_, currentPlayerTurnState]) => isReadingCard(currentPlayerTurnState)),
+        tap(([_, currentPlayerTurnState]) => {
             this.gameCardService.startTimer(currentPlayerTurnState.gameCard.type, currentPlayerTurnState.cardReadingStartedAt);
         })
-    ), {
-        dispatch: false,
-    });
+    ), { dispatch: false });
 
     public gameCardHide$ = createEffect(() => this.actions$.pipe(
         ofType(
@@ -76,20 +73,22 @@ export class GameCardEffects {
         map(() => finishProcessingLobbyStateAction())
     ));
 
-    public restoreCardReadingState$ = createEffect(() => this.actions$.pipe(
+    public gameCardStateRestore$ = createEffect(() => this.actions$.pipe(
         ofType(
             initLobbyAction,
             restoreLobbyAction
         ),
 
         withLatestFrom(this.store.select(currentPlayerTurnStateSelector)),
-        filter(([action, currentPlayerTurnState]) => isReadingCard(currentPlayerTurnState)),
-        tap(([action, currentPlayerTurnState]) => {
-            this.gameCardService.makeVisible(currentPlayerTurnState.gameCard);
+        tap(([_, currentPlayerTurnState]) => {
+            if (currentPlayerTurnState && isReadingCard(currentPlayerTurnState)) {
+                this.gameCardService.makeVisible(currentPlayerTurnState.gameCard);
+            } else {
+                this.gameCardService.makeVisible(null);
+            }
         })
-    ), {
-        dispatch: false,
-    });
+
+    ), { dispatch: false });
 
     public gameCardReadingFinish$ = createEffect(() => this.actions$.pipe(
         ofType(
@@ -101,22 +100,14 @@ export class GameCardEffects {
         withLatestFrom(this.store.select(playerTurnStateSelector)),
         filter(([action, playerTurnState]) => isReadingCard(playerTurnState)),
 
-        switchMap(([action, playerTurnState]) => {
-            const diff = diffInSec(new Date(), playerTurnState.cardReadingStartedAt);
-            const delay = leftTime(diff, CARD_READING_TIME);
-
-            return timer(delay * 1000);
-        }),
-
-        withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([t, playerTurnState]) => isReadingCard(playerTurnState)),
+        switchMap(([action, playerTurnState]) => leftTimeDelay(playerTurnState.cardReadingStartedAt, CARD_READING_TIME)
+            .takeUntilActions(this.actions$, cardReadingFinishPlayerAction, cardReadingFinishGameSysAction)),
 
         tap(() => {
             this.actionService.applyAction(cardReadingFinishGameSysAction());
         })
-    ), {
-        dispatch: false,
-    });
+
+    ), { dispatch: false });
 
     constructor(
         private readonly actions$: Actions,

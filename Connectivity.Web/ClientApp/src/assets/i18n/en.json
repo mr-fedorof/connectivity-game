@@ -1,5 +1,7 @@
 {
     "MESSAGES": {
+        "SOMETHING_WENT_WRONG": "Something went wrong. Please try again.",
+        "PAGE_NOT_FOUND": "Page Not Found",
         "CONNECTION_LOST": "Connection has been lost. Trying to reconnect.",
         "CONNECTION_ESTABLISHED": "Connection established."
     },

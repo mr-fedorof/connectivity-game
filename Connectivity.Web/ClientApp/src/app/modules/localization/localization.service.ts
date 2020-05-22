@@ -31,7 +31,7 @@ export class LocalizationService {
         return this.translateService.use(lang);
     }
 
-    public translate(key: string, params: object): string {
+    public translate(key: string, params?: object): string {
         return this.translateService.instant(key, params);
     }
 

@@ -20,8 +20,7 @@ import { ActionService, GameTimerService } from '@modules/game/services';
 import { ModalService } from '@modules/modal/services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { diffInSec, leftTime } from '@shared/utils/date.utils';
-import { timer } from 'rxjs';
+import { leftTimeDelay } from '@shared/utils/date.utils';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 @Injectable()
@@ -35,11 +34,10 @@ export class GameCardTaskEffects {
         tap(() => {
             this.actionService.applyAction(startCardTaskGameSysAction());
         })
-    ), {
-        dispatch: false,
-    });
 
-    public gameCardTaskTimer$ = createEffect(() => this.actions$.pipe(
+    ), { dispatch: false });
+
+    public gameCardTaskTimerStart$ = createEffect(() => this.actions$.pipe(
         ofType(
             initLobbyAction,
             restoreLobbyAction,
@@ -48,12 +46,12 @@ export class GameCardTaskEffects {
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
         filter(([action, playerTurnState]) => isCardTaskActive(playerTurnState)),
+
         tap(([action, playerTurnState]) => {
             this.gameTimerService.startTimer(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan * 60);
         })
-    ), {
-        dispatch: false,
-    });
+
+    ), { dispatch: false });
 
     public gameCardTaskFinish$ = createEffect(() => this.actions$.pipe(
         ofType(
@@ -65,18 +63,14 @@ export class GameCardTaskEffects {
         withLatestFrom(this.store.select(playerTurnStateSelector)),
         filter(([action, playerTurnState]) => isCardTaskActive(playerTurnState)),
 
-        switchMap(([action, playerTurnState]) => {
-            const diff = diffInSec(new Date(), playerTurnState.cardTaskStartedAt);
-            const delay = leftTime(diff, playerTurnState.gameCard.timespan * 60);
+        switchMap(([action, playerTurnState]) => leftTimeDelay(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan * 60)
+            .takeUntilActions(this.actions$, finishCardTaskGameSysAction)),
 
-            return timer(delay * 1000);
-        }),
         tap(() => {
             this.actionService.applyAction(finishCardTaskGameSysAction());
         })
-    ), {
-        dispatch: false,
-    });
+
+    ), { dispatch: false });
 
     public gameCardTaskResult$ = createEffect(() => this.actions$.pipe(
         ofType(
@@ -84,10 +78,10 @@ export class GameCardTaskEffects {
             restoreLobbyAction,
             finishCardTaskGameSysAction
         ),
-
         currentPlayerTurnFilter(this.store),
+
         withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([action, playerTurnState]) => isCardTaskFinished(playerTurnState) && !isCardTaskResulted(playerTurnState)),
+        filter(([_, playerTurnState]) => isCardTaskFinished(playerTurnState) && !isCardTaskResulted(playerTurnState)),
 
         switchMap(() => this.modalService.inquiry(CardResultConfirmationModalComponent, c => c.confirmed)),
         tap((result: boolean) => {
@@ -97,11 +91,10 @@ export class GameCardTaskEffects {
                 this.actionService.applyAction(cardTaskFailPlayerAction());
             }
         })
-    ), {
-        dispatch: false,
-    });
 
-    public nextPlayer$ = createEffect(() => this.actions$.pipe(
+    ), { dispatch: false });
+
+    public giveTurnToNextPlayer$ = createEffect(() => this.actions$.pipe(
         ofType(
             initLobbyAction,
             restoreLobbyAction,
@@ -117,9 +110,8 @@ export class GameCardTaskEffects {
         tap(([action, nextPlayerTurnId]) => {
             this.actionService.applyAction(nextPlayerGameSysAction(nextPlayerTurnId));
         })
-    ), {
-        dispatch: false,
-    });
+
+    ), { dispatch: false });
 
     constructor(
         private readonly actions$: Actions,

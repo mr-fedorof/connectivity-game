@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LocalizationService } from '@modules/localization';
 import { Observable, Subject } from 'rxjs';
 
 import { AlertType } from '../enums';
@@ -15,6 +16,11 @@ export class GlobalAlertService {
 
     public get clear$(): Observable<string | null> {
         return this._clearSubject.asObservable();
+    }
+
+    constructor(
+        private readonly localizationService: LocalizationService
+    ) {
     }
 
     public alert(type: AlertType, message: string, options: { id?: string, time?: number } = {}): void {
@@ -41,10 +47,14 @@ export class GlobalAlertService {
     }
 
     public somethingWentWrong(): void {
-        this.error('Something went wrong. Please try again.');
+        const message = this.localizationService.translate('MESSAGES.SOMETHING_WENT_WRONG');
+
+        this.error(message);
     }
 
     public alertPageNotFound(): void {
-        this.error('Page Not Found.');
+        const message = this.localizationService.translate('MESSAGES.PAGE_NOT_FOUND');
+
+        this.error(message);
     }
 }

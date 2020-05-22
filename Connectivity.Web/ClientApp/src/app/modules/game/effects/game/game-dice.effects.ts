@@ -7,7 +7,7 @@ import { GameDiceService } from '../../services';
 
 @Injectable()
 export class GameDiceEffects {
-    public rollDice$ = createEffect(() => this.actions$.pipe(
+    public gameDiceRoll$ = createEffect(() => this.actions$.pipe(
         ofType(rollDicePlayerAction),
 
         switchMap(action => this.gameDiceService.rollDice(action.payload.value)),
