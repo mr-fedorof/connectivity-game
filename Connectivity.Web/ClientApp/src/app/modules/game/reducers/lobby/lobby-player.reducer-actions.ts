@@ -59,9 +59,5 @@ export const lobbyPlayerReducerActions = [
             ...p,
             ready: false,
         })),
-        game: {
-            ...state.game,
-            readyToStartAt: null,
-        }
     })),
 ];

@@ -1,10 +1,12 @@
 import { Injectable, Type } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable()
 export class ModalService {
+    private readonly _hideRequestSubject: Subject<Type<any>> = new Subject<Type<any>>();
+
     constructor(
         private readonly bsModalService: BsModalService
     ) {
@@ -33,7 +35,15 @@ export class ModalService {
         this.bsModalService.show(component, config);
     }
 
-    public hideTopmost(): void {
-        this.bsModalService.hide(1);
+    public hide<T>(modalType: Type<T>): void {
+        this._hideRequestSubject.next(modalType);
+    }
+
+    public getHideRequest<T>(modalType: Type<T>): Observable<void> {
+        return this._hideRequestSubject.asObservable()
+            .pipe(
+                filter(t => t.name === modalType.name),
+                map(() => null)
+            );
     }
 }

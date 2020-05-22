@@ -2,13 +2,13 @@ import { AnimationEvent } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { cardReadingFinishPlayerAction, takeAnotherCardPlayerAction } from '@modules/game/actions';
 import { GameCardTaskType, GameCardType } from '@modules/game/enums';
+import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameCard } from '@modules/game/models';
 import { ActionService, GameCardService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
-import { diffInSec } from '@shared/utils/date.utils';
 import { range } from 'lodash';
-import { EMPTY, Observable, pipe, timer } from 'rxjs';
-import { filter, map, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { CARD_READING_TIME } from '../../../game.constants';
 import { gameCardTypeToDice } from '../../../helpers';
@@ -59,8 +59,8 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
             .pipe(
                 takeUntil(this.onDestroy),
                 filter(([type, startedAt]) => type === this.type),
-                map(([type, startedAt]) => startedAt),
-                this.timeLeftPipe
+                map(([type, startedAt]) => [startedAt, CARD_READING_TIME]),
+                timeLeftPipe()
             );
     }
 
@@ -128,21 +128,4 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
                 return '';
         }
     }
-
-    private readonly timeLeftPipe = pipe(
-        switchMap((startedAt: string) => {
-            const startedDiff = diffInSec(new Date(), startedAt);
-
-            if (startedDiff > CARD_READING_TIME) {
-                return EMPTY;
-            }
-
-            return timer(0, 1000)
-                .pipe(
-                    map(i => startedDiff + i),
-                    map(diff => CARD_READING_TIME - diff),
-                    takeWhile(timeleft => timeleft >= 0)
-                );
-        })
-    );
 }

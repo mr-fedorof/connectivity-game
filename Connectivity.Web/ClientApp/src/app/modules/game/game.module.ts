@@ -26,14 +26,7 @@ import { GameStartingModalComponent } from './components/lobby/game-starting-mod
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
 import { TeamInfoComponent } from './components/team-info/team-info.component';
-import { GameCardTaskEffects } from './effects/game/game-card-task.effects';
-import { GameCardEffects } from './effects/game/game-card.effects';
-import { GameDiceEffects } from './effects/game/game-dice.effects';
-import { GamePlayerEffects } from './effects/game/game-player.effects';
-import { GameEffects } from './effects/game/game.effects';
-import { LobbyStateEffects } from './effects/lobby-state.effects';
-import { LobbyEffects } from './effects/lobby.effects';
-import { PlayerEffects } from './effects/player.effects';
+import { gameEngineEffects } from './effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
@@ -61,16 +54,7 @@ import {
         FormsModule,
         GameRoutingModule,
         StoreModule.forFeature(GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers),
-        EffectsModule.forFeature([
-            LobbyStateEffects,
-            LobbyEffects,
-            PlayerEffects,
-            GameEffects,
-            GamePlayerEffects,
-            GameDiceEffects,
-            GameCardEffects,
-            GameCardTaskEffects,
-        ]),
+        EffectsModule.forFeature(gameEngineEffects),
         SharedModule,
     ],
     declarations: [

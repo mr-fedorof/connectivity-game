@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { notReadyPlayerAction } from '@modules/game/actions';
 import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
 import { ActionService, GameService } from '@modules/game/services';
+import { ModalService } from '@modules/modal/services';
 import { DestroyableComponent } from '@shared/destroyable';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
@@ -17,6 +19,8 @@ export class GameStartingModalComponent extends DestroyableComponent implements 
     public timeleft$: Observable<number>;
 
     constructor(
+        private readonly modalRef: BsModalRef,
+        private readonly modalService: ModalService,
         private readonly gameService: GameService,
         private readonly actionService: ActionService
     ) {
@@ -24,6 +28,12 @@ export class GameStartingModalComponent extends DestroyableComponent implements 
     }
 
     public ngOnInit(): void {
+        this.modalService.getHideRequest(GameStartingModalComponent)
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(() => {
+                this.modalRef.hide();
+            });
+
         this.gameService.currentPlayer$
             .pipe(
                 takeUntil(this.onDestroy),
