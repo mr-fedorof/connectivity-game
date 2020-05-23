@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Connectivity.Application.GameActions.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,7 @@ namespace Connectivity.Application.GameActions
             Directory.CreateDirectory(_path);
         }
 
-        public int CurrentIndex(Guid lobbyId)
+        public Task<int> CurrentIndex(Guid lobbyId)
         {
             lock (_syncObject)
             {
@@ -31,11 +32,11 @@ namespace Connectivity.Application.GameActions
                     currentIndex = int.Parse(File.ReadAllText($@"{_path}\{lobbyId}"));
                 }
 
-                return currentIndex;
+                return Task.FromResult(currentIndex); ;
             }
         }
 
-        public int NextIndex(Guid lobbyId)
+        public Task<int> NextIndex(Guid lobbyId)
         {
             lock (_syncObject)
             {
@@ -50,7 +51,7 @@ namespace Connectivity.Application.GameActions
                 _cache.Set(lobbyId, currentIndex);
                 File.WriteAllText($@"{_path}\{lobbyId}", currentIndex.ToString());
 
-                return currentIndex;
+                return Task.FromResult(currentIndex);
             }
         }
     }

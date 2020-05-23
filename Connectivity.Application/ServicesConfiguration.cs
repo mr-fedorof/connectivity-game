@@ -16,6 +16,8 @@ namespace Connectivity.Application
     {
         public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
+            
+            services.AddSingleton<IGameCache, GameCacheInMemory>();
             if (environment.IsLocal())
             {
                 services.AddSingleton<IGameActionIndexer, GameActionIndexerInFile>();

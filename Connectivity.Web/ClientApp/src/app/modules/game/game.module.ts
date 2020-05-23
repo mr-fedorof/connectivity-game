@@ -39,13 +39,13 @@ import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { LobbyStateInitializedGuard } from './guard/lobby-state-initialized.guard';
 import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
+import { GameRisovachService } from './services/game-risovach.service';
 import {
     ActionService,
     GameCardService,
     GameDiceService,
     GameHubService,
     GameMessageService,
-    GameRisovachService,
     GameService,
     GameSessionStorage,
     GameTimerService,

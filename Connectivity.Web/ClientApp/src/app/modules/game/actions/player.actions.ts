@@ -106,7 +106,7 @@ export const skipMovePlayerAction = createAction('[Player] [Sh] Skip Move', () =
 }));
 export type SkipMovePlayerAction = ReturnType<typeof skipMovePlayerAction> & Action;
 
-export const drawAction = createAction('[Player] [Sh] Draw', (drawPayload: DrawPayload) => ({
-    payload: drawPayload,
+export const drawingStartPlayerAction = createAction('[Player] [Sh] Drawing Start', () => ({
+    payload: {},
 }));
-export type DrawAction = ReturnType<typeof drawAction> & Action;
+export type DrawingStartPlayerAction = ReturnType<typeof drawingStartPlayerAction> & Action;

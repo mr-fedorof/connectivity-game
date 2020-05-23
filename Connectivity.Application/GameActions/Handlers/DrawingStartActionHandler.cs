@@ -7,14 +7,12 @@ using Connectivity.Domain.GameActions.Payloads;
 
 namespace Connectivity.Application.GameActions.Handlers
 {
-    [GameActionType(GameActionType.Draw)]
-    public class DrawActionHandler : GameActionHandler<DrawPayload>
+    [GameActionType(GameActionType.DrawingStart)]
+    public class DrawingStartActionHandler : GameActionHandler<EmptyPayload>
     {
-        protected override async Task<GameAction<DrawPayload>> HandleAsync(GameAction<DrawPayload> gameAction)
-        {
-            // TODO: caching here?
-            // if payload.Erase == true, clear cache?
 
+        protected override async Task<GameAction<EmptyPayload>> HandleAsync(GameAction<EmptyPayload> gameAction)
+        {
             return gameAction;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Connectivity.Application.GameActions.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -7,37 +8,31 @@ namespace Connectivity.Application.GameActions
 {
     public class GameActionIndexerInMemory : IGameActionIndexer
     {
-        private readonly object _syncObject = new object();
+        private readonly IGameCache _cache;
 
-        private readonly IMemoryCache _cache;
-
-        public GameActionIndexerInMemory(IMemoryCache cache)
+        public GameActionIndexerInMemory(IGameCache cache)
         {
             _cache = cache;
         }
 
-        public int CurrentIndex(Guid lobbyId)
+        public async Task<int> CurrentIndex(Guid lobbyId)
         {
-            lock (_syncObject)
-            {
-                var currentIndex = _cache.Get<int?>(lobbyId) ?? 0;
+            var currentIndex = await _cache.GetAsync<int?>(lobbyId.ToString()) ?? 0;
 
-                return currentIndex;
-            }
+            return currentIndex;
         }
 
-        public int NextIndex(Guid lobbyId)
+        public async Task<int> NextIndex(Guid lobbyId)
         {
-            lock (_syncObject)
-            {
-                var currentIndex = _cache.Get<int?>(lobbyId) ?? 0;
+            // TODO: if applicable, reuse GetOrSetAsync()
+            var currentIndex = await _cache.GetAsync<int?>(lobbyId.ToString()) ?? 0;
 
-                currentIndex += 1;
+            currentIndex += 1;
 
-                _cache.Set(lobbyId, currentIndex);
+            // TODO: Shurik F - check expiration TimeSpan.FromHours(1)
+            await _cache.SetAsync(lobbyId.ToString(), currentIndex, TimeSpan.FromHours(1));
 
-                return currentIndex;
-            }
+            return currentIndex;
         }
     }
 }

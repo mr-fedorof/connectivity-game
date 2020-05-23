@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using Connectivity.Domain.Enums;
 using Connectivity.Domain.Models;
 using Connectivity.Application.Services.Interfaces;
+using Connectivity.Domain.GameActions.Payloads;
 using Connectivity.Domain.Models.Cards;
 using Connectivity.Persistence.DbClients;
 using MongoDB.Driver;
+using Connectivity.Application.GameActions.Interfaces;
+using System.Collections.Generic;
 
 namespace Connectivity.Application.Services
 {
@@ -15,15 +18,18 @@ namespace Connectivity.Application.Services
         private readonly IConnectivityDbClient _dbClient;
         private readonly IGameCardService _cardService;
         private readonly IGameCardDeckService _cardDeckService;
+        private readonly IGameCache _gameCache;
 
         public GameService(
             IConnectivityDbClient dbClient,
             IGameCardService cardService,
-            IGameCardDeckService cardDeckService)
+            IGameCardDeckService cardDeckService,
+            IGameCache gameCache)
         {
             _dbClient = dbClient;
             _cardService = cardService;
             _cardDeckService = cardDeckService;
+            _gameCache = gameCache;
         }
 
         public async Task SetGameStatusAsync(Guid lobbyId, GameStatus status)
@@ -62,7 +68,7 @@ namespace Connectivity.Application.Services
             var cardDeck = await GetCardDeckAsync(lobbyId);
 
             var cardId = cardDeck.TakeCard(cardType);
-            
+
             // Reshuffle cards for the card type in the deck
             if (cardId == null)
             {
@@ -72,7 +78,7 @@ namespace Connectivity.Application.Services
 
                 cardId = cardDeck.TakeCard(cardType);
             }
-            
+
             if (cardId == null)
             {
                 throw new Exception("Card deck is empty.");
@@ -88,5 +94,26 @@ namespace Connectivity.Application.Services
 
             return card;
         }
+
+        public async Task SaveDrawing(string lobbyId, DrawPayload drawPayload)
+        {
+            var drawingKey = GetDrawingKey(lobbyId);
+            if (drawPayload.Erase)
+            {
+                await _gameCache.DeleteKeyAsync(drawingKey);
+                return;
+            }
+
+            var stored = await _gameCache.GetOrSetAsync(drawingKey, () => new List<DrawPayload> { drawPayload }, TimeSpan.FromMinutes(3));
+            stored.Add(drawPayload);
+            await _gameCache.SetAsync(drawingKey, stored, TimeSpan.FromMinutes(3));
+        }
+        public async Task<IList<DrawPayload>> RestoreDrawings(string lobbyId)
+        {
+            var drawingKey = GetDrawingKey(lobbyId);
+            return await _gameCache.GetAsync<List<DrawPayload>>(drawingKey);
+        }
+
+        private string GetDrawingKey(string id) => $"draw-{id}";
     }
 }

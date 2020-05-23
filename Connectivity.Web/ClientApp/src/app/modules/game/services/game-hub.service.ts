@@ -5,7 +5,7 @@ import { merge, Observable, of, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { GameHubEvent } from '../enums';
-import { LobbyConnectResult } from '../models';
+import { LobbyConnectResult, DrawPayload } from '../models';
 
 @Injectable()
 export class GameHubService {
@@ -58,17 +58,26 @@ export class GameHubService {
         return this.client.invoke(GameHubEvent.gameAction, action);
     }
 
-    // TODO: temp draw here
-    public drawMove(p): Observable<Action> {
-        return this.client.invoke('DrawMove', p);
+    public restoreDrawings(lobbyId: string) {
+        return this.client.invoke(GameHubEvent.restoreDrawings, lobbyId);
     }
 
-    // TODO: temp draw here
-    public addDrawListener(): Observable<Action> {
-        return this.client.listen('DrawMove').pipe(
-            map(([action]) => action as Action)
+    public addRestoreDrawingsListener(): Observable<DrawPayload[]> {
+        return this.client.listen(GameHubEvent.restoreDrawings).pipe(
+            map(([ps]) => ps as DrawPayload[])
         );
     }
+
+    public drawMove(lobbyId: string, drawPayload: DrawPayload) {
+        return this.client.invoke(GameHubEvent.drawMove, lobbyId, drawPayload);
+    }
+
+    public addDrawMoveListener(): Observable<DrawPayload> {
+        return this.client.listen(GameHubEvent.drawMove).pipe(
+            map(([p]) => p as DrawPayload)
+        );
+    }
+
 
     public stop(): Observable<void> {
         if (!this.isActive) {

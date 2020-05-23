@@ -1,15 +1,15 @@
 <h5 class="app-game-risovach__title">Risovach</h5>
 <div class="app-game-risovach__container">
-    <canvas id="canvas" width="300" height="164" style="border: 1px dashed;"></canvas>
+    <canvas id="canvas" width="300" height="164"></canvas>
+    <span class="pen-width" *ngFor="let lw of lineWeights; let i = index">
+        <div  (click)="onLineWeightClick(lw)" class="dashed-border">
+            <div  class="line-width" style="height: {{lw}}px;width: {{lw}}px;"></div>
+        </div>
+    </span>
     <div>
-        <span (click)="onLineWeightClick(1)" class="pen-width" style="height: 1px;width: 1px;"></span>
-        <span (click)="onLineWeightClick(5)" class="pen-width" style="height: 5px;width: 5px;"></span>
-        <span (click)="onLineWeightClick(10)" class="pen-width" style="height: 10px;width: 10px;"></span>
-    </div>
-    <div>
-        <button class="pen-color" (click)="onStrokeColorClick(0)" style="background-color: {{colors[0]}};"></button>
-        <button class="pen-color" (click)="onStrokeColorClick(1)" style="background-color: {{colors[1]}};"></button>
-        <button class="pen-color" (click)="onStrokeColorClick(2)" style="background-color: {{colors[2]}};"></button>
+        <span *ngFor="let color of colors; let i = index">
+            <button class="pen-color" (click)="onStrokeColorClick(i)" style="background-color: {{color}};"></button>
+        </span>
         <button (click)="onClearClick()">clear</button>
     </div>
 
