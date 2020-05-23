@@ -1,4 +1,6 @@
 import * as moment from 'moment';
+import { Observable, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export function diffInSec(
     dateA: Date | string,
@@ -24,4 +26,15 @@ export function leftTime(
     return actualDiff > maxDiff
         ? 0
         : maxDiff - actualDiff;
+}
+
+export function leftTimeDelay(
+    startedAt: Date | string,
+    timespan: number
+): Observable<void> {
+    const diff = diffInSec(new Date(), startedAt);
+    const delay = leftTime(diff, timespan);
+
+    return timer(delay * 1000)
+        .pipe(map(() => null));
 }

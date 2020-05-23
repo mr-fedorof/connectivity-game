@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h4
+        class="modal-title"
+        translate
+    >GAME_STARTING.TITLE</h4>
+</div>
+
+<div class="modal-body">
+    <p translate>GAME_STARTING.MESSAGE_1</p>
+    <p
+        translate
+        [translateParams]="{ time: timeleft$ | async }"
+    >GAME_STARTING.MESSAGE_2</p>
+</div>
+
+<div class="modal-footer">
+    <button
+        type="button"
+        class="btn btn-danger"
+        (click)="onNotReady()"
+        translate
+    >GAME_STARTING.NOT_READY</button>
+</div>

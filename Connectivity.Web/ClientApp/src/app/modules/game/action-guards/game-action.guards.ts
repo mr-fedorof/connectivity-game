@@ -10,8 +10,9 @@ import {
     startCardTaskGameSysAction,
     startGameSysAction,
 } from '../actions';
-import { GameStatus } from '../enums';
-import { gameSelector, playerTurnSelector, playerTurnStateSelector } from '../selectors/game.selectors';
+import { isReadyToStartGame } from '../models';
+import { playerTurnSelector, playerTurnStateSelector } from '../selectors/game.selectors';
+import { lobbySelector } from '../selectors/lobby.selectors';
 
 @Injectable()
 export class StartGameSysActionGuard implements IActionGuard {
@@ -23,8 +24,8 @@ export class StartGameSysActionGuard implements IActionGuard {
     }
 
     public canActivate(action: Action): Observable<boolean> {
-        return this.store.select(gameSelector)
-            .pipe(map(game => game.status === GameStatus.WaitingForPlayers));
+        return this.store.select(lobbySelector)
+            .pipe(map(lobby => isReadyToStartGame(lobby)));
     }
 }
 

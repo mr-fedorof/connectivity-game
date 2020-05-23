@@ -90,6 +90,14 @@
                             "with": "src/environments/environment.local.ts"
                         }
                     ]
+                },
+                "local-iis": {
+                    "fileReplacements": [
+                        {
+                            "replace": "src/environments/environment.ts",
+                            "with": "src/environments/environment.local-iis.ts"
+                        }
+                    ]
                 }
             }
         },
@@ -107,6 +115,9 @@
             },
             "local": {
               "browserTarget": "connectivity-web:build:local"
+            },
+            "local-iis": {
+              "browserTarget": "connectivity-web:build:local-iis"
             }
           }
         },
@@ -160,6 +171,8 @@
               "vendorChunk": true
             },
             "local": {
+            },
+            "local-iis": {
             }
           }
         }

@@ -10,7 +10,7 @@
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express (Local)": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local"
       }
@@ -29,8 +29,6 @@
     },
     ".Net Core (Local)": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local"
       },

@@ -2,13 +2,13 @@ import { AnimationEvent } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { cardReadingFinishPlayerAction, takeAnotherCardPlayerAction } from '@modules/game/actions';
 import { GameCardTaskType, GameCardType } from '@modules/game/enums';
+import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameCard } from '@modules/game/models';
 import { ActionService, GameCardService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
-import { diffInSec } from '@shared/utils/date.utils';
 import { range } from 'lodash';
-import { EMPTY, Observable, pipe, timer } from 'rxjs';
-import { filter, map, switchMap, takeUntil, takeWhile } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { CARD_READING_TIME } from '../../../game.constants';
 import { gameCardTypeToDice } from '../../../helpers';
@@ -18,10 +18,10 @@ import { gameCardContentAnimation } from './game-card.animations';
     selector: 'app-game-card',
     templateUrl: './game-card.component.html',
     styleUrls: ['./game-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
         gameCardContentAnimation(),
     ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameCardComponent extends DestroyableComponent implements OnInit {
     public diceDots: number[];
@@ -59,8 +59,8 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
             .pipe(
                 takeUntil(this.onDestroy),
                 filter(([type, startedAt]) => type === this.type),
-                map(([type, startedAt]) => startedAt),
-                this.timeLeftPipe
+                map(([type, startedAt]) => [startedAt, CARD_READING_TIME]),
+                timeLeftPipe()
             );
     }
 
@@ -74,6 +74,40 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
 
     public onGameCardContentAnimationDone(event: AnimationEvent): void {
         this.gameCardContentAnimationDone.emit(event);
+    }
+
+    public getCardName(type: GameCardType): string {
+        switch (type) {
+            case GameCardType.Talk:
+                return 'GAME_CARD.TALK';
+            case GameCardType.Mine:
+                return 'GAME_CARD.MINE';
+            case GameCardType.Draw:
+                return 'GAME_CARD.DRAW';
+            case GameCardType.Crocodile:
+                return 'GAME_CARD.CROCODILE';
+            case GameCardType.Agent:
+                return 'GAME_CARD.AGENT';
+            case GameCardType.Joker:
+                return 'GAME_CARD.JOKER';
+            default:
+                return '';
+        }
+    }
+
+    public getCarTaskName(type: GameCardTaskType): string {
+        switch (type) {
+            case GameCardTaskType.JokerNotMyFilm:
+                return 'GAME_TASK.NOT_MY_FILM';
+            case GameCardTaskType.JokerNotMySong:
+                return 'GAME_TASK.NOT_MY_SONG';
+            case GameCardTaskType.JokerSpeakingBook:
+                return 'GAME_TASK.SPEAKING_BOOK';
+            case GameCardTaskType.JokerTopsyTurvy:
+                return 'GAME_TASK.TOPSY_TURVY';
+            default:
+                return '';
+        }
     }
 
     private getTypeClass(type: GameCardType): string {
@@ -94,55 +128,4 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
                 return '';
         }
     }
-
-    private getCardName(type: GameCardType): string {
-        switch (type) {
-            case GameCardType.Talk:
-                return 'GAME_CARD.TALK';
-            case GameCardType.Mine:
-                return 'GAME_CARD.MINE';
-            case GameCardType.Draw:
-                return 'GAME_CARD.DRAW';
-            case GameCardType.Crocodile:
-                return 'GAME_CARD.CROCODILE';
-            case GameCardType.Agent:
-                return 'GAME_CARD.AGENT';
-            case GameCardType.Joker:
-                return 'GAME_CARD.JOKER';
-            default:
-                return '';
-        }
-    }
-
-    private getCarTaskName(type: GameCardTaskType): string {
-        switch (type) {
-            case GameCardTaskType.JokerNotMyFilm:
-                return 'GAME_TASK.NOT_MY_FILM';
-            case GameCardTaskType.JokerNotMySong:
-                return 'GAME_TASK.NOT_MY_SONG';
-            case GameCardTaskType.JokerSpeakingBook:
-                return 'GAME_TASK.SPEAKING_BOOK';
-            case GameCardTaskType.JokerTopsyTurvy:
-                return 'GAME_TASK.TOPSY_TURVY';
-            default:
-                return '';
-        }
-    }
-
-    private readonly timeLeftPipe = pipe(
-        switchMap((startedAt: string) => {
-            const startedDiff = diffInSec(new Date(), startedAt);
-
-            if (startedDiff > CARD_READING_TIME) {
-                return EMPTY;
-            }
-
-            return timer(0, 1000)
-                .pipe(
-                    map(i => startedDiff + i),
-                    map(diff => CARD_READING_TIME - diff),
-                    takeWhile(timeleft => timeleft >= 0)
-                );
-        })
-    );
 }

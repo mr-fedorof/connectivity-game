@@ -320,23 +320,22 @@ $modal-inner-padding:               $spacer-16;
 
 $modal-title-line-height:           $line-height-base;
 
-// $modal-content-color:               null !default;
-// $modal-content-bg:                  $white !default;
-// $modal-content-border-color:        rgba($black, .2) !default;
-// $modal-content-border-width:        $border-width !default;
+$modal-content-color:               $text-color-base;
+$modal-content-bg:                  $white !default;
+$modal-content-border-color:        null;
+$modal-content-border-width:        0;
 $modal-content-border-radius:       $border-radius;
 // $modal-content-box-shadow-xs:       0 .25rem .5rem rgba($black, .5) !default;
 // $modal-content-box-shadow-sm-up:    0 .5rem 1rem rgba($black, .5) !default;
 
 // $modal-backdrop-bg:                 $black !default;
 // $modal-backdrop-opacity:            .5 !default;
-// $modal-header-border-color:         $border-color !default;
-// $modal-footer-border-color:         $modal-header-border-color !default;
-// $modal-header-border-width:         $modal-content-border-width !default;
-// $modal-footer-border-width:         $modal-header-border-width !default;
-// $modal-header-padding-y:            1rem !default;
-// $modal-header-padding-x:            1rem !default;
-// $modal-header-padding:              $modal-header-padding-y $modal-header-padding-x !default; // Keep this for backwards compatibility
+$modal-header-border-color:         $cian;
+$modal-footer-border-color:         $cian;
+$modal-header-border-width:         $border-width;
+$modal-footer-border-width:         $border-width;
+$modal-header-padding-y:            $spacer-16;
+$modal-header-padding-x:            $spacer-16;
 
 // $modal-xl:                          1140px !default;
 // $modal-lg:                          800px !default;

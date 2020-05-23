@@ -16,9 +16,8 @@ export class GamePlayerEffects {
         tap(([action, nextPlayerTurnId]) => {
             this.actionService.applyAction(nextPlayerGameSysAction(nextPlayerTurnId));
         })
-    ), {
-        dispatch: false,
-    });
+
+    ), { dispatch: false });
 
     constructor(
         private readonly actions$: Actions,

@@ -1,5 +1,17 @@
 import { Action, createAction } from '@ngrx/store';
 
+export const readyToStartGameSysAction = createAction('[Game] [Sh] [Sys] Ready To Start', () => ({
+    payload: {
+        readyToStartAt: null as string,
+    },
+}));
+export type ReadyToStartGameSysAction = ReturnType<typeof readyToStartGameSysAction> & Action;
+
+export const notReadyToStartGameSysAction = createAction('[Game] [Sh] [Sys] Not Ready To Start', () => ({
+    payload: {},
+}));
+export type NotReadyToStartGameSysAction = ReturnType<typeof notReadyToStartGameSysAction> & Action;
+
 export const startGameSysAction = createAction('[Game] [Sh] [Sys] Start', () => ({
     payload: {},
 }));

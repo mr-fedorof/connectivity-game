@@ -1,7 +1,13 @@
 {
     "MESSAGES": {
+        "SOMETHING_WENT_WRONG": "Something went wrong. Please try again.",
+        "PAGE_NOT_FOUND": "Page Not Found",
         "CONNECTION_LOST": "Connection has been lost. Trying to reconnect.",
         "CONNECTION_ESTABLISHED": "Connection established."
+    },
+    "BUTTONS": {
+        "YES": "Yes",
+        "NO": "No"
     },
     "HOME": {
         "CONNECTIVITY": "Connectivity",
@@ -46,11 +52,22 @@
         "IM_NOT_READY": "I'm not ready",
         "LEAVE_LOBBY": "Leave Lobby"
     },
+    "GAME_STARTING": {
+        "TITLE": "Game",
+        "MESSAGE_1": "All players are ready",
+        "MESSAGE_2": "Game is starting after: {{ time }} sec",
+        "NOT_READY": "I'm not ready"
+    },
     "GAME": {
         "ROLL_THE_DICE": "Roll the dice",
         "TAKE_CARD": "Take Card",
         "SKIP_THE_MOVE": "Skip the move",
         "LEAVE": "Leave the Game"
+    },
+    "GAME_MESSAGES": {
+        "PLAYER_TURN": "It's turn for {{ player }} from {{ team }}. Roll the dice.",
+        "PLAYER_ROLLED_THE_DICE": "{{ player }} got {{ value }}. Take the card.",
+        "PLAYER_SKIPPED_THE_TURN": "{{ player }} from {{ team }} decided to skip the turn."
     },
     "GAME_CARD": {
         "TALK": "Talk",
@@ -59,8 +76,11 @@
         "CROCODILE": "Crocodile",
         "AGENT": "Agent",
         "JOKER": "Joker",
-        "GOT_IT": "Got it",
-        "SKIP_CARD": "Another card"
+        "BUTTONS": {
+            "CLOSE": "Close",
+            "GOT_IT": "Got it",
+            "SKIP_CARD": "Another card"
+        }
     },
     "GAME_TASK": {
         "NOT_MY_FILM": "Not my film",
@@ -68,9 +88,8 @@
         "SPEAKING_BOOK": "Speaking book",
         "TOPSY_TURVY": "Topsy turvy"
     },
-    "GAME_MESSAGES": {
-        "PLAYER_TURN": "It's turn for {{ player }} from {{ team }}. Roll the dice.",
-        "PLAYER_ROLLED_THE_DICE": "{{ player }} got {{ value }}. Take the card.",
-        "PLAYER_SKIPPED_THE_TURN": "{{ player }} from {{ team }} decided to skip the turn."
+    "CONFIRM_CARD_TASK_RESULT_DIALOG": {
+        "TITLE": "Task Results",
+        "QUESTION": "Did your team answered the question?"
     }
 }

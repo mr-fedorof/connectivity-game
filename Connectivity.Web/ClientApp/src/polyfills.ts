@@ -1,3 +1,6 @@
+
+// tslint:disable: ordered-imports
+// tslint:disable: no-import-side-effect
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -61,5 +64,5 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * APPLICATION IMPORTS
  */
 
-// tslint:disable-next-line: no-import-side-effect
 import '@modules/spinner/extensions/wrap-with-spinner.extension';
+import '@modules/game/helpers/pipe.extensions';

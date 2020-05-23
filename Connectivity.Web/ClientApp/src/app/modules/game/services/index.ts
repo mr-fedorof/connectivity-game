@@ -9,3 +9,4 @@ export * from './game-dice.service';
 export * from './game-card.service';
 export * from './game-timer.service';
 export * from './game-message.service';
+export * from './game-dialog.service';

@@ -1,10 +1,11 @@
-import { Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, HostBinding, Input, TemplateRef } from '@angular/core';
 import { Player, Team } from '@modules/game/models';
 
 @Component({
     selector: 'app-team-info',
     templateUrl: './team-info.component.html',
     styleUrls: ['./team-info.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamInfoComponent {
     @Input() public team: Team;

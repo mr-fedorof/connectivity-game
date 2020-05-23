@@ -7,9 +7,6 @@ import { SharedModule } from '@shared/shared.module';
 
 import { actionGuardingProviders } from './action-guarding';
 import { actionGuards } from './action-guards';
-import {
-    CardResultConfirmationModalComponent,
-} from './components/game-field/card-result-confirmation-modal/card-result-confirmation-modal.component';
 import { GameActionsComponent } from './components/game-field/game-actions/game-actions.component';
 import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
@@ -20,19 +17,13 @@ import { GameRisovachComponent } from './components/game-field/game-risovach/gam
 import { GameTeamsComponent } from './components/game-field/game-teams/game-teams.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
 import { GameTimerComponent } from './components/game-field/game-timer/game-timer.component';
-import { TeamInfoComponent } from './components/game-field/team-info/team-info.component';
 import { LobbyCreateComponent } from './components/lobby-create/lobby-create.component';
 import { LobbyStateComponent } from './components/lobby-state/lobby-state.component';
+import { GameStartingModalComponent } from './components/lobby/game-starting-modal/game-starting-modal.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { PlayerIdentificationComponent } from './components/player-identification/player-identification.component';
-import { GameCardTaskEffects } from './effects/game/game-card-task.effects';
-import { GameCardEffects } from './effects/game/game-card.effects';
-import { GameDiceEffects } from './effects/game/game-dice.effects';
-import { GamePlayerEffects } from './effects/game/game-player.effects';
-import { GameEffects } from './effects/game/game.effects';
-import { LobbyStateEffects } from './effects/lobby-state.effects';
-import { LobbyEffects } from './effects/lobby.effects';
-import { PlayerEffects } from './effects/player.effects';
+import { TeamInfoComponent } from './components/team-info/team-info.component';
+import { gameEngineEffects } from './effects';
 import { GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers } from './game-engine.feature';
 import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
@@ -43,6 +34,7 @@ import { GameRisovachService } from './services/game-risovach.service';
 import {
     ActionService,
     GameCardService,
+    GameDialogService,
     GameDiceService,
     GameHubService,
     GameMessageService,
@@ -60,16 +52,7 @@ import {
         FormsModule,
         GameRoutingModule,
         StoreModule.forFeature(GAME_ENGINE_FEATURE_NAME, gameEngineFeatureReducers),
-        EffectsModule.forFeature([
-            LobbyStateEffects,
-            LobbyEffects,
-            PlayerEffects,
-            GameEffects,
-            GamePlayerEffects,
-            GameDiceEffects,
-            GameCardEffects,
-            GameCardTaskEffects,
-        ]),
+        EffectsModule.forFeature(gameEngineEffects),
         SharedModule,
     ],
     declarations: [
@@ -87,10 +70,10 @@ import {
         GameCardComponent,
         TeamInfoComponent,
         GameDiceComponent,
-        CardResultConfirmationModalComponent,
         GameCardDeckComponent,
         GameActionsComponent,
         GameTimerComponent,
+        GameStartingModalComponent,
     ],
     providers: [
         LobbyService,
@@ -108,6 +91,7 @@ import {
         GameTimerService,
         GameMessageService,
         GameRisovachService,
+        GameDialogService,
         ...actionGuardingProviders,
         ...actionGuards,
     ],

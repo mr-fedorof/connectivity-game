@@ -1,7 +1,7 @@
 import { Action, createAction } from '@ngrx/store';
 
 import { GameCardType } from '../enums';
-import { GameCard, Player, DrawPayload } from '../models';
+import { DrawPayload, GameCard, Player } from '../models';
 
 export const newPlayerAction = createAction('[Player] [Sh] New', (player: Player) => ({
     payload: {
@@ -32,13 +32,6 @@ export const leaveTeamPlayerAction = createAction('[Player] [Sh] Leave Team', (p
     },
 }));
 export type LeaveTeamPlayerAction = ReturnType<typeof leaveTeamPlayerAction> & Action;
-
-export const longPlayerAction = createAction('[Player] [Sh] Long Action', () => ({
-    payload: {
-    },
-    long: true,
-}));
-export type LongPlayerAction = ReturnType<typeof longPlayerAction> & Action;
 
 export const readyPlayerAction = createAction('[Player] [Sh] Ready', (playerId: string) => ({
     payload: {
