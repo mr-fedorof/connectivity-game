@@ -17,7 +17,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
     public colors = ["#000", "#f00", "#ff7f00", "#ff0", "#0f0", "#00f", "#4b0082", "#8f00ff", "#fff"];
     public lineWeights = [1, 3, 5, 7, 10, 15, 25];
     public lineWeight = 1;
-    public strokeCode = 0;
+    public strokeColorCode = 0;
     public oX;
     public oY;
     private isDrawing = false;
@@ -34,7 +34,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
         this.canvasContext = this.canvas.getContext('2d');
         this.canvasContext.lineCap = "round";
         this.canvasContext.lineJoin = "round";
-        this.canvasContext.strokeStyle = "#000";
+        this.canvasContext.strokeStyle = this.colors[0];
         this.canvasContext.lineWidth = 1;
 
         this.canvasEvents();
@@ -57,7 +57,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
     }
 
     public onStrokeColorClick(code) {
-        this.strokeCode = code;
+        this.strokeColorCode = code;
     }
 
     public onClearClick() {
@@ -95,10 +95,9 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             this.oY,
             this.oX - 1,
             this.oY - 1,
-            this.strokeCode,
+            this.strokeColorCode,
             this.lineWeight);
 
-        console.log(`draw out`, p)
         this.drawMove(p);
         this.risovachService.drawMove(p);
     };
@@ -114,7 +113,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             this.oY,
             this.oX - 1,
             this.oY - 1,
-            this.strokeCode,
+            this.strokeColorCode,
             this.lineWeight);
 
         this.drawMove(p);
@@ -137,7 +136,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
                 this.oY,
                 x,
                 y,
-                this.strokeCode,
+                this.strokeColorCode,
                 this.lineWeight);
 
             this.drawMove(p);
@@ -158,7 +157,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             this.oY,
             x,
             y,
-            this.strokeCode,
+            this.strokeColorCode,
             this.lineWeight);
 
         this.drawMove(p);

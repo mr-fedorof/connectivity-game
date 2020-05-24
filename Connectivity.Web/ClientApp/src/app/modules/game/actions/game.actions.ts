@@ -1,4 +1,5 @@
 import { Action, createAction } from '@ngrx/store';
+import { GameCardType } from '../enums';
 
 export const readyToStartGameSysAction = createAction('[Game] [Sh] [Sys] Ready To Start', () => ({
     payload: {
@@ -29,9 +30,10 @@ export const cardReadingFinishGameSysAction = createAction('[Game] [Sh] [Sys] Ca
 }));
 export type CardReadingFinishGameSysAction = ReturnType<typeof cardReadingFinishGameSysAction> & Action;
 
-export const startCardTaskGameSysAction = createAction('[Game] [Sh] [Sys] Start Card Task', () => ({
+export const startCardTaskGameSysAction = createAction('[Game] [Sh] [Sys] Start Card Task', (gameCardType: GameCardType) => ({
     payload: {
         startedAt: null as string,
+        gameCardType,
     },
 }));
 export type StartCardTaskGameSysAction = ReturnType<typeof startCardTaskGameSysAction> & Action;

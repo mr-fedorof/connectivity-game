@@ -69,7 +69,7 @@ export class GameCardComponent extends DestroyableComponent implements OnInit {
     }
 
     public onGotItClick(): void {
-        this.actionService.applyAction(cardReadingFinishPlayerAction());
+        this.actionService.applyAction(cardReadingFinishPlayerAction(this.type));
     }
 
     public onGameCardContentAnimationDone(event: AnimationEvent): void {

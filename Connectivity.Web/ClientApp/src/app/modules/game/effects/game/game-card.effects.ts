@@ -103,7 +103,7 @@ export class GameCardEffects {
         switchMap(([action, playerTurnState]) => leftTimeDelay(playerTurnState.cardReadingStartedAt, CARD_READING_TIME)
             .takeUntilActions(this.actions$, cardReadingFinishPlayerAction, cardReadingFinishGameSysAction)),
 
-        tap(() => {
+        tap((e) => {
             this.actionService.applyAction(cardReadingFinishGameSysAction());
         })
 

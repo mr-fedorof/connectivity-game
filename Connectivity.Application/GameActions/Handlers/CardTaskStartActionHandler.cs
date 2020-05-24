@@ -14,6 +14,12 @@ namespace Connectivity.Application.GameActions.Handlers
         {
             gameAction.Payload.StartedAt = DateTime.UtcNow;
 
+            if (gameAction.Payload.GameCardType == CardType.Draw)
+            {
+                gameAction.Type = GameActionType.DrawingStart;
+            }
+
+
             return gameAction;
         }
     }

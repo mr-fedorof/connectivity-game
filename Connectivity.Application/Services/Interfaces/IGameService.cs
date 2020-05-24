@@ -20,5 +20,7 @@ namespace Connectivity.Application.Services.Interfaces
         Task SaveDrawing(string lobbyId, DrawPayload drawPayload);
 
         Task<IList<DrawPayload>> RestoreDrawings(string lobbyId);
+
+        Task DeleteDrawings(string lobbyId);
     }
 }

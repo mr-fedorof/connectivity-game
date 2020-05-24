@@ -28,8 +28,8 @@ export class GameCardTaskEffects {
             cardReadingFinishGameSysAction
         ),
 
-        tap(() => {
-            this.actionService.applyAction(startCardTaskGameSysAction());
+        tap((action) => {
+            this.actionService.applyAction(startCardTaskGameSysAction(action.payload.gameCardType)); // todo: is there more elegant way?
         })
 
     ), { dispatch: false });

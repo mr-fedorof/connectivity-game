@@ -43,6 +43,8 @@ namespace Connectivity.Domain.Enums
         
         [EnumMember(Value = "[Player] [Sh] Drawing Start")]
         DrawingStart,
+        [EnumMember(Value = "[Player] [Sh] Drawing End")]
+        DrawingEnd,
 
         [SkipIndex]
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share")]

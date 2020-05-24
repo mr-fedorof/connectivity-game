@@ -45,6 +45,7 @@ import {
     LobbyStorage,
     PendingActionsStorage,
 } from './services';
+import { GameRisovachModalComponent } from './components/game-field/game-risovach/game-risovach-modal/game-risovach-modal.component';
 
 @NgModule({
     imports: [
@@ -74,6 +75,7 @@ import {
         GameActionsComponent,
         GameTimerComponent,
         GameStartingModalComponent,
+        GameRisovachModalComponent,
     ],
     providers: [
         LobbyService,
