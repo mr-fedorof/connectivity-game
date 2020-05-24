@@ -1,0 +1,202 @@
+@import 'component-common.scss';
+
+$dice-w: 40px;
+$dice-h: 40px;
+$dice-pad: 4px;
+
+$dot-h: 8px;
+$dot-w: 8px;
+
+:host {
+    @extend .app-game-card-back;
+}
+
+.app-game-card-back {
+    display: block;
+    position: relative;
+    border-radius: $border-radius;
+    border: 1px solid $gray-200;
+
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &#{&}--talk {
+        background-color: $light-blue;
+        background-image: url(/assets/images/talk.svg);
+    }
+
+    &#{&}--mine {
+        background-color: $cian;
+        background-image: url(/assets/images/mine.svg);
+    }
+
+    &#{&}--draw {
+        background-color: $olive;
+        background-image: url(/assets/images/draw.svg);
+    }
+
+    &#{&}--crocodile {
+        background-color: $orange;
+        background-image: url(/assets/images/crocodile.svg);
+    }
+
+    &#{&}--agent {
+        background-color: $purple;
+        background-image: url(/assets/images/agent.svg);
+    }
+
+    &#{&}--joker {
+        background-color: $pink;
+        background-image: url(/assets/images/joker.svg);
+    }
+
+    &#{&}--simplified {
+        background-image: none;
+    }
+
+    &__dice {
+        &--first {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+        }
+
+        &--second {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+        }
+    }
+}
+
+.app-dice {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $white;
+    width: $dice-w;
+    height: $dice-h;
+    border-radius: $border-radius-sm;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    &__dot {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &:before {
+            content: ' ';
+            display: block;
+            width: $dot-w;
+            height: $dot-h;
+            border-radius: 50%;
+            background-color: $gray-900;
+        }
+    }
+
+    @mixin dot-pos($t, $r, $b, $l) {
+        position: absolute;
+        top: $t;
+        right: $r;
+        bottom: $b;
+        left: $l;
+    }
+
+    &--1 &__dot {
+        &:nth-child(1) {
+            @include dot-pos(($dice-h - $dot-h)/2, auto, auto, ($dice-w - $dot-w)/2);
+        }
+    }
+
+    &--2 &__dot {
+        &:nth-child(1) {
+            @include dot-pos($dice-pad, auto, auto, $dice-pad);
+        }
+
+        &:nth-child(2) {
+            @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+        }
+    }
+
+    &--3 &__dot {
+        &:nth-child(1) {
+            @include dot-pos($dice-pad, auto, auto, $dice-pad);
+        }
+
+        &:nth-child(2) {
+            @include dot-pos(($dice-h - $dot-h)/2, auto, auto, ($dice-w - $dot-w)/2);
+        }
+
+        &:nth-child(3) {
+            @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+        }
+    }
+
+    &--4 &__dot {
+        &:nth-child(1) {
+            @include dot-pos($dice-pad, auto, auto, $dice-pad);
+        }
+
+        &:nth-child(2) {
+            @include dot-pos($dice-pad, $dice-pad, auto, auto);
+        }
+
+        &:nth-child(3) {
+            @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+        }
+
+        &:nth-child(4) {
+            @include dot-pos(auto, auto, $dice-pad, $dice-pad);
+        }
+    }
+
+    &--5 &__dot {
+        &:nth-child(1) {
+            @include dot-pos($dice-pad, auto, auto, $dice-pad);
+        }
+
+        &:nth-child(2) {
+            @include dot-pos($dice-pad, $dice-pad, auto, auto);
+        }
+
+        &:nth-child(3) {
+            @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+        }
+
+        &:nth-child(4) {
+            @include dot-pos(auto, auto, $dice-pad, $dice-pad);
+        }
+
+        &:nth-child(5) {
+            @include dot-pos(($dice-h - $dot-h)/2, auto, auto, ($dice-w - $dot-w)/2);
+        }
+    }
+
+    &--6 &__dot {
+        &:nth-child(1) {
+            @include dot-pos($dice-pad, auto, auto, $dice-pad);
+        }
+
+        &:nth-child(2) {
+            @include dot-pos(($dice-h - $dot-h)/2, auto, auto, $dice-pad);
+        }
+
+        &:nth-child(3) {
+            @include dot-pos(auto, auto, $dice-pad, $dice-pad);
+        }
+
+        &:nth-child(4) {
+            @include dot-pos($dice-pad, $dice-pad, auto, auto);
+        }
+
+        &:nth-child(5) {
+            @include dot-pos(($dice-w - $dot-w)/2, $dice-pad, auto, auto);
+        }
+
+        &:nth-child(6) {
+            @include dot-pos(auto, $dice-pad, $dice-pad, auto);
+        }
+    }
+}

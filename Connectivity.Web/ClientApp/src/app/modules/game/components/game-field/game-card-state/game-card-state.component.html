@@ -1,0 +1,21 @@
+<div class="app-game-card-state__header">
+    <h3 class="app-game-card-state__header-title">{{ getCardName(gameCard?.type) | translate }}</h3>
+    <h4
+        *ngIf="getCarTaskName(gameCard?.task.type)"
+        class="app-game-card-state__header-sub-title"
+    >
+        {{ getCarTaskName(gameCard.task.type) | translate }}
+    </h4>
+</div>
+
+<div class="app-game-card-state__content">
+    <div
+        class="app-game-card-state__message"
+        [innerHTML]="'GAME_CARD.PLAYER_READING' | translate:{ player: (player$ | async)?.name }"
+    >
+    </div>
+</div>
+
+<div class="app-game-card-state__timer">
+    {{ timeleft$ | async }}
+</div>

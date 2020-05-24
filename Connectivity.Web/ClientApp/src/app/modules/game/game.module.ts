@@ -9,6 +9,9 @@ import { actionGuardingProviders } from './action-guarding';
 import { actionGuards } from './action-guards';
 import { GameActionsComponent } from './components/game-field/game-actions/game-actions.component';
 import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
+import { GameCardStateComponent } from './components/game-field/game-card-state/game-card-state.component';
+import { GameCardBackComponent } from './components/game-field/game-card/game-card-back/game-card-back.component';
+import { GameCardFrontComponent } from './components/game-field/game-card/game-card-front/game-card-front.component';
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
 import { GameDiceComponent } from './components/game-field/game-dice/game-dice.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
@@ -74,6 +77,9 @@ import {
         GameActionsComponent,
         GameTimerComponent,
         GameStartingModalComponent,
+        GameCardFrontComponent,
+        GameCardBackComponent,
+        GameCardStateComponent,
     ],
     providers: [
         LobbyService,

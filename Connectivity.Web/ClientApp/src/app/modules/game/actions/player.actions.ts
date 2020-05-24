@@ -72,6 +72,12 @@ export const takeAnotherCardPlayerAction = createAction('[Player] [Sh] Take Anot
 }));
 export type TakeAnotherCardPlayerAction = ReturnType<typeof takeAnotherCardPlayerAction> & Action;
 
+export const closeCardPlayerAction = createAction('[Player] Close Card', () => ({
+    payload: {},
+    long: true,
+}));
+export type CloseCardPlayerAction = ReturnType<typeof closeCardPlayerAction> & Action;
+
 export const cardReadingStartPlayerAction = createAction('[Player] [Sh] Card Reading Start', () => ({
     payload: {
         startedAt: null as string,

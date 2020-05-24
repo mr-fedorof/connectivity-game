@@ -28,3 +28,16 @@ export function showHideAnimation(duration = '150ms'): AnimationTriggerMetadata 
         ]),
     ]);
 }
+
+export function fadeInOutAnimation(duration = '150ms'): AnimationTriggerMetadata {
+    return trigger('fadeInOut', [
+        transition(':enter', [
+            style({ opacity: 0 }),
+            animate(duration, style({ opacity: 1 })),
+        ]),
+
+        transition(':leave', [
+            animate(duration, style({ opacity: 0 })),
+        ]),
+    ]);
+}

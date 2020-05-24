@@ -32,7 +32,9 @@ export function gameCardDeckAnimation(): AnimationTriggerMetadata {
             ]),
         ]),
 
-        transition('* => *', []),
+        transition('* => *', [
+            query('.app-game-card-deck__card--state', animateChild(), { optional: true }),
+        ]),
     ]);
 }
 

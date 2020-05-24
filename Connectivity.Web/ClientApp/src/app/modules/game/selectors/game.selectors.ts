@@ -16,7 +16,7 @@ export const gameStatusSelector: MemoizedSelector<IGameEngineFeature, GameStatus
     (game: Game) => game.status
 );
 
-export const playerTurnSelector: MemoizedSelector<IGameEngineFeature, string> = createSelector(
+export const playerTurnIdSelector: MemoizedSelector<IGameEngineFeature, string> = createSelector(
     gameSelector,
     (game: Game) => game.playerTurnId
 );
@@ -24,7 +24,7 @@ export const playerTurnSelector: MemoizedSelector<IGameEngineFeature, string> = 
 export const nextPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, string> = createSelector(
     playersSelector,
     teamsSelector,
-    playerTurnSelector,
+    playerTurnIdSelector,
     (players: Player[], teams: Team[], playerTurnId: string) => {
         if (!playerTurnId) {
             return null;
@@ -45,6 +45,12 @@ export const nextPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, string
 export const playerTurnStateSelector: MemoizedSelector<IGameEngineFeature, PlayerTurnState> = createSelector(
     gameSelector,
     (game: Game) => game.playerTurnState || {}
+);
+
+export const playerTurnPlayerSelector: MemoizedSelector<IGameEngineFeature, Player> = createSelector(
+    playerTurnIdSelector,
+    playersSelector,
+    (playerTurnId, players) => players?.find(p => p.id === playerTurnId)
 );
 
 export const currentPlayerTurnStateSelector: MemoizedSelector<IGameEngineFeature, PlayerTurnState> = createSelector(

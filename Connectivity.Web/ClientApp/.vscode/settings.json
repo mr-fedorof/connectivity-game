@@ -9,5 +9,6 @@
 
     "[scss]": {
         "editor.formatOnSave": false
-    }
+    },
+    "explorer.compactFolders": false
 }
