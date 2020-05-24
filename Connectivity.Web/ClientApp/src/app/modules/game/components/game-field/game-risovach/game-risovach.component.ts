@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit, ElementRef, NgZone } from '@angular/core';
-import { drawAction } from '@modules/game/actions';
-import { GameRisovachService, ActionService } from '@modules/game/services';
+import { GameRisovachService } from '@modules/game/services/game-risovach.service';
 import { DestroyableComponent } from '@shared/destroyable';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { DrawPayload } from '../../../models';
 
 @Component({
@@ -13,8 +12,10 @@ import { DrawPayload } from '../../../models';
 })
 export class GameRisovachComponent extends DestroyableComponent implements OnInit {
     public canvas;
+
     public canvasContext;
     public colors = ["#000", "#f00", "#ff7f00", "#ff0", "#0f0", "#00f", "#4b0082", "#8f00ff", "#fff"];
+    public lineWeights = [1, 3, 5, 7, 10, 15, 25];
     public lineWeight = 1;
     public strokeCode = 0;
     public oX;
@@ -23,8 +24,6 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
 
     constructor(
         private readonly risovachService: GameRisovachService,
-        private readonly actionService: ActionService,
-        private zone: NgZone,
         private cdr: ChangeDetectorRef,
     ) {
         super();
@@ -47,7 +46,6 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
                 takeUntil(this.onDestroy),
             )
             .subscribe(p => {
-                console.log(`draw in`, p)
                 this.drawMove(p);
                 this.cdr.markForCheck();
             });
@@ -64,7 +62,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
 
     public onClearClick() {
         this.eraseCanvas();
-        this.actionService.applyAction(drawAction({ erase: true }));
+        this.risovachService.drawMove({ erase: true });
     }
 
     public eraseCanvas() {
@@ -102,7 +100,7 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
 
         console.log(`draw out`, p)
         this.drawMove(p);
-        this.actionService.applyAction(drawAction(p));
+        this.risovachService.drawMove(p);
     };
 
     public touchStart(e) {
@@ -119,9 +117,8 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             this.strokeCode,
             this.lineWeight);
 
-        console.log(`draw out`, p)
         this.drawMove(p);
-        this.actionService.applyAction(drawAction(p));
+        this.risovachService.drawMove(p);
     };
 
     // Mouse only control
@@ -143,9 +140,8 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
                 this.strokeCode,
                 this.lineWeight);
 
-            console.log(`draw out`, p)
             this.drawMove(p);
-            this.actionService.applyAction(drawAction(p));
+            this.risovachService.drawMove(p);
             this.oX = x;
             this.oY = y;
         }
@@ -165,9 +161,8 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             this.strokeCode,
             this.lineWeight);
 
-        console.log(`draw out`, p)
         this.drawMove(p);
-        this.actionService.applyAction(drawAction(p));
+        this.risovachService.drawMove(p);
         this.oX = x;
         this.oY = y;
     };

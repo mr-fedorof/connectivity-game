@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Connectivity.Application.GameActions.Interfaces
 {
     public interface IGameActionIndexer
     {
-        int CurrentIndex(Guid lobbyId);
+        Task<int> CurrentIndex(Guid lobbyId);
 
-        int NextIndex(Guid lobbyId);
+        Task<int> NextIndex(Guid lobbyId);
     }
 }

@@ -31,11 +31,14 @@ namespace Connectivity.Application.Hubs
             return result;
         }
 
-        //TODO: probably this will be better for draw
-        public void DrawMove(DrawPayload p)
+        public void DrawMove(string lobbyId, DrawPayload p)
         {
-            // Call the client method to draw the line.
-            Clients.Others.SendAsync("DrawMove", p);
+            _gameHubService.DrawMove(Context.ConnectionId, lobbyId, p);
+        }
+
+        public async Task RestoreDrawings(string lobbyId)
+        {
+            await _gameHubService.RestoreDrawings(Context.ConnectionId, lobbyId);
         }
 
         // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)

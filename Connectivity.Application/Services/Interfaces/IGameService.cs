@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Connectivity.Domain.Enums;
+using Connectivity.Domain.GameActions.Payloads;
 using Connectivity.Domain.Models.Cards;
 
 namespace Connectivity.Application.Services.Interfaces
@@ -14,5 +16,9 @@ namespace Connectivity.Application.Services.Interfaces
         Task SetCardDeckAsync(Guid lobbyId, CardDeck cardDeck);
 
         Task<Card> GetCardFromDeckAsync(Guid lobbyId, CardType cardType);
+
+        Task SaveDrawing(string lobbyId, DrawPayload drawPayload);
+
+        Task<IList<DrawPayload>> RestoreDrawings(string lobbyId);
     }
 }
