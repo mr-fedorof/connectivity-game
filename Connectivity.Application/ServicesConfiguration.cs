@@ -35,6 +35,7 @@ namespace Connectivity.Application
             services.AddSingleton<IGameService, GameService>();
             services.AddSingleton<IGameCardService, GameCardService>();
             services.AddSingleton<IGameCardDeckService, GameCardDeckService>();
+            services.AddSingleton<IGameRisovachService, GameRisovachService>();
         }
 
         private static IServiceCollection AddGameActionHandlers(this IServiceCollection services, Assembly assembly)

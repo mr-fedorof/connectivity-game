@@ -40,9 +40,6 @@ namespace Connectivity.Domain.Enums
         CardTaskSuccessPlayer,
         [EnumMember(Value = "[Player] [Sh] Card Task Fail")]
         CardTaskFailPlayer,
-        
-        [EnumMember(Value = "[Player] [Sh] Drawing Start")]
-        DrawingStart,
 
         [SkipIndex]
         [EnumMember(Value = "[Lobby] [Sh] [SI] Share")]

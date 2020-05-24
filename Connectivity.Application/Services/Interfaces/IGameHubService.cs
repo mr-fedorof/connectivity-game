@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Connectivity.Domain.GameActions;
 using Connectivity.Domain.GameActions.Payloads;
@@ -15,8 +16,8 @@ namespace Connectivity.Application.Services.Interfaces
         Task<GameAction> ProcessGameActionAsync<T>(string currentConnectionId, GameAction<T> gameActionT)
             where T : class;
 
-        void DrawMove(string currentConnectionId, string lobbyId, DrawPayload drawPayload);
+        Task ProcessDrawActionAsync(string currentConnectionId, Guid lobbyId, DrawAction drawAction);
 
-        Task RestoreDrawings(string currentConnectionId, string lobbyId);
+        Task<List<DrawAction>> RestoreDrawActionsAsync(string currentConnectionId, Guid lobbyId);
     }
 }

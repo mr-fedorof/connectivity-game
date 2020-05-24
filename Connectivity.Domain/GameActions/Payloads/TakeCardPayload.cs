@@ -6,7 +6,7 @@ namespace Connectivity.Domain.GameActions.Payloads
 {
     public class TakeCardPayload
     {
-        public CardType GameCardType { get; set; }
+        public GameCardType GameCardType { get; set; }
 
         public Card GameCard { get; set; }
     }

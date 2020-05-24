@@ -44,7 +44,7 @@ namespace Connectivity.CLI.Infrastructure
                 }
                 var card = new Card
                 {
-                    Type = CardType.Alias,
+                    Type = GameCardType.Alias,
                     Timespan = 1,
                     Reward = 1,
                     Task = new CardTask
@@ -85,7 +85,7 @@ namespace Connectivity.CLI.Infrastructure
 
                 var card = new Card
                 {
-                    Type = CardType.Taboo,
+                    Type = GameCardType.Taboo,
                     Timespan = 2,
                     Reward = 2,
                     Task = new CardTask
@@ -129,7 +129,7 @@ namespace Connectivity.CLI.Infrastructure
 
                 var card = new Card
                 {
-                    Type = CardType.Draw,
+                    Type = GameCardType.Draw,
                     Timespan = 3,
                     Reward = 3,
                     Task = new CardTask
@@ -163,7 +163,7 @@ namespace Connectivity.CLI.Infrastructure
                 }
                 var card = new Card
                 {
-                    Type = CardType.Crocodile,
+                    Type = GameCardType.Crocodile,
                     Timespan = 2,
                     Reward = 4,
                     Task = new CardTask
@@ -197,7 +197,7 @@ namespace Connectivity.CLI.Infrastructure
                 }
                 var card = new Card
                 {
-                    Type = CardType.WhoAmI,
+                    Type = GameCardType.WhoAmI,
                     Timespan = 2,
                     Reward = 5,
                     Task = new CardTask
@@ -234,7 +234,7 @@ namespace Connectivity.CLI.Infrastructure
                         }
                         var card = new Card
                         {
-                            Type = CardType.Joker,
+                            Type = GameCardType.Joker,
                             Timespan = 1,
                             Reward = 3,
                             Task = new CardTask
@@ -264,7 +264,7 @@ namespace Connectivity.CLI.Infrastructure
                         }
                         var card = new Card
                         {
-                            Type = CardType.Joker,
+                            Type = GameCardType.Joker,
                             Timespan = 1,
                             Reward = 3,
                             Task = new CardTask
@@ -297,7 +297,7 @@ namespace Connectivity.CLI.Infrastructure
 
                         var card = new Card
                         {
-                            Type = CardType.Joker,
+                            Type = GameCardType.Joker,
                             Timespan = 1,
                             Reward = 3,
                             Task = new CardTask
@@ -331,7 +331,7 @@ namespace Connectivity.CLI.Infrastructure
 
                         var card = new Card
                         {
-                            Type = CardType.Joker,
+                            Type = GameCardType.Joker,
                             Timespan = 1,
                             Reward = 3,
                             Task = new CardTask
@@ -370,11 +370,11 @@ namespace Connectivity.CLI.Infrastructure
 
             using var package = new ExcelPackage(newFile);
 
-            Export(package, cardsSaved, CardType.Alias);
+            Export(package, cardsSaved, GameCardType.Alias);
             ExportTaboo(package, cardsSaved);
-            Export(package, cardsSaved, CardType.Draw);
-            Export(package, cardsSaved, CardType.Crocodile);
-            Export(package, cardsSaved, CardType.WhoAmI);
+            Export(package, cardsSaved, GameCardType.Draw);
+            Export(package, cardsSaved, GameCardType.Crocodile);
+            Export(package, cardsSaved, GameCardType.WhoAmI);
             ExportJoker(package, cardsSaved, TaskType.JokerTopsyTurvy);
             ExportJoker(package, cardsSaved, TaskType.JokerNotMyFilm);
             ExportJoker(package, cardsSaved, TaskType.JokerSpeakingBook);
@@ -384,7 +384,7 @@ namespace Connectivity.CLI.Infrastructure
             package.Save();
         }
 
-        private static void Export(ExcelPackage package, List<Card> cards, CardType type)
+        private static void Export(ExcelPackage package, List<Card> cards, GameCardType type)
         {
             var worksheet = package.Workbook.Worksheets.Add(type.ToString());
             worksheet.Cells[1, 1].Value = "Question";
@@ -402,11 +402,11 @@ namespace Connectivity.CLI.Infrastructure
 
         private static void ExportTaboo(ExcelPackage package, List<Card> cards)
         {
-            var worksheet = package.Workbook.Worksheets.Add(CardType.Taboo.ToString());
+            var worksheet = package.Workbook.Worksheets.Add(GameCardType.Taboo.ToString());
             worksheet.Cells[1, 1].Value = "Question";
             worksheet.Cells[1, 2].Value = "Banned Words";
 
-            var cardsTaboo = cards.Where(_ => _.Type == CardType.Taboo).ToList();
+            var cardsTaboo = cards.Where(_ => _.Type == GameCardType.Taboo).ToList();
             var idx = 2;
             foreach (var card in cardsTaboo)
             {
@@ -419,7 +419,7 @@ namespace Connectivity.CLI.Infrastructure
                 }
             }
             worksheet.Cells[$"A1:B{idx}"].AutoFitColumns(0);
-            Console.WriteLine($"Exported {idx-2} {CardType.Taboo} questions");
+            Console.WriteLine($"Exported {idx-2} {GameCardType.Taboo} questions");
         }
 
         private static void ExportJoker(ExcelPackage package, List<Card> cards, TaskType taskType)

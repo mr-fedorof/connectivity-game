@@ -11,7 +11,7 @@ namespace Connectivity.Domain.Models.Cards
         [BsonRepresentation(BsonType.String)]
         public Guid Id { get; set; }
 
-        public CardType Type { get; set; }
+        public GameCardType Type { get; set; }
 
         public CardTask Task { get; set; }
 

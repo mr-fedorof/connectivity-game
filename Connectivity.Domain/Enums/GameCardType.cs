@@ -1,6 +1,6 @@
 ﻿namespace Connectivity.Domain.Enums
 {
-    public enum CardType
+    public enum GameCardType
     {
         Alias = 1,
         Taboo = 2,

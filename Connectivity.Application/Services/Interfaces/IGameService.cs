@@ -15,10 +15,6 @@ namespace Connectivity.Application.Services.Interfaces
 
         Task SetCardDeckAsync(Guid lobbyId, CardDeck cardDeck);
 
-        Task<Card> GetCardFromDeckAsync(Guid lobbyId, CardType cardType);
-
-        Task SaveDrawing(string lobbyId, DrawPayload drawPayload);
-
-        Task<IList<DrawPayload>> RestoreDrawings(string lobbyId);
+        Task<Card> GetCardFromDeckAsync(Guid lobbyId, GameCardType gameCardType);
     }
 }

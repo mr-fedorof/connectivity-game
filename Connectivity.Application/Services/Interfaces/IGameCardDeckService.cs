@@ -10,6 +10,6 @@ namespace Connectivity.Application.Services.Interfaces
     {
         Task<CardDeck> GetShuffledDeckAsync();
 
-        Task<List<Guid>> GetShuffledCardSetAsync(CardType type);
+        Task<List<Guid>> GetShuffledCardSetAsync(GameCardType type);
     }
 }

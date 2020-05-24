@@ -8,9 +8,9 @@ namespace Connectivity.Domain.Enums
     {
         [EnumMember(Value = "GameAction")]
         GameAction,
-        [EnumMember(Value = "DrawMove")]
-        DrawMove,
-        [EnumMember(Value = "RestoreDrawings")]
-        RestoreDrawings
+        [EnumMember(Value = "DrawAction")]
+        DrawAction,
+        [EnumMember(Value = "RestoreDrawActions")]
+        RestoreDrawActions
     }
 }

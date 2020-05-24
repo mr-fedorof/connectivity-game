@@ -16,6 +16,9 @@ import { GameCardComponent } from './components/game-field/game-card/game-card.c
 import { GameDiceComponent } from './components/game-field/game-dice/game-dice.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
 import { GameMessagesComponent } from './components/game-field/game-messages/game-messages.component';
+import {
+    GameRisovachModalComponent,
+} from './components/game-field/game-risovach/game-risovach-modal/game-risovach-modal.component';
 import { GameRisovachComponent } from './components/game-field/game-risovach/game-risovach.component';
 import { GameTeamsComponent } from './components/game-field/game-teams/game-teams.component';
 import { GameTilesComponent } from './components/game-field/game-tiles/game-tiles.component';
@@ -33,7 +36,6 @@ import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { LobbyStateInitializedGuard } from './guard/lobby-state-initialized.guard';
 import { FreePlayersPipe } from './pipes/free-players.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
-import { GameRisovachService } from './services/game-risovach.service';
 import {
     ActionService,
     GameCardService,
@@ -48,6 +50,7 @@ import {
     LobbyStorage,
     PendingActionsStorage,
 } from './services';
+import { GameRisovachService } from './services/game-risovach.service';
 
 @NgModule({
     imports: [
@@ -80,6 +83,7 @@ import {
         GameCardFrontComponent,
         GameCardBackComponent,
         GameCardStateComponent,
+        GameRisovachModalComponent,
     ],
     providers: [
         LobbyService,

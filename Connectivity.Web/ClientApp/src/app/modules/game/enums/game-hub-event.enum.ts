@@ -1,5 +1,5 @@
 export enum GameHubEvent {
     gameAction = 'GameAction',
-    drawMove = 'DrawMove',
-    restoreDrawings = 'RestoreDrawings',
+    drawAction = 'DrawAction',
+    restoreDrawActions = 'RestoreDrawActions',
 }

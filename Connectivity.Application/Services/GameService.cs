@@ -63,20 +63,20 @@ namespace Connectivity.Application.Services
             );
         }
 
-        public async Task<Card> GetCardFromDeckAsync(Guid lobbyId, CardType cardType)
+        public async Task<Card> GetCardFromDeckAsync(Guid lobbyId, GameCardType gameCardType)
         {
             var cardDeck = await GetCardDeckAsync(lobbyId);
 
-            var cardId = cardDeck.TakeCard(cardType);
+            var cardId = cardDeck.TakeCard(gameCardType);
 
             // Reshuffle cards for the card type in the deck
             if (cardId == null)
             {
-                var newCardSet = await _cardDeckService.GetShuffledCardSetAsync(cardType);
+                var newCardSet = await _cardDeckService.GetShuffledCardSetAsync(gameCardType);
 
-                cardDeck[cardType] = newCardSet;
+                cardDeck[gameCardType] = newCardSet;
 
-                cardId = cardDeck.TakeCard(cardType);
+                cardId = cardDeck.TakeCard(gameCardType);
             }
 
             if (cardId == null)
@@ -94,26 +94,5 @@ namespace Connectivity.Application.Services
 
             return card;
         }
-
-        public async Task SaveDrawing(string lobbyId, DrawPayload drawPayload)
-        {
-            var drawingKey = GetDrawingKey(lobbyId);
-            if (drawPayload.Erase)
-            {
-                await _gameCache.DeleteKeyAsync(drawingKey);
-                return;
-            }
-
-            var stored = await _gameCache.GetOrSetAsync(drawingKey, () => new List<DrawPayload> { drawPayload }, TimeSpan.FromMinutes(3));
-            stored.Add(drawPayload);
-            await _gameCache.SetAsync(drawingKey, stored, TimeSpan.FromMinutes(3));
-        }
-        public async Task<IList<DrawPayload>> RestoreDrawings(string lobbyId)
-        {
-            var drawingKey = GetDrawingKey(lobbyId);
-            return await _gameCache.GetAsync<List<DrawPayload>>(drawingKey);
-        }
-
-        private string GetDrawingKey(string id) => $"draw-{id}";
     }
 }
