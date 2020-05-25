@@ -24,11 +24,9 @@ import {
     readyToStartGameSysAction,
     restoreLobbyAction,
     startGameSysAction,
-    drawingStartPlayerAction,
 } from '../../actions';
 import { isReadyToStartGame, isStartingGame, Lobby } from '../../models';
 import { lobbySelector } from '../../selectors/lobby.selectors';
-import { GameRisovachModalComponent } from '../../components/game-field/game-risovach/game-risovach-modal/game-risovach-modal.component';
 
 @Injectable()
 export class GameEffects {

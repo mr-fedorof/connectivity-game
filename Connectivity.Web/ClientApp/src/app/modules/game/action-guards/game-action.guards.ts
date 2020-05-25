@@ -11,7 +11,7 @@ import {
     startGameSysAction,
 } from '../actions';
 import { isReadyToStartGame } from '../models';
-import { playerTurnSelector, playerTurnStateSelector } from '../selectors/game.selectors';
+import { playerTurnIdSelector, playerTurnStateSelector } from '../selectors/game.selectors';
 import { lobbySelector } from '../selectors/lobby.selectors';
 
 @Injectable()
@@ -54,7 +54,7 @@ export class NextPlayerGameSysActionGuard implements IActionGuard {
     }
 
     public canActivate(action: NextPlayerGameSysAction): Observable<boolean> {
-        return this.store.select(playerTurnSelector)
+        return this.store.select(playerTurnIdSelector)
             .pipe(map(playerTurnId => playerTurnId !== action.payload.nextPlayerTurnId));
     }
 }

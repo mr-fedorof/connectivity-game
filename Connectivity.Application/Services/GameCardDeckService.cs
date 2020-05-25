@@ -26,18 +26,18 @@ namespace Connectivity.Application.Services
         {
             var cardDeck = new CardDeck
             {
-                Alias = await GetShuffledCardSetAsync(CardType.Alias),
-                Taboo = await GetShuffledCardSetAsync(CardType.Taboo),
-                Draw = await GetShuffledCardSetAsync(CardType.Draw),
-                Crocodile = await GetShuffledCardSetAsync(CardType.Crocodile),
-                WhoAmI = await GetShuffledCardSetAsync(CardType.WhoAmI),
-                Joker = await GetShuffledCardSetAsync(CardType.Joker),
+                Alias = await GetShuffledCardSetAsync(GameCardType.Alias),
+                Taboo = await GetShuffledCardSetAsync(GameCardType.Taboo),
+                Draw = await GetShuffledCardSetAsync(GameCardType.Draw),
+                Crocodile = await GetShuffledCardSetAsync(GameCardType.Crocodile),
+                WhoAmI = await GetShuffledCardSetAsync(GameCardType.WhoAmI),
+                Joker = await GetShuffledCardSetAsync(GameCardType.Joker),
             };
 
             return cardDeck;
         }
 
-        public async Task<List<Guid>> GetShuffledCardSetAsync(CardType type)
+        public async Task<List<Guid>> GetShuffledCardSetAsync(GameCardType type)
         {
             var cursor = await _dbClient.GameCards.FindAsync(
                 Builders<Card>.Filter.Eq(_ => _.Type, type),

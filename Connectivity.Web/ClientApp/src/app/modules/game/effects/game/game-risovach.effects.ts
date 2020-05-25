@@ -1,39 +1,48 @@
 import { Injectable } from '@angular/core';
+import { GameCardType } from '@modules/game/enums';
+import { playerTurnStateSelector } from '@modules/game/selectors/game.selectors';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { filter, tap, withLatestFrom } from 'rxjs/operators';
 
-import { drawingStartPlayerAction, drawingEndPlayerAction } from '../../actions';
-import { Lobby } from '../../models';
-import { lobbySelector } from '../../selectors/lobby.selectors';
-import { GameRisovachModalComponent } from '../../components/game-field/game-risovach/game-risovach-modal/game-risovach-modal.component';
 import { ModalService } from '../../../modal/services';
+import { initLobbyAction, restoreLobbyAction, startCardTaskGameSysAction } from '../../actions';
+import {
+    GameRisovachModalComponent,
+} from '../../components/game-field/game-risovach/game-risovach-modal/game-risovach-modal.component';
+import { isCardTaskActive } from '../../models';
 
 @Injectable()
 export class GameRisovachEffects {
-    public showRisovach$ = createEffect(() => this.actions$.pipe(
-        ofType(drawingStartPlayerAction),
+    public gameRisovachShow$ = createEffect(() => this.actions$.pipe(
+        ofType(
+            initLobbyAction,
+            restoreLobbyAction,
+            startCardTaskGameSysAction
+        ),
 
-        withLatestFrom(this.store.select(lobbySelector)),
-        tap(([action, lobby]: [Action, Lobby]) => {
-            this.modalService.show(GameRisovachModalComponent, { class: 'modal-xl'});
+        withLatestFrom(this.store.select(playerTurnStateSelector)),
+        filter(([_, playerTurnState]) => playerTurnState?.gameCard?.type === GameCardType.Draw && isCardTaskActive(playerTurnState)),
+
+        tap(() => {
+            this.modalService.show(GameRisovachModalComponent, { class: 'modal-xl' });
         })
 
     ), { dispatch: false });
 
+    // public hideRisovach$ = createEffect(() => this.actions$.pipe(
+    //     ofType(drawingEndPlayerAction),
 
-    public hideRisovach$ = createEffect(() => this.actions$.pipe(
-        ofType(drawingEndPlayerAction),
+    //     withLatestFrom(this.store.select(lobbySelector)),
+    //     tap(([action, lobby]: [Action, Lobby]) => {
+    //         this.modalService.hide(GameRisovachModalComponent);
+    //     })
 
-        withLatestFrom(this.store.select(lobbySelector)),
-        tap(([action, lobby]: [Action, Lobby]) => {
-            this.modalService.hide(GameRisovachModalComponent);
-        })
-
-    ), { dispatch: false });
+    // ), { dispatch: false });
 
     constructor(
         private readonly actions$: Actions,
         private readonly store: Store,
-        private readonly modalService: ModalService) { }
+        private readonly modalService: ModalService
+    ) { }
 }

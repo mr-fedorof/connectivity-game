@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { rollDicePlayerAction, skipMovePlayerAction, takeCardPlayerAction, drawingStartPlayerAction } from '@modules/game/actions';
+import { rollDicePlayerAction, skipMovePlayerAction, takeCardPlayerAction } from '@modules/game/actions';
 import { diceToGameCardType } from '@modules/game/helpers';
 import { PlayerTurnState } from '@modules/game/models';
 import { ActionService } from '@modules/game/services';
@@ -29,9 +29,5 @@ export class GameActionsComponent {
 
     public onSkipMoveClick(): void {
         this.actionService.applyAction(skipMovePlayerAction());
-    }
-
-    public onRisovachClick(): void {
-        this.actionService.applyAction(drawingStartPlayerAction());
     }
 }

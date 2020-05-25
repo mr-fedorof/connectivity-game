@@ -1,18 +1,38 @@
-<div class="">
-    <canvas id="canvas" width="1100" height="500"></canvas>
-    <div class="controls-container">
-        <div class="pen-width" *ngFor="let lw of lineWeights; let i = index">
-            <div class="outer-circle" (click)="onLineWeightClick(lw)">
-                <div  class="inner-circle" style="height: {{lw}}px;width: {{lw}}px; background-color: {{colors[strokeColorCode]}};"></div>
-            </div>
+<canvas
+    id="canvas"
+    width="1100"
+    height="500"
+></canvas>
+
+<div class="controls-container">
+    <div
+        class="pen-width"
+        *ngFor="let lw of lineWeights; let i = index"
+    >
+        <div
+            class="outer-circle"
+            (click)="onLineWeightClick(lw)"
+        >
+            <div
+                class="inner-circle"
+                [style.height.px]="lw"
+                [style.width.px]="lw"
+                [style.background-color]="colors[strokeColorCode]"
+            ></div>
         </div>
     </div>
-    <div class="controls-container">
-        <span *ngFor="let color of colors; let i = index">
-            <button class="pen-color" (click)="onStrokeColorClick(i)" style="background-color: {{color}};"></button>
-        </span>
-        <span class="fas fa-erase" (click)="onClearClick()">erase</span>
+</div>
 
-    </div>
-
+<div class="controls-container">
+    <span *ngFor="let color of colors; let i = index">
+        <button
+            class="pen-color"
+            (click)="onStrokeColorClick(i)"
+            [style.background-color]="color"
+        ></button>
+    </span>
+    <span
+        class="fas fa-erase"
+        (click)="onClearClick()"
+    >erase</span>
 </div>

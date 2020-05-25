@@ -6,9 +6,7 @@
 }
 
 .app-game-risovach {
-    display: flex;
-    flex-direction: column;
-    min-height: 192px;
+    display: block;
 
     &__title {
         padding: $spacer-8 $spacer-16;

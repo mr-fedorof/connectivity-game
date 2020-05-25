@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { drawingEndPlayerAction } from '@modules/game/actions';
-import { ActionService, GameService } from '@modules/game/services';
 import { ModalService } from '@modules/modal/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-game-risovach-modal',
@@ -14,14 +11,9 @@ import { takeUntil, tap } from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameRisovachModalComponent extends DestroyableComponent implements OnInit {
-    public currentPlayerId: string;
-    public timeleft$: Observable<number>;
-
     constructor(
         private readonly modalRef: BsModalRef,
-        private readonly modalService: ModalService,
-        private readonly gameService: GameService,
-        private readonly actionService: ActionService
+        private readonly modalService: ModalService
     ) {
         super();
     }
@@ -32,10 +24,5 @@ export class GameRisovachModalComponent extends DestroyableComponent implements 
             .subscribe(() => {
                 this.modalRef.hide();
             });
-    }
-
-    close(): void {
-        this.actionService.applyAction(drawingEndPlayerAction());
-
     }
 }

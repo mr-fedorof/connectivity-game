@@ -31,40 +31,14 @@ namespace Connectivity.Application.Hubs
             return result;
         }
 
-        public void DrawMove(string lobbyId, DrawPayload p)
+        public async Task DrawAction(Guid lobbyId, DrawAction drawAction)
         {
-            _gameHubService.DrawMove(Context.ConnectionId, lobbyId, p);
+            await _gameHubService.ProcessDrawActionAsync(Context.ConnectionId, lobbyId, drawAction);
         }
 
-        public async Task RestoreDrawings(string lobbyId)
+        public async Task RestoreDrawActions(Guid lobbyId)
         {
-            await _gameHubService.RestoreDrawings(Context.ConnectionId, lobbyId);
+            await _gameHubService.RestoreDrawActionsAsync(Context.ConnectionId, lobbyId);
         }
-
-        // public async Task BroadcastDrawing(string roomId, string eventName, int x, int y)
-        // {
-        //     await Clients.OthersInGroup(roomId).SendAsync("Draw", new
-        //     {
-        //         Context.ConnectionId,
-        //         eventName,
-        //         x,
-        //         y
-        //     });
-        // }
-        //
-        // public async Task BroadcastClearCanvas(string roomId)
-        // {
-        //     await Clients.Group(roomId).SendAsync("ClearCanvas");
-        // }
-        //
-        // public async Task BroadcastChatMessage(string roomId, string userName, string message)
-        // {
-        //     await Clients.Group(roomId).SendAsync("ReceiveMessage", new
-        //     {
-        //         Context.ConnectionId,
-        //         userName,
-        //         message
-        //     });
-        // }
     }
 }

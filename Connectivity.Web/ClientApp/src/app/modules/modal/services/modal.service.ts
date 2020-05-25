@@ -26,13 +26,12 @@ export class ModalService {
             );
     }
 
-    public show<T>(component: Type<T>, modalOptions?): BsModalRef {
+    public show<T>(component: Type<T>, modalOptions?: ModalOptions): BsModalRef {
         const config: ModalOptions = {
             keyboard: false,
             backdrop: 'static',
+            ...modalOptions || {},
         };
-
-        (<any>Object).assign(config, modalOptions);
 
         return this.bsModalService.show(component, config);
     }

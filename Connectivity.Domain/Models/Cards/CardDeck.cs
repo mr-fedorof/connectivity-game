@@ -19,18 +19,18 @@ namespace Connectivity.Domain.Models.Cards
 
         public List<Guid> Joker { get; set; } = new List<Guid>();
 
-        public List<Guid> this[CardType type]
+        public List<Guid> this[GameCardType type]
         {
             get
             {
                 switch (type)
                 {
-                    case CardType.Alias: return Alias;
-                    case CardType.Taboo: return Taboo;
-                    case CardType.Draw: return Draw;
-                    case CardType.Crocodile: return Crocodile;
-                    case CardType.WhoAmI: return WhoAmI;
-                    case CardType.Joker: return Joker;
+                    case GameCardType.Alias: return Alias;
+                    case GameCardType.Taboo: return Taboo;
+                    case GameCardType.Draw: return Draw;
+                    case GameCardType.Crocodile: return Crocodile;
+                    case GameCardType.WhoAmI: return WhoAmI;
+                    case GameCardType.Joker: return Joker;
                 }
 
                 return null;
@@ -39,31 +39,31 @@ namespace Connectivity.Domain.Models.Cards
             {
                 switch (type)
                 {
-                    case CardType.Alias:
+                    case GameCardType.Alias:
                         Alias = value;
                         break;
-                    case CardType.Taboo:
+                    case GameCardType.Taboo:
                         Taboo = value;
                         break;
-                    case CardType.Draw:
+                    case GameCardType.Draw:
                         Draw = value;
                         break;
-                    case CardType.Crocodile:
+                    case GameCardType.Crocodile:
                         Crocodile = value;
                         break;
-                    case CardType.WhoAmI:
+                    case GameCardType.WhoAmI:
                         WhoAmI = value;
                         break;
-                    case CardType.Joker:
+                    case GameCardType.Joker:
                         Joker = value;
                         break;
                 }
             }
         }
 
-        public Guid? TakeCard(CardType cardType)
+        public Guid? TakeCard(GameCardType gameCardType)
         {
-            var list = this[cardType];
+            var list = this[gameCardType];
 
             if (list == null || list.Count == 0)
             {

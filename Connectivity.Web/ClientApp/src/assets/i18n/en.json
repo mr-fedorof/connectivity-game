@@ -76,6 +76,7 @@
         "CROCODILE": "Crocodile",
         "AGENT": "Agent",
         "JOKER": "Joker",
+        "PLAYER_READING": "<strong>{{ player }}</strong> is reading the card.",
         "BUTTONS": {
             "CLOSE": "Close",
             "GOT_IT": "Got it",

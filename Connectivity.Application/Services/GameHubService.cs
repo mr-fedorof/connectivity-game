@@ -24,19 +24,19 @@ namespace Connectivity.Application.Services
         private readonly IGameActionIndexer _gameActionIndexer;
         private readonly IGameActionDispatcher _gameActionDispatcher;
         private readonly ILobbyService _lobbyService;
-        private readonly IGameService _gameService;
+        private readonly IGameRisovachService _gameRisovachService;
 
         public GameHubService(
             IHubContext<GameHub> hubContext,
             IGameActionDispatcher gameActionDispatcher,
             IGameActionIndexer gameActionIndexer,
             ILobbyService lobbyService,
-            IGameService gameService)
+            IGameRisovachService gameRisovachService)
         {
             _gameActionDispatcher = gameActionDispatcher;
             _gameActionIndexer = gameActionIndexer;
             _lobbyService = lobbyService;
-            _gameService = gameService;
+            _gameRisovachService = gameRisovachService;
             _hubContext = hubContext;
         }
 
@@ -67,21 +67,21 @@ namespace Connectivity.Application.Services
             return await ProcessGameActionAsync(currentConnectionId, gameAction);
         }
 
-        public void DrawMove(string currentConnectionId, string lobbyId, DrawPayload drawPayload)
+        public async Task ProcessDrawActionAsync(string currentConnectionId, Guid lobbyId, DrawAction drawAction)
         {
             // Call the client method to draw the line. 
             // TODO: add current step as Id as well (possibly playerID?);
-            Task.Run(() => _gameService.SaveDrawing(lobbyId, drawPayload));
-            _hubContext.Clients.GroupExcept(lobbyId, currentConnectionId).SendAsync(GameHubMethod.DrawMove.ToString(), drawPayload);
+            _ = Task.Run(async () => await _gameRisovachService.AddDrawActionAsync(lobbyId, drawAction));
+
+            await _hubContext.Clients.GroupExcept(lobbyId.ToString(), currentConnectionId)
+                .SendAsync(GameHubMethod.DrawAction.ToString(), drawAction);
         }
 
-        public async Task RestoreDrawings(string currentConnectionId, string lobbyId)
+        public async Task<List<DrawAction>> RestoreDrawActionsAsync(string currentConnectionId, Guid lobbyId)
         {
-            var drawings = await _gameService.RestoreDrawings(lobbyId);
-            if (drawings != null)
-            {
-                await _hubContext.Clients.Client(currentConnectionId).SendAsync(GameHubMethod.RestoreDrawings.ToString(), drawings);
-            }
+            var drawActions = await _gameRisovachService.RestoreDrawActionsAsync(lobbyId);
+
+            return drawActions;
         }
 
         public async Task<GameAction> ProcessGameActionAsync(string currentConnectionId, GameAction gameAction)

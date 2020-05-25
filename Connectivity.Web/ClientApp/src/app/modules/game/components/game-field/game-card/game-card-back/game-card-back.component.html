@@ -1,0 +1,19 @@
+<ul
+    *ngIf="diceDots.length > 0"
+    class="app-game-card-back__dice app-game-card-back__dice--first app-dice app-dice--{{ diceDots.length }}"
+>
+    <li
+        *ngFor="let dot of diceDots"
+        class="app-dice__dot"
+    ></li>
+</ul>
+
+<ul
+    *ngIf="diceDots.length > 0"
+    class="app-game-card-back__dice app-game-card-back__dice--second app-dice app-dice--{{ diceDots.length }}"
+>
+    <li
+        *ngFor="let dot of diceDots"
+        class="app-dice__dot"
+    ></li>
+</ul>

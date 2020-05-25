@@ -1,0 +1,52 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .app-game-card-state;
+}
+
+.app-game-card-state {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: $border-radius;
+    border: 1px solid $gray-200;
+    overflow: hidden;
+
+    padding: $spacer;
+
+    &__header {
+        margin-bottom: $spacer;
+
+        &-title {
+            color: $cian;
+            text-align: center;
+            font-size: $font-size-24;
+        }
+
+        &-sub-title {
+            color: $orange;
+            text-align: center;
+            font-size: $font-size-16;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        font-size: $font-size-16;
+    }
+
+    &__message {
+        text-align: center;
+    }
+
+    &__timer {
+        text-align: center;
+        margin-top: $spacer;
+        font-size: $font-size-16;
+        font-weight: $font-weight-bold;
+    }
+}

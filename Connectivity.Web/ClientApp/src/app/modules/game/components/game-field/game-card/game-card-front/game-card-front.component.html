@@ -1,0 +1,89 @@
+<div class="app-game-card-front__header">
+    <h3 class="app-game-card-front__header-title">{{ getCardName(gameCard?.type) | translate }}</h3>
+    <h4
+        *ngIf="getCarTaskName(gameCard?.task.type)"
+        class="app-game-card-front__header-sub-title"
+    >
+        {{ getCarTaskName(gameCard.task.type) | translate }}
+    </h4>
+</div>
+
+<div
+    [@gameCardContent]="gameCardContentState"
+    (@gameCardContent.done)="onGameCardContentAnimationDone($event)"
+    class="app-game-card-front__content"
+>
+    <ul
+        *ngIf="isCardMaster && gameCard?.task.questions?.length > 0"
+        class="app-game-card-front__content-questions"
+    >
+        <li
+            *ngFor="let question of gameCard?.task.questions"
+            class="app-game-card-front__content-question"
+        >
+            {{ question }}
+        </li>
+    </ul>
+
+    <ul
+        *ngIf="isCardMaster && gameCard?.task.bannedWords?.length > 0"
+        class="app-game-card-front__content-banned-words"
+    >
+        <li
+            *ngFor="let bannedWord of gameCard?.task.bannedWords"
+            class="app-game-card-front__content-banned-word"
+        >
+            {{ bannedWord }}
+        </li>
+    </ul>
+
+    <div
+        *ngIf="!isCardMaster"
+        class="app-game-card-front__message"
+        [innerHTML]="'GAME_CARD.PLAYER_READING' | translate:{ player: (player$ | async)?.name }"
+    >
+    </div>
+
+    <div class="app-game-card-front__timer">
+        {{ timeleft$ | async }}
+    </div>
+</div>
+
+<div class="row app-game-card-front__footer">
+    <div
+        *ngIf="isCardMaster"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-danger"
+            (click)="onSkipCardClick()"
+            [disabled]="isProcessing$ | async"
+            translate
+        >GAME_CARD.BUTTONS.SKIP_CARD</button>
+    </div>
+    <div
+        *ngIf="isCardMaster"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-primary"
+            (click)="onGotItClick()"
+            [disabled]="isProcessing$ | async"
+            translate
+        >GAME_CARD.BUTTONS.GOT_IT</button>
+    </div>
+    <div
+        *ngIf="!isCardMaster"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-secondary"
+            (click)="onCloseClick()"
+            [disabled]="isProcessing$ | async"
+            translate
+        >GAME_CARD.BUTTONS.CLOSE</button>
+    </div>
+</div>

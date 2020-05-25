@@ -72,6 +72,12 @@ export const takeAnotherCardPlayerAction = createAction('[Player] [Sh] Take Anot
 }));
 export type TakeAnotherCardPlayerAction = ReturnType<typeof takeAnotherCardPlayerAction> & Action;
 
+export const closeCardPlayerAction = createAction('[Player] Close Card', () => ({
+    payload: {},
+    long: true,
+}));
+export type CloseCardPlayerAction = ReturnType<typeof closeCardPlayerAction> & Action;
+
 export const cardReadingStartPlayerAction = createAction('[Player] [Sh] Card Reading Start', () => ({
     payload: {
         startedAt: null as string,
@@ -79,8 +85,8 @@ export const cardReadingStartPlayerAction = createAction('[Player] [Sh] Card Rea
 }));
 export type CardReadingStartPlayerAction = ReturnType<typeof cardReadingStartPlayerAction> & Action;
 
-export const cardReadingFinishPlayerAction = createAction('[Player] [Sh] Card Reading Finish', (gameCardType: GameCardType) => ({
-    payload: { gameCardType },
+export const cardReadingFinishPlayerAction = createAction('[Player] [Sh] Card Reading Finish', () => ({
+    payload: {},
 }));
 export type CardReadingFinishPlayerAction = ReturnType<typeof cardReadingFinishPlayerAction> & Action;
 
@@ -103,8 +109,3 @@ export const drawingStartPlayerAction = createAction('[Player] [Sh] Drawing Star
     payload: {},
 }));
 export type DrawingStartPlayerAction = ReturnType<typeof drawingStartPlayerAction> & Action;
-
-export const drawingEndPlayerAction = createAction('[Player] [Sh] Drawing End', () => ({
-    payload: {},
-}));
-export type DrawingEndPlayerAction = ReturnType<typeof drawingEndPlayerAction> & Action;
