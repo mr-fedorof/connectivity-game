@@ -1,5 +1,5 @@
 <button
-    *ngIf="currentPlayerTurnState && !currentPlayerTurnState.diceValue"
+    *ngIf="isCurrentPlayerTurn && !playerTurnState.diceValue"
     type="button"
     class="btn btn-lg btn-primary app-game-actions__action"
     [disabled]="isProcessing"
@@ -8,7 +8,7 @@
 >GAME.ROLL_THE_DICE</button>
 
 <button
-    *ngIf="currentPlayerTurnState && currentPlayerTurnState.diceValue && !currentPlayerTurnState.cardReadingStartedAt"
+    *ngIf="isCurrentPlayerTurn && playerTurnState.diceValue && !playerTurnState.cardReadingStartedAt"
     type="button"
     class="btn btn-lg btn-primary app-game-actions__action"
     [disabled]="isProcessing"
@@ -17,7 +17,7 @@
 >GAME.TAKE_CARD</button>
 
 <button
-    *ngIf="currentPlayerTurnState"
+    *ngIf="isCurrentPlayerTurn"
     type="button"
     class="btn btn-lg btn-danger app-game-actions__action"
     [disabled]="isProcessing"

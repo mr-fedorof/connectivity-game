@@ -1,66 +1,64 @@
 @import 'component-common.scss';
 
 :host {
-    @extend .app-game-card-front;
+    @extend .app-game-card-task;
 }
 
-.app-game-card-front {
+.app-game-card-task {
     display: flex;
     flex-direction: column;
-    background-color: white;
-    border-radius: $border-radius;
-    border: 1px solid $gray-200;
-    overflow: hidden;
-
-    padding: $spacer-x2;
 
     &__header {
         margin-bottom: $spacer-x2;
-
-        &-title {
-            color: $cian;
-            text-align: center;
-            font-size: $font-size-32;
-        }
-
-        &-sub-title {
-            color: $orange;
-            text-align: center;
-            font-size: $font-size-24;
-        }
     }
 
     &__content {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        flex-grow: 1;
         font-size: $font-size-24;
         border-top: 1px solid $cian;
         border-bottom: 1px solid $cian;
+    }
 
-        &-questions {
+    &__footer {
+        margin-top: $spacer-x2;
+    }
+
+    &__title {
+        color: $cian;
+        text-align: center;
+        font-size: $font-size-32;
+    }
+
+    &__sub-title {
+        color: $orange;
+        text-align: center;
+        font-size: $font-size-24;
+    }
+
+    &__question {
+        margin-bottom: $spacer;
+
+        &-list {
             margin: 0;
             padding: 0;
             list-style-type: none;
             text-align: center;
         }
+    }
 
-        &-question {
-            margin-bottom: $spacer;
-        }
+    &__banned-word {
+        margin-bottom: $spacer;
+        color: $red;
 
-        &-banned-words {
+        &-list {
             margin: 0;
             padding: 0;
             list-style-type: none;
             text-align: center;
-        }
-
-        &-banned-word {
-            margin-bottom: $spacer;
-            color: $red;
         }
     }
 
@@ -69,9 +67,5 @@
         padding: $spacer-x2;
         font-size: $font-size-24;
         font-weight: $font-weight-bold;
-    }
-
-    &__footer {
-        margin-top: $spacer-x2;
     }
 }

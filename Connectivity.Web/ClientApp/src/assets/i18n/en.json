@@ -80,7 +80,8 @@
         "BUTTONS": {
             "CLOSE": "Close",
             "GOT_IT": "Got it",
-            "SKIP_CARD": "Another card"
+            "SKIP_CARD": "Another card",
+            "GUESS": "Guess"
         }
     },
     "GAME_TASK": {

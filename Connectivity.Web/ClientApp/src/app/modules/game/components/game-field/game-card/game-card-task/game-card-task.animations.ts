@@ -1,7 +1,7 @@
 import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
 
-export function gameCardContentAnimation(): AnimationTriggerMetadata {
-    return trigger('gameCardContent', [
+export function gameCardTaskContentAnimation(): AnimationTriggerMetadata {
+    return trigger('gameCardTaskContent', [
         state('undefined', style({
             opacity: 1,
         })),

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { nextPlayerTurnSelector } from '@modules/game/selectors/game.selectors';
+import { nextPlayerTurnIdSelector } from '@modules/game/selectors/game.selectors';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { tap, withLatestFrom } from 'rxjs/operators';
@@ -12,7 +12,7 @@ export class GamePlayerEffects {
     public skipMove$ = createEffect(() => this.actions$.pipe(
         ofType(skipMovePlayerAction),
 
-        withLatestFrom(this.store.select(nextPlayerTurnSelector)),
+        withLatestFrom(this.store.select(nextPlayerTurnIdSelector)),
         tap(([action, nextPlayerTurnId]) => {
             this.actionService.applyAction(nextPlayerGameSysAction(nextPlayerTurnId));
         })

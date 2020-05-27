@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { GameCardTaskType, GameCardType } from '@modules/game/enums';
 import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameCard, getCardName, getCardTaskName, Player } from '@modules/game/models';
-import { playerTurnPlayerSelector } from '@modules/game/selectors/game.selectors';
+import { activePlayerSelector } from '@modules/game/selectors/game.selectors';
 import { GameCardService } from '@modules/game/services';
 import { Store } from '@ngrx/store';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -29,7 +29,7 @@ export class GameCardStateComponent extends DestroyableComponent implements OnIn
     }
 
     public ngOnInit(): void {
-        this.player$ = this.store.select(playerTurnPlayerSelector);
+        this.player$ = this.store.select(activePlayerSelector);
 
         this.timeleft$ = this.gameCardService.timer$
             .pipe(

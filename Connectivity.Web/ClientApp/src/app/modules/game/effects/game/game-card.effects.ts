@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isReadingCard, PlayerTurnState } from '@modules/game/models';
+import { isReadingCard } from '@modules/game/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { leftTimeDelay } from '@shared/utils/date.utils';
@@ -21,7 +21,7 @@ import {
     takeCardPlayerAction,
 } from '../../actions';
 import { CARD_READING_TIME } from '../../game.constants';
-import { currentPlayerTurnStateSelector, playerTurnStateSelector } from '../../selectors/game.selectors';
+import { playerTurnStateSelector } from '../../selectors/game.selectors';
 import { ActionService, GameCardService } from '../../services';
 
 @Injectable()
@@ -29,8 +29,7 @@ export class GameCardEffects {
     public gameCardShow$ = createEffect(() => this.actions$.pipe(
         ofType<TakeCardPlayerAction>(takeCardPlayerAction),
 
-        withLatestFrom(this.store.select(currentPlayerTurnStateSelector)),
-        switchMap(([action, currentPlayerTurnState]: [TakeCardPlayerAction, PlayerTurnState]) => this.gameCardService.showCard(action.payload.gameCard, !!currentPlayerTurnState)),
+        switchMap((action: TakeCardPlayerAction) => this.gameCardService.showCard(action.payload.gameCard)),
         map(() => finishProcessingLobbyStateAction())
     ));
 
@@ -87,15 +86,12 @@ export class GameCardEffects {
             restoreLobbyAction
         ),
 
-        withLatestFrom(
-            this.store.select(playerTurnStateSelector),
-            this.store.select(currentPlayerTurnStateSelector)
-        ),
-        tap(([_, playerTurnState, currentPlayerTurnState]) => {
+        withLatestFrom(this.store.select(playerTurnStateSelector)),
+        tap(([_, playerTurnState]) => {
             if (playerTurnState && isReadingCard(playerTurnState)) {
-                this.gameCardService.makeVisible(playerTurnState.gameCard, !!currentPlayerTurnState);
+                this.gameCardService.makeVisible(playerTurnState.gameCard);
             } else {
-                this.gameCardService.makeVisible(null, null);
+                this.gameCardService.makeVisible(null);
             }
         })
 

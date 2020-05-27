@@ -44,7 +44,6 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
 
     public activeGameCard: GameCard;
     public nextActiveGameCard: GameCard;
-    public isCardMaster: boolean;
 
     @Input() public type: GameCardType;
 
@@ -56,7 +55,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
     public gameCardDeckState = 'undefined';
     public gameCardBackdropState = 'undefined';
     public gameCardState = 'undefined';
-    public gameCardContentState = 'undefined';
+    public gameCardTaskContentState = 'undefined';
 
     public get isGameCardOnDeck(): boolean {
         return this.gameCardState === 'on-deck';
@@ -83,10 +82,9 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         this.gameCardService.showCard$
             .pipe(
                 takeUntil(this.onDestroy),
-                filter(([gameCard, isCardMaster]) => gameCard.type === this.type),
-                tap(([gameCard, isCardMaster]) => {
+                filter(gameCard => gameCard.type === this.type),
+                tap(gameCard => {
                     this.activeGameCard = gameCard;
-                    this.isCardMaster = isCardMaster;
                 })
             )
             .subscribe(() => {
@@ -103,7 +101,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
                 })
             )
             .subscribe(() => {
-                this.gameCardContentState = 'hidden';
+                this.gameCardTaskContentState = 'hidden';
                 this.cdr.markForCheck();
             });
 
@@ -120,11 +118,10 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         this.gameCardService.visibilityRestoring$
             .pipe(
                 takeUntil(this.onDestroy),
-                map(([gameCard, isCardMaster]) => {
+                map(gameCard => {
                     const visible = gameCard?.type === this.type;
 
                     this.activeGameCard = visible ? gameCard : null;
-                    this.isCardMaster = visible ? isCardMaster : null;
 
                     return visible;
                 }),
@@ -150,9 +147,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         if (event.toState === 'show-card') {
             this.gameCardService.showCardFinish(this.type);
 
-            if (this.isCardMaster) {
-                this.actionService.applyAction(cardReadingStartPlayerAction());
-            }
+            this.actionService.applyAction(cardReadingStartPlayerAction());
         }
 
         if (event.toState === 'hide-card') {
@@ -162,18 +157,16 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         }
     }
 
-    public onGameCardContentAnimationDone(event: AnimationEvent): void {
+    public onGameCardTaskContentAnimationDone(event: AnimationEvent): void {
         if (event.toState === 'hidden') {
-            this.gameCardContentState = 'visible';
+            this.gameCardTaskContentState = 'visible';
             this.activeGameCard = this.nextActiveGameCard;
         }
 
         if (event.fromState === 'hidden' && event.toState === 'visible') {
             this.gameCardService.showAnotherCardFinish(this.type);
 
-            if (this.isCardMaster) {
-                this.actionService.applyAction(cardReadingStartPlayerAction());
-            }
+            this.actionService.applyAction(cardReadingStartPlayerAction());
         }
     }
 
@@ -218,27 +211,27 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         this.gameCardDeckState = 'idle';
         this.gameCardBackdropState = 'hidden';
         this.gameCardState = 'on-deck';
-        this.gameCardContentState = 'visible';
+        this.gameCardTaskContentState = 'visible';
     }
 
     private setShowCardState(): void {
         this.gameCardDeckState = 'show-card';
         this.gameCardBackdropState = 'shown';
         this.gameCardState = 'open';
-        this.gameCardContentState = 'visible';
+        this.gameCardTaskContentState = 'visible';
     }
 
     private setHideCardState(): void {
         this.gameCardDeckState = 'hide-card';
         this.gameCardBackdropState = 'hidden';
         this.gameCardState = 'hidden';
-        this.gameCardContentState = 'visible';
+        this.gameCardTaskContentState = 'visible';
     }
 
     private setUndefinedState(): void {
         this.gameCardDeckState = 'undefined';
         this.gameCardBackdropState = 'undefined';
         this.gameCardState = 'undefined';
-        this.gameCardContentState = 'undefined';
+        this.gameCardTaskContentState = 'undefined';
     }
 }

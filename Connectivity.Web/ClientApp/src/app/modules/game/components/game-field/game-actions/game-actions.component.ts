@@ -11,7 +11,8 @@ import { ActionService } from '@modules/game/services';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameActionsComponent {
-    @Input() public currentPlayerTurnState: PlayerTurnState = null;
+    @Input() public playerTurnState: PlayerTurnState = null;
+    @Input() public isCurrentPlayerTurn: boolean = false;
     @Input() public isProcessing = false;
 
     constructor(
@@ -24,7 +25,7 @@ export class GameActionsComponent {
     }
 
     public onTakeCardClick(): void {
-        this.actionService.applyAction(takeCardPlayerAction(diceToGameCardType(this.currentPlayerTurnState.diceValue)));
+        this.actionService.applyAction(takeCardPlayerAction(diceToGameCardType(this.playerTurnState.diceValue)));
     }
 
     public onSkipMoveClick(): void {

@@ -12,7 +12,7 @@ import {
 } from '@modules/game/actions';
 import { currentPlayerTurnFilter } from '@modules/game/helpers/pipe.helpers';
 import { isCardTaskActive, isCardTaskFinished, isCardTaskResulted } from '@modules/game/models';
-import { nextPlayerTurnSelector, playerTurnStateSelector } from '@modules/game/selectors/game.selectors';
+import { nextPlayerTurnIdSelector, playerTurnStateSelector } from '@modules/game/selectors/game.selectors';
 import { ActionService, GameDialogService, GameTimerService } from '@modules/game/services';
 import { DialogAction } from '@modules/modal/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -105,7 +105,7 @@ export class GameCardTaskEffects {
         filter(([action, playerTurnState]) => isCardTaskResulted(playerTurnState)),
         map(([action, playerTurnState]) => action),
 
-        withLatestFrom(this.store.select(nextPlayerTurnSelector)),
+        withLatestFrom(this.store.select(nextPlayerTurnIdSelector)),
         tap(([action, nextPlayerTurnId]) => {
             this.actionService.applyAction(nextPlayerGameSysAction(nextPlayerTurnId));
         })

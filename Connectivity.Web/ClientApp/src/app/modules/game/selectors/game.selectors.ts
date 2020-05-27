@@ -21,7 +21,7 @@ export const playerTurnIdSelector: MemoizedSelector<IGameEngineFeature, string> 
     (game: Game) => game.playerTurnId
 );
 
-export const nextPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, string> = createSelector(
+export const nextPlayerTurnIdSelector: MemoizedSelector<IGameEngineFeature, string> = createSelector(
     playersSelector,
     teamsSelector,
     playerTurnIdSelector,
@@ -47,25 +47,20 @@ export const playerTurnStateSelector: MemoizedSelector<IGameEngineFeature, Playe
     (game: Game) => game.playerTurnState || {}
 );
 
-export const playerTurnPlayerSelector: MemoizedSelector<IGameEngineFeature, Player> = createSelector(
-    playerTurnIdSelector,
-    playersSelector,
-    (playerTurnId, players) => players?.find(p => p.id === playerTurnId)
-);
-
-export const currentPlayerTurnStateSelector: MemoizedSelector<IGameEngineFeature, PlayerTurnState> = createSelector(
+export const isCurrentPlayerTurnSelector: MemoizedSelector<IGameEngineFeature, boolean> = createSelector(
     gameSelector,
     currentPlayerSelector,
     (game, currentPlayer) => {
         if (!game || !currentPlayer || game.playerTurnId !== currentPlayer.id) {
-            return null;
+            return false;
         }
 
-        return game.playerTurnState;
+        return true;
     }
 );
 
-export const diceValueSelector: MemoizedSelector<IGameEngineFeature, number> = createSelector(
-    playerTurnStateSelector,
-    (playerTurnState: PlayerTurnState) => playerTurnState.diceValue
+export const activePlayerSelector: MemoizedSelector<IGameEngineFeature, Player> = createSelector(
+    playerTurnIdSelector,
+    playersSelector,
+    (playerTurnId, players) => players?.find(p => p.id === playerTurnId)
 );

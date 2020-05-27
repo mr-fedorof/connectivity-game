@@ -4,12 +4,18 @@
     [simplifiedView]="simplifiedBack"
 ></app-game-card-back>
 
-<app-game-card-front
+<div
     *ngIf="frontEnabled"
     class="app-game-card__front"
-    [type]="type"
-    [gameCard]="gameCard"
-    [isCardMaster]="isCardMaster"
-    [gameCardContentState]="gameCardContentState"
-    (gameCardContentAnimationDone)="onGameCardContentAnimationDone($event)"
-></app-game-card-front>
+>
+    <app-game-card-task
+        *ngIf="gameCard"
+        class="app-game-card__task"
+        [gameCard]="gameCard"
+        [currentPlayer]="currentPlayer$ | async"
+        [activePlayer]="activePlayer$ | async"
+        [playerTurnState]="playerTurnState$ | async"
+        [gameCardTaskContentState]="gameCardTaskContentState"
+        (gameCardTaskContentAnimationDone)="onGameCardTaskContentAnimationDone($event)"
+    ></app-game-card-task>
+</div>

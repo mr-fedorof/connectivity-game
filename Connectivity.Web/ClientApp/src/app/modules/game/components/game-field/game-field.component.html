@@ -40,7 +40,7 @@
                         <app-game-card-deck [type]="GameCardType.Crocodile"></app-game-card-deck>
                     </div>
                     <div class="col-auto">
-                        <app-game-card-deck [type]="GameCardType.Agent"></app-game-card-deck>
+                        <app-game-card-deck [type]="GameCardType.WhoAmI"></app-game-card-deck>
                     </div>
                     <div class="col-auto">
                         <app-game-card-deck [type]="GameCardType.Joker"></app-game-card-deck>
@@ -51,23 +51,28 @@
 
             <app-game-actions
                 class="col-auto app-game-field__center-col-actions"
-                [currentPlayerTurnState]="currentPlayerTurnState$ | async"
+                [isCurrentPlayerTurn]="isCurrentPlayerTurn$ | async"
+                [playerTurnState]="playerTurnState$ | async"
                 [isProcessing]="isProcessing$ | async"
             ></app-game-actions>
         </div>
     </div>
 
     <div class="col-3 app-game-field__right-col">
-        <app-game-teams class="app-game-field__right-col-game-teams"
-                        [teams]="teams$ | async"
-                        [players]="players$ | async"></app-game-teams>
-        
+        <app-game-teams
+            class="app-game-field__right-col-game-teams"
+            [teams]="teams$ | async"
+            [players]="players$ | async"
+        ></app-game-teams>
+
         <app-game-messages class="app-game-field__right-col-game-messages"></app-game-messages>
 
         <div class="app-game-field__right-col-actions">
-            <button type="button"
-                    class="btn btn-lg btn-secondary"
-                    translate>
+            <button
+                type="button"
+                class="btn btn-lg btn-secondary"
+                translate
+            >
                 GAME.LEAVE
             </button>
         </div>

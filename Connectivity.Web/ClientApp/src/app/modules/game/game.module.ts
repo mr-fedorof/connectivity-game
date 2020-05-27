@@ -11,7 +11,7 @@ import { GameActionsComponent } from './components/game-field/game-actions/game-
 import { GameCardDeckComponent } from './components/game-field/game-card-deck/game-card-deck.component';
 import { GameCardStateComponent } from './components/game-field/game-card-state/game-card-state.component';
 import { GameCardBackComponent } from './components/game-field/game-card/game-card-back/game-card-back.component';
-import { GameCardFrontComponent } from './components/game-field/game-card/game-card-front/game-card-front.component';
+import { GameCardTaskComponent } from './components/game-field/game-card/game-card-task/game-card-task.component';
 import { GameCardComponent } from './components/game-field/game-card/game-card.component';
 import { GameDiceComponent } from './components/game-field/game-dice/game-dice.component';
 import { GameFieldComponent } from './components/game-field/game-field.component';
@@ -35,6 +35,8 @@ import { GameRoutingModule } from './game-routing.module';
 import { GameSessionExistsGuard, LobbyExistsGuard } from './guard';
 import { LobbyStateInitializedGuard } from './guard/lobby-state-initialized.guard';
 import { FreePlayersPipe } from './pipes/free-players.pipe';
+import { GameCardNamePipe } from './pipes/game-card-name.pipe';
+import { GameCardTaskNamePipe } from './pipes/game-card-task-name.pipe';
 import { TeamPlayersPipe } from './pipes/team-players.pipe';
 import {
     ActionService,
@@ -80,10 +82,12 @@ import { GameRisovachService } from './services/game-risovach.service';
         GameActionsComponent,
         GameTimerComponent,
         GameStartingModalComponent,
-        GameCardFrontComponent,
+        GameCardTaskComponent,
         GameCardBackComponent,
         GameCardStateComponent,
         GameRisovachModalComponent,
+        GameCardNamePipe,
+        GameCardTaskNamePipe,
     ],
     providers: [
         LobbyService,

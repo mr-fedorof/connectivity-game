@@ -35,7 +35,7 @@ export class GameCardBackComponent implements OnInit {
                 return 'app-game-card-back--draw';
             case GameCardType.Crocodile:
                 return 'app-game-card-back--crocodile';
-            case GameCardType.Agent:
+            case GameCardType.WhoAmI:
                 return 'app-game-card-back--agent';
             case GameCardType.Joker:
                 return 'app-game-card-back--joker';

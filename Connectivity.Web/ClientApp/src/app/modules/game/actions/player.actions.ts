@@ -1,7 +1,7 @@
 import { Action, createAction } from '@ngrx/store';
 
 import { GameCardType } from '../enums';
-import { DrawPayload, GameCard, Player } from '../models';
+import { GameCard, Player } from '../models';
 
 export const newPlayerAction = createAction('[Player] [Sh] New', (player: Player) => ({
     payload: {
@@ -89,6 +89,13 @@ export const cardReadingFinishPlayerAction = createAction('[Player] [Sh] Card Re
     payload: {},
 }));
 export type CardReadingFinishPlayerAction = ReturnType<typeof cardReadingFinishPlayerAction> & Action;
+
+export const startCardTaskPlayerAction = createAction('[Player] [Sh] Start Card Task', () => ({
+    payload: {
+        startedAt: null as string,
+    },
+}));
+export type StartCardTaskPlayerAction = ReturnType<typeof startCardTaskPlayerAction> & Action;
 
 export const cardTaskSuccessPlayerAction = createAction('[Player] [Sh] Card Task Success', () => ({
     payload: {},

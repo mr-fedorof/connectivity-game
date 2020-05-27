@@ -23,7 +23,7 @@ export function getCardName(type: GameCardType): string {
             return 'GAME_CARD.DRAW';
         case GameCardType.Crocodile:
             return 'GAME_CARD.CROCODILE';
-        case GameCardType.Agent:
+        case GameCardType.WhoAmI:
             return 'GAME_CARD.AGENT';
         case GameCardType.Joker:
             return 'GAME_CARD.JOKER';

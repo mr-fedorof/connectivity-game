@@ -3,8 +3,8 @@ import { diffInSec } from '@shared/utils/date.utils';
 import { Observable, of, pipe, timer, UnaryFunction } from 'rxjs';
 import { filter, map, switchMap, takeWhile, withLatestFrom } from 'rxjs/operators';
 
-import { Player, PlayerTurnState } from '../models';
-import { currentPlayerTurnStateSelector } from '../selectors/game.selectors';
+import { Player } from '../models';
+import { isCurrentPlayerTurnSelector } from '../selectors/game.selectors';
 import { currentPlayerSelector } from '../selectors/lobby.selectors';
 
 export function currentPlayerActionFilter(store: Store): UnaryFunction<Observable<Action>, Observable<Action>> {
@@ -17,9 +17,9 @@ export function currentPlayerActionFilter(store: Store): UnaryFunction<Observabl
 
 export function currentPlayerTurnFilter(store: Store): UnaryFunction<Observable<Action>, Observable<Action>> {
     return pipe(
-        withLatestFrom<Action, Observable<PlayerTurnState>>(store.select(currentPlayerTurnStateSelector)),
-        filter(([action, currentPlayerTurnState]: [Action, PlayerTurnState]) => !!currentPlayerTurnState),
-        map(([action, currentPlayer]: [Action, PlayerTurnState]) => action)
+        withLatestFrom(store.select(isCurrentPlayerTurnSelector)),
+        filter(([action, isCurrentPlayerTurn]: [Action, boolean]) => isCurrentPlayerTurn),
+        map(([action, isCurrentPlayerTurn]: [Action, boolean]) => action)
     );
 }
 

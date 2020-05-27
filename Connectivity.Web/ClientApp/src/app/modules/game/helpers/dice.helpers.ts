@@ -10,7 +10,7 @@ export function gameCardTypeToDice(type: GameCardType): number {
             return 3;
         case GameCardType.Crocodile:
             return 4;
-        case GameCardType.Agent:
+        case GameCardType.WhoAmI:
             return 5;
         case GameCardType.Joker:
             return 6;
@@ -30,7 +30,7 @@ export function diceToGameCardType(dice: number): GameCardType {
         case 4:
             return GameCardType.Crocodile;
         case 5:
-            return GameCardType.Agent;
+            return GameCardType.WhoAmI;
         case 6:
             return GameCardType.Joker;
         default:

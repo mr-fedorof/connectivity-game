@@ -29,9 +29,8 @@
         class="app-game-card-deck__card app-game-card-deck__card--active"
         [type]="type"
         [frontEnabled]="true"
-        [isCardMaster]="isCardMaster"
         [gameCard]="activeGameCard"
-        [gameCardContentState]="gameCardContentState"
-        (gameCardContentAnimationDone)="onGameCardContentAnimationDone($event)"
+        [gameCardTaskContentState]="gameCardTaskContentState"
+        (gameCardTaskContentAnimationDone)="onGameCardTaskContentAnimationDone($event)"
     ></app-game-card>
 </div>

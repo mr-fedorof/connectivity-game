@@ -1,0 +1,103 @@
+<div class="app-game-card-task__header">
+    <h3 class="app-game-card-task__title">{{ gameCard.type | gameCardName | translate }}</h3>
+    <h4
+        *ngIf="gameCard.task.type | gameCardTaskName"
+        class="app-game-card-task__sub-title"
+    >
+        {{ gameCard.task.type | gameCardTaskName | translate }}
+    </h4>
+</div>
+
+<div
+    [@gameCardTaskContent]="gameCardTaskContentState"
+    (@gameCardTaskContent.done)="onGameCardTaskContentAnimationDone($event)"
+    class="app-game-card-task__content"
+>
+    <ng-container *ngIf="isTaskDetailsAvailable">
+        <ul
+            *ngIf="gameCard.task.questions?.length > 0"
+            class="app-game-card-task__question-list"
+        >
+            <li
+                *ngFor="let question of gameCard.task.questions"
+                class="app-game-card-task__question"
+            >
+                {{ question }}
+            </li>
+        </ul>
+
+        <ul
+            *ngIf="gameCard.task.bannedWords?.length > 0"
+            class="app-game-card-task__banned-word-list"
+        >
+            <li
+                *ngFor="let bannedWord of gameCard.task.bannedWords"
+                class="app-game-card-task__banned-word"
+            >
+                {{ bannedWord }}
+            </li>
+        </ul>
+    </ng-container>
+
+    <div
+        *ngIf="isGameCardTaskMessageAvailable"
+        class="app-game-card-front__message"
+        [innerHTML]="gameCardTaskMessage"
+    >
+    </div>
+
+    <div class="app-game-card-task__timer">
+        {{ timeleft$ | async }}
+    </div>
+</div>
+
+<div class="row app-game-card-task__footer">
+    <div
+        *ngIf="isSkipCardButtonAvailable"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-danger"
+            (click)="onSkipCardClick()"
+            [disabled]="isProcessing$ | async"
+            translate
+        >GAME_CARD.BUTTONS.SKIP_CARD</button>
+    </div>
+    <div
+        *ngIf="isGotItButtonAvailable"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-primary"
+            (click)="onGotItClick()"
+            [disabled]="isProcessing$ | async"
+            translate
+        >GAME_CARD.BUTTONS.GOT_IT</button>
+    </div>
+    <div
+        *ngIf="isGuessButtonAvailable"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-primary"
+            (click)="onGuessClick()"
+            [disabled]="isGuessButtonDisabled || (isProcessing$ | async)"
+            translate
+        >GAME_CARD.BUTTONS.GUESS</button>
+    </div>
+    <div
+        *ngIf="isCloseButtonAvailable"
+        class="col"
+    >
+        <button
+            type="button"
+            class="btn btn-block btn-secondary"
+            [disabled]="isProcessing$ | async"
+            (click)="onCloseClick()"
+            translate
+        >GAME_CARD.BUTTONS.CLOSE</button>
+    </div>
+</div>
