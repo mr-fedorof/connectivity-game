@@ -1,0 +1,19 @@
+@import 'component-common.scss';
+
+:host {
+    @extend .game-risovach-modal;
+}
+
+.game-risovach-modal {
+    display: block;
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__timer {
+        font-size: $font-size-24;
+        font-weight: $font-weight-bold;
+    }
+}

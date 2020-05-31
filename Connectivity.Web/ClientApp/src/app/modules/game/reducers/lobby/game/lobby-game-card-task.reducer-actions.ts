@@ -9,10 +9,23 @@ import {
     finishCardTaskGameSysAction,
     StartCardTaskGameSysAction,
     startCardTaskGameSysAction,
+    StartCardTaskPlayerAction,
+    startCardTaskPlayerAction,
 } from '../../../actions';
 import { Lobby } from '../../../models';
 
 export const lobbyGameCardTaskReducerActions = [
+    on(startCardTaskPlayerAction, (state: Lobby, { payload }: StartCardTaskPlayerAction): Lobby => ({
+        ...state,
+        game: {
+            ...state.game,
+            playerTurnState: {
+                ...state.game.playerTurnState,
+                cardTaskStartedAt: payload.startedAt,
+            },
+        },
+    })),
+
     on(startCardTaskGameSysAction, (state: Lobby, { payload }: StartCardTaskGameSysAction): Lobby => ({
         ...state,
         game: {

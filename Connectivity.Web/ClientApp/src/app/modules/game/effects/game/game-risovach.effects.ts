@@ -6,11 +6,11 @@ import { Store } from '@ngrx/store';
 import { filter, tap, withLatestFrom } from 'rxjs/operators';
 
 import { ModalService } from '../../../modal/services';
-import { initLobbyAction, restoreLobbyAction, startCardTaskGameSysAction } from '../../actions';
+import { finishCardTaskGameSysAction, initLobbyAction, restoreLobbyAction, startCardTaskGameSysAction } from '../../actions';
 import {
     GameRisovachModalComponent,
 } from '../../components/game-field/game-risovach/game-risovach-modal/game-risovach-modal.component';
-import { isCardTaskActive } from '../../models';
+import { isCardTaskInProgress } from '../../models';
 
 @Injectable()
 export class GameRisovachEffects {
@@ -22,7 +22,7 @@ export class GameRisovachEffects {
         ),
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([_, playerTurnState]) => playerTurnState?.gameCard?.type === GameCardType.Draw && isCardTaskActive(playerTurnState)),
+        filter(([_, playerTurnState]) => playerTurnState?.gameCard?.type === GameCardType.Draw && isCardTaskInProgress(playerTurnState)),
 
         tap(() => {
             this.modalService.show(GameRisovachModalComponent, { class: 'modal-xl' });
@@ -30,15 +30,14 @@ export class GameRisovachEffects {
 
     ), { dispatch: false });
 
-    // public hideRisovach$ = createEffect(() => this.actions$.pipe(
-    //     ofType(drawingEndPlayerAction),
+    public gameRisovachHide$ = createEffect(() => this.actions$.pipe(
+        ofType(finishCardTaskGameSysAction),
 
-    //     withLatestFrom(this.store.select(lobbySelector)),
-    //     tap(([action, lobby]: [Action, Lobby]) => {
-    //         this.modalService.hide(GameRisovachModalComponent);
-    //     })
+        tap(() => {
+            this.modalService.hide(GameRisovachModalComponent);
+        })
 
-    // ), { dispatch: false });
+    ), { dispatch: false });
 
     constructor(
         private readonly actions$: Actions,

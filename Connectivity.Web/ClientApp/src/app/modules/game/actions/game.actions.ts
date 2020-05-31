@@ -24,6 +24,13 @@ export const nextPlayerGameSysAction = createAction('[Game] [Sh] [Sys] Next Play
 }));
 export type NextPlayerGameSysAction = ReturnType<typeof nextPlayerGameSysAction> & Action;
 
+export const cardReadingStartGameSysAction = createAction('[Game] [Sh] [Sys] Card Reading Start', () => ({
+    payload: {
+        startedAt: null as string,
+    },
+}));
+export type CardReadingStartGameSysAction = ReturnType<typeof cardReadingStartGameSysAction> & Action;
+
 export const cardReadingFinishGameSysAction = createAction('[Game] [Sh] [Sys] Card Reading Finish', () => ({
     payload: {},
 }));

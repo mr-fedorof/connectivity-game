@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Connectivity.Application.Services.Interfaces;
 using Connectivity.Domain.GameActions;
@@ -36,9 +37,9 @@ namespace Connectivity.Application.Hubs
             await _gameHubService.ProcessDrawActionAsync(Context.ConnectionId, lobbyId, drawAction);
         }
 
-        public async Task RestoreDrawActions(Guid lobbyId)
+        public async Task<List<DrawAction>> RestoreDrawActions(Guid lobbyId)
         {
-            await _gameHubService.RestoreDrawActionsAsync(Context.ConnectionId, lobbyId);
+            return await _gameHubService.RestoreDrawActionsAsync(Context.ConnectionId, lobbyId);
         }
     }
 }

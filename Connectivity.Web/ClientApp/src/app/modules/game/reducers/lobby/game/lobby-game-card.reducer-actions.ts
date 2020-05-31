@@ -5,8 +5,8 @@ import {
     cardReadingFinishGameSysAction,
     CardReadingFinishPlayerAction,
     cardReadingFinishPlayerAction,
-    CardReadingStartPlayerAction,
-    cardReadingStartPlayerAction,
+    CardReadingStartGameSysAction,
+    cardReadingStartGameSysAction,
     TakeAnotherCardPlayerAction,
     takeAnotherCardPlayerAction,
     TakeCardPlayerAction,
@@ -38,7 +38,7 @@ export const lobbyGameCardReducerActions = [
         },
     })),
 
-    on(cardReadingStartPlayerAction, (state: Lobby, { payload }: CardReadingStartPlayerAction): Lobby => ({
+    on(cardReadingStartGameSysAction, (state: Lobby, { payload }: CardReadingStartGameSysAction): Lobby => ({
         ...state,
         game: {
             ...state.game,

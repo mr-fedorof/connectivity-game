@@ -57,6 +57,7 @@
         ],
         "max-line-length": false,
         "max-file-line-count": false,
-        "no-inferrable-types": false
+        "no-inferrable-types": false,
+        "prefer-inline-decorator": false
     }
 }

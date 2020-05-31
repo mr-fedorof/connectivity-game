@@ -8,7 +8,7 @@ import {
 } from '@modules/game/actions';
 import { GameCardType } from '@modules/game/enums';
 import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
-import { GameCard, isReadingCard, Player, PlayerTurnState } from '@modules/game/models';
+import { GameCard, isCardReadingInProgress, Player, PlayerTurnState } from '@modules/game/models';
 import { ActionService, GameCardService } from '@modules/game/services';
 import { LocalizationService } from '@modules/localization';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -174,7 +174,7 @@ export class GameCardTaskComponent extends DestroyableComponent implements OnIni
             case GameCardType.Joker:
                 return false;
             case GameCardType.WhoAmI:
-                return isReadingCard(this.playerTurnState);
+                return isCardReadingInProgress(this.playerTurnState);
             default:
                 return false;
         }

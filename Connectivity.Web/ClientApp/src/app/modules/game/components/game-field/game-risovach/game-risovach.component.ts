@@ -1,8 +1,18 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit, ElementRef, NgZone } from '@angular/core';
-import { GameRisovachService } from '@modules/game/services/game-risovach.service';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
+import { GameHubService, GameService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
-import { takeUntil, tap } from 'rxjs/operators';
-import { DrawPayload } from '../../../models';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
+
+import { DrawAction } from '../../../models';
 
 @Component({
     selector: 'app-game-risovach',
@@ -10,168 +20,260 @@ import { DrawPayload } from '../../../models';
     styleUrls: ['./game-risovach.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameRisovachComponent extends DestroyableComponent implements OnInit {
-    public canvas;
+export class GameRisovachComponent extends DestroyableComponent implements OnInit, AfterViewInit {
+    private readonly _drawActionsSubject = new Subject<DrawAction>();
 
-    public canvasContext;
-    public colors = ["#000", "#f00", "#ff7f00", "#ff0", "#0f0", "#00f", "#4b0082", "#8f00ff", "#fff"];
-    public lineWeights = [1, 3, 5, 7, 10, 15, 25];
-    public lineWeight = 1;
-    public strokeColorCode = 0;
-    public oX;
-    public oY;
+    private lobbyId: string = null;
     private isDrawing = false;
 
+    public readonly canvasWidth = 1100;
+    public readonly canvasheight = 500;
+
+    public readonly lineWeights = [
+        8,
+        12,
+        16,
+        24,
+        32,
+    ];
+
+    public readonly colors = [
+        '#000000',
+        '#FF0000',
+        '#FF7F00',
+        '#FFFF00',
+        '#00FF00',
+        '#0000FF',
+        '#4B0082',
+        '#8F00FF',
+    ];
+
+    public readonly drawActions$: Observable<DrawAction> = this._drawActionsSubject.asObservable();
+
+    @ViewChild('canvas')
+    public canvasEl: ElementRef<HTMLCanvasElement>;
+
+    public canvas: HTMLCanvasElement;
+    public canvasContext: CanvasRenderingContext2D;
+
+    public currentLineWeight: number = this.lineWeights[0];
+    public currentColorIndex: number = 0;
+    public get currentColor(): string {
+        return this.colors[this.currentColorIndex];
+    }
+    public currentX: number;
+    public currentY: number;
+
     constructor(
-        private readonly risovachService: GameRisovachService,
-        private cdr: ChangeDetectorRef,
+        private readonly cdr: ChangeDetectorRef,
+        private readonly gameHubService: GameHubService,
+        private readonly gameService: GameService
     ) {
         super();
     }
 
     public ngOnInit(): void {
-        this.canvas = document.getElementById('canvas');
-        this.canvasContext = this.canvas.getContext('2d');
-        this.canvasContext.lineCap = "round";
-        this.canvasContext.lineJoin = "round";
-        this.canvasContext.strokeStyle = this.colors[0];
-        this.canvasContext.lineWidth = 1;
-
-        this.canvasEvents();
-    }
-
-    ngAfterViewInit() {
-        this.risovachService.drawings$
+        this.gameService.lobby$
             .pipe(
                 takeUntil(this.onDestroy),
+                take(1)
             )
+            .subscribe(lobby => {
+                this.lobbyId = lobby.id;
+                this.initDrawActionsSync(lobby.id);
+            });
+    }
+
+    public ngAfterViewInit(): void {
+        this.initCanvas(this.canvasEl.nativeElement);
+
+        this.canvas = this.canvasEl.nativeElement;
+        this.canvasContext = this.canvasEl.nativeElement.getContext('2d');
+    }
+
+    public onLineWeightClick(lineWeight): void {
+        this.currentLineWeight = lineWeight;
+    }
+
+    public onPenColorClick(colorIndex: number): void {
+        this.currentColorIndex = colorIndex;
+    }
+
+    public onClearClick(): void {
+        this.eraseCanvas();
+
+        this.gameHubService.sendDrawAction(this.lobbyId, { erase: true });
+    }
+
+    public initDrawActionsSync(lobbyId: string): void {
+        this.gameHubService.restoreDrawActions(lobbyId)
+            .subscribe((drawActions: DrawAction[]) => {
+                drawActions.forEach(drawPayload => {
+                    this._drawActionsSubject.next(drawPayload);
+                });
+            });
+
+        this.gameHubService.listenToDrawActions()
+            .subscribe((drawPayload: DrawAction) => {
+                this._drawActionsSubject.next(drawPayload);
+            });
+
+        this.drawActions$
+            .pipe(takeUntil(this.onDestroy))
             .subscribe(p => {
-                this.drawMove(p);
+                this.drawCanvas(p);
                 this.cdr.markForCheck();
             });
     }
 
+    public initCanvas(canvas: HTMLCanvasElement): void {
+        canvas.width = this.canvasWidth;
+        canvas.height = this.canvasheight;
 
-    public onLineWeightClick(lineWeight) {
-        this.lineWeight = lineWeight;
+        const canvasContext = canvas.getContext('2d');
+
+        canvasContext.lineCap = 'round';
+        canvasContext.lineJoin = 'round';
+        canvasContext.strokeStyle = this.currentColor;
+        canvasContext.lineWidth = this.currentLineWeight;
+
+        fromEvent(canvas, 'mousedown')
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe((e: MouseEvent) => {
+                this.onCanvasMousedown(e);
+            });
+
+        fromEvent(canvas, 'mousemove')
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe((e: MouseEvent) => {
+                this.onCanvaseMousemove(e);
+            });
+
+        fromEvent(canvas, 'touchstart')
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe((e: TouchEvent) => {
+                this.onCanvasTouchstart(e);
+            });
+
+        fromEvent(canvas, 'touchmove')
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe((e: TouchEvent) => {
+                this.onCanvasTouchMove(e);
+            });
+
+        fromEvent(document, 'mouseup')
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe((e: MouseEvent) => {
+                this.onDocumentMouseup(e);
+            });
     }
 
-    public onStrokeColorClick(code) {
-        this.strokeColorCode = code;
+    public onCanvasMousedown(e: MouseEvent): void {
+        this.isDrawing = true;
+
+        this.currentX = e.offsetX;
+        this.currentY = e.offsetY;
+
+        const drawAction = new DrawAction(
+            this.currentX,
+            this.currentY,
+            this.currentX - 1,
+            this.currentY - 1,
+            this.currentColorIndex,
+            this.currentLineWeight);
+
+        this.drawCanvas(drawAction);
+
+        this.gameHubService.sendDrawAction(this.lobbyId, drawAction);
     }
 
-    public onClearClick() {
-        this.eraseCanvas();
-        this.risovachService.drawMove({ erase: true });
+    public onCanvaseMousemove(e: MouseEvent): void {
+        if (!this.isDrawing) {
+            return;
+        }
+
+        const x: number = e.offsetX;
+        const y: number = e.offsetY;
+
+        const drawAction = new DrawAction(
+            this.currentX,
+            this.currentY,
+            x,
+            y,
+            this.currentColorIndex,
+            this.currentLineWeight);
+
+        this.drawCanvas(drawAction);
+
+        this.gameHubService.sendDrawAction(this.lobbyId, drawAction);
+
+        this.currentX = x;
+        this.currentY = y;
     }
 
-    public eraseCanvas() {
-        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    public onCanvasTouchstart(e: TouchEvent): void {
+        const touchEvent = (e as any).originalEvent.changedTouches[0];
+        e.preventDefault();
+
+        this.currentX = touchEvent.clientX - touchEvent.target.offsetLeft;
+        this.currentY = touchEvent.clientY - touchEvent.target.offsetTop;
+
+        const drawAction = new DrawAction(
+            this.currentX,
+            this.currentY,
+            this.currentX - 1,
+            this.currentY - 1,
+            this.currentColorIndex,
+            this.currentLineWeight);
+
+        this.drawCanvas(drawAction);
+
+        this.gameHubService.sendDrawAction(this.lobbyId, drawAction);
     }
 
-    // Consume functions, client and server
-    public drawMove(p) {
-        if (p.erase === true) {
+    public onCanvasTouchMove(e: TouchEvent): void {
+        const touchEvent = (e as any).originalEvent.changedTouches[0];
+        e.preventDefault();
+
+        const x = touchEvent.clientX - touchEvent.target.offsetLeft;
+        const y = touchEvent.clientY - touchEvent.target.offsetTop;
+
+        const drawAction = new DrawAction(
+            this.currentX,
+            this.currentY,
+            x,
+            y,
+            this.currentColorIndex,
+            this.currentLineWeight);
+
+        this.drawCanvas(drawAction);
+
+        this.gameHubService.sendDrawAction(this.lobbyId, drawAction);
+
+        this.currentX = x;
+        this.currentY = y;
+    }
+
+    public onDocumentMouseup(e: MouseEvent): void {
+        this.isDrawing = false;
+    }
+
+    private drawCanvas(drawAction: DrawAction): void {
+        if (drawAction.erase) {
             this.eraseCanvas();
+
             return;
         }
 
         this.canvasContext.beginPath();
-        this.canvasContext.moveTo(p.fromX, p.fromY);
-        this.canvasContext.lineTo(p.toX, p.toY);
-        this.canvasContext.lineWidth = p.lineWidth;
-        this.canvasContext.strokeStyle = this.colors[p.strokeStyle];
+        this.canvasContext.moveTo(drawAction.fromX, drawAction.fromY);
+        this.canvasContext.lineTo(drawAction.toX, drawAction.toY);
+        this.canvasContext.lineWidth = drawAction.lineWidth;
+        this.canvasContext.strokeStyle = this.colors[drawAction.strokeStyle];
         this.canvasContext.stroke();
     }
 
-    // Common mousedown
-    public start(e) {
-        this.isDrawing = true;
-        this.oX = e.offsetX;
-        this.oY = e.offsetY;
-
-        let p = new DrawPayload(
-            this.oX,
-            this.oY,
-            this.oX - 1,
-            this.oY - 1,
-            this.strokeColorCode,
-            this.lineWeight);
-
-        this.drawMove(p);
-        this.risovachService.drawMove(p);
-    };
-
-    public touchStart(e) {
-        var touchEvent = e.originalEvent.changedTouches[0];
-        e.preventDefault();
-        this.oX = touchEvent.clientX - touchEvent.target.offsetLeft;
-        this.oY = touchEvent.clientY - touchEvent.target.offsetTop;
-
-        let p = new DrawPayload(
-            this.oX,
-            this.oY,
-            this.oX - 1,
-            this.oY - 1,
-            this.strokeColorCode,
-            this.lineWeight);
-
-        this.drawMove(p);
-        this.risovachService.drawMove(p);
-    };
-
-    // Mouse only control
-    public stop(e) {
-        this.isDrawing = false;
-    };
-
-    // Common mousemove
-    public move(e) {
-        if (this.isDrawing) {
-            let x = e.offsetX;
-            let y = e.offsetY;
-
-            let p = new DrawPayload(
-                this.oX,
-                this.oY,
-                x,
-                y,
-                this.strokeColorCode,
-                this.lineWeight);
-
-            this.drawMove(p);
-            this.risovachService.drawMove(p);
-            this.oX = x;
-            this.oY = y;
-        }
-    };
-
-    public touchMove(e) {
-        var touchEvent = e.originalEvent.changedTouches[0];
-        e.preventDefault();
-        let x = touchEvent.clientX - touchEvent.target.offsetLeft;
-        let y = touchEvent.clientY - touchEvent.target.offsetTop;
-
-        let p = new DrawPayload(
-            this.oX,
-            this.oY,
-            x,
-            y,
-            this.strokeColorCode,
-            this.lineWeight);
-
-        this.drawMove(p);
-        this.risovachService.drawMove(p);
-        this.oX = x;
-        this.oY = y;
-    };
-
-    // Canvas Events & EventListeners
-    public canvasEvents() {
-        this.canvas.addEventListener("mousedown", this.start.bind(this), false);
-        this.canvas.addEventListener("mousemove", this.move.bind(this), false);
-        this.canvas.addEventListener("touchstart", this.touchStart.bind(this), false);
-        this.canvas.addEventListener("touchmove", this.touchMove.bind(this), false);
-        document.addEventListener("mouseup", this.stop.bind(this), false);
+    private eraseCanvas(): void {
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 }

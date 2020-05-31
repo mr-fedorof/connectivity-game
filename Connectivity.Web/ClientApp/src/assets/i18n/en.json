@@ -93,5 +93,9 @@
     "CONFIRM_CARD_TASK_RESULT_DIALOG": {
         "TITLE": "Task Results",
         "QUESTION": "Did your team answered the question?"
+    },
+    "GAME_RISOVACH": {
+        "TITLE": "Drawing",
+        "ERASE": "Erase"
     }
 }

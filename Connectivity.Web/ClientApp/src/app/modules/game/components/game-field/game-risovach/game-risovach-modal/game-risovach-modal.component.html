@@ -1,7 +1,16 @@
 <div class="modal-header">
-    <h4 class="modal-title">Go risovat' ya sozdal</h4>
+    <h4
+        class="modal-title"
+        translate
+    >GAME_RISOVACH.TITLE</h4>
 </div>
 
 <div class="modal-body">
     <app-game-risovach></app-game-risovach>
+</div>
+
+<div class="modal-footer game-risovach-modal__footer">
+    <div class="game-risovach-modal__timer">
+        {{ timeleft$ | async }}
+    </div>
 </div>

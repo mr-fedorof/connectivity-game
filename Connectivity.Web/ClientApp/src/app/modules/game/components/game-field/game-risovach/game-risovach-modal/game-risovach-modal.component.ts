@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
+import { GameTimerService } from '@modules/game/services';
 import { ModalService } from '@modules/modal/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -11,9 +14,12 @@ import { takeUntil } from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameRisovachModalComponent extends DestroyableComponent implements OnInit {
+    public timeleft$: Observable<number>;
+
     constructor(
         private readonly modalRef: BsModalRef,
-        private readonly modalService: ModalService
+        private readonly modalService: ModalService,
+        private readonly gameTimerService: GameTimerService
     ) {
         super();
     }
@@ -24,5 +30,11 @@ export class GameRisovachModalComponent extends DestroyableComponent implements 
             .subscribe(() => {
                 this.modalRef.hide();
             });
+
+        this.timeleft$ = this.gameTimerService.timer$
+            .pipe(
+                takeUntil(this.onDestroy),
+                timeLeftPipe()
+            );
     }
 }

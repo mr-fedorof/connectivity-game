@@ -7,10 +7,10 @@ using Connectivity.Domain.GameActions.Payloads;
 
 namespace Connectivity.Application.GameActions.Handlers
 {
-    [GameActionType(GameActionType.CardReadingStartPlayer)]
-    public class CardReadingStartActionHandler : GameActionHandler<CardReadingStartPayload>
+    [GameActionType(GameActionType.CardReadingStartGame)]
+    public class CardReadingStartGameActionHandler : GameActionHandler<CardReadingStartGamePayload>
     {
-        protected override async Task<GameAction<CardReadingStartPayload>> HandleAsync(GameAction<CardReadingStartPayload> gameAction)
+        protected override async Task<GameAction<CardReadingStartGamePayload>> HandleAsync(GameAction<CardReadingStartGamePayload> gameAction)
         {
             gameAction.Payload.StartedAt = DateTime.UtcNow;
 

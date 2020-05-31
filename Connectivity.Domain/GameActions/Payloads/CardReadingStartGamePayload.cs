@@ -2,7 +2,7 @@
 
 namespace Connectivity.Domain.GameActions.Payloads
 {
-    public class CardReadingStartPayload
+    public class CardReadingStartGamePayload
     {
         public DateTime? StartedAt { get; set; }
     }

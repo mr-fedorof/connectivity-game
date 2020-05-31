@@ -11,13 +11,6 @@
     [type]="type"
 ></app-game-card>
 
-<app-game-card-state
-    *ngIf="isGameCardOnDeck && activeGameCard && (gameCardStateVisibility$ | async)"
-    [@fadeInOut]
-    class="app-game-card-deck__card app-game-card-deck__card--state"
-    [gameCard]="activeGameCard"
-></app-game-card-state>
-
 <div
     #backdropEl
     [@gameCardBackdrop]="gameCardBackdropState"

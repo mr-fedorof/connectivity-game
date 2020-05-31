@@ -1,5 +1,6 @@
 import { isBoolean } from 'lodash';
 
+import { GameCardType } from '../enums';
 import { GameCard } from './game-card.model';
 
 export class PlayerTurnState {
@@ -18,27 +19,46 @@ export class PlayerTurnState {
     }
 }
 
-export function isReadingCard(playerTurnState: PlayerTurnState): boolean {
+export function isDiceRolled(playerTurnState: PlayerTurnState): boolean {
     return !!playerTurnState
-        && !!playerTurnState.cardReadingStartedAt
+        && playerTurnState.diceValue > 0;
+}
+
+export function isCardReadingStarted(playerTurnState: PlayerTurnState): boolean {
+    return !!playerTurnState
+        && !!playerTurnState.cardReadingStartedAt;
+}
+
+export function isCardReadingInProgress(playerTurnState: PlayerTurnState): boolean {
+    return isCardReadingStarted(playerTurnState)
         && !playerTurnState.cardReadingFinished;
 }
 
-export function isCardTaskActive(playerTurnState: PlayerTurnState): boolean {
+export function isCardReadingFinished(playerTurnState: PlayerTurnState): boolean {
+    return isCardReadingStarted(playerTurnState)
+        && !!playerTurnState.cardReadingFinished;
+}
+
+export function isCardTaskStartManual(playerTurnState: PlayerTurnState): boolean {
+    return playerTurnState?.gameCard.type === GameCardType.WhoAmI;
+}
+
+export function isCardTaskStarted(playerTurnState: PlayerTurnState): boolean {
     return !!playerTurnState
-        && !!playerTurnState.cardReadingFinished
-        && !!playerTurnState.cardTaskStartedAt
+        && !!playerTurnState.cardTaskStartedAt;
+}
+
+export function isCardTaskInProgress(playerTurnState: PlayerTurnState): boolean {
+    return isCardTaskStarted(playerTurnState)
         && !playerTurnState.cardTaskFinished;
 }
 
 export function isCardTaskFinished(playerTurnState: PlayerTurnState): boolean {
-    return !!playerTurnState
-        && !!playerTurnState.cardReadingFinished
+    return isCardTaskStarted(playerTurnState)
         && !!playerTurnState.cardTaskFinished;
 }
 
 export function isCardTaskResulted(playerTurnState: PlayerTurnState): boolean {
-    return !!playerTurnState
-        && !!playerTurnState.cardTaskFinished
+    return isCardTaskFinished(playerTurnState)
         && isBoolean(playerTurnState.cardTaskResult);
 }

@@ -1,4 +1,4 @@
-export class DrawPayload {
+export class DrawAction {
     constructor(
         public fromX?: number,
         public fromY?: number,

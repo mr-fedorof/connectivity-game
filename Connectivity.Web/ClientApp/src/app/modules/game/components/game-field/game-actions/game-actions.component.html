@@ -1,26 +1,28 @@
-<button
-    *ngIf="isCurrentPlayerTurn && !playerTurnState.diceValue"
-    type="button"
-    class="btn btn-lg btn-primary app-game-actions__action"
-    [disabled]="isProcessing"
-    (click)="onRollDiceClick()"
-    translate
->GAME.ROLL_THE_DICE</button>
+<ng-container *ngIf="state$ | async as state">
+    <button
+        *ngIf="state.isCurrentPlayerTurn && !isDiceRolled(state.playerTurnState)"
+        type="button"
+        class="btn btn-lg btn-primary app-game-actions__action"
+        [disabled]="isProcessing$ | async"
+        (click)="onRollDiceClick()"
+        translate
+    >GAME.ROLL_THE_DICE</button>
 
-<button
-    *ngIf="isCurrentPlayerTurn && playerTurnState.diceValue && !playerTurnState.cardReadingStartedAt"
-    type="button"
-    class="btn btn-lg btn-primary app-game-actions__action"
-    [disabled]="isProcessing"
-    (click)="onTakeCardClick()"
-    translate
->GAME.TAKE_CARD</button>
+    <button
+        *ngIf="state.isCurrentPlayerTurn && isDiceRolled(state.playerTurnState) && !isCardReadingStarted(state.playerTurnState)"
+        type="button"
+        class="btn btn-lg btn-primary app-game-actions__action"
+        [disabled]="isProcessing$ | async"
+        (click)="onTakeCardClick(state.playerTurnState)"
+        translate
+    >GAME.TAKE_CARD</button>
 
-<button
-    *ngIf="isCurrentPlayerTurn"
-    type="button"
-    class="btn btn-lg btn-danger app-game-actions__action"
-    [disabled]="isProcessing"
-    (click)="onSkipMoveClick()"
-    translate
->GAME.SKIP_THE_MOVE</button>
+    <button
+        *ngIf="state.isCurrentPlayerTurn && !isCardReadingStarted(state.playerTurnState)"
+        type="button"
+        class="btn btn-lg btn-danger app-game-actions__action"
+        [disabled]="isProcessing$ | async"
+        (click)="onSkipMoveClick()"
+        translate
+    >GAME.SKIP_THE_MOVE</button>
+</ng-container>

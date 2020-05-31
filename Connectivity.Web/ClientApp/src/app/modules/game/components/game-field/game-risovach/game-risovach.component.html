@@ -1,38 +1,44 @@
 <canvas
-    id="canvas"
-    width="1100"
-    height="500"
+    #canvas
+    class="app-game-risovach__canvas"
 ></canvas>
 
-<div class="controls-container">
-    <div
-        class="pen-width"
-        *ngFor="let lw of lineWeights; let i = index"
-    >
+<div class="row app-game-risovach__tool-bar">
+    <div class="col app-game-risovach__pen-width">
         <div
-            class="outer-circle"
+            class="app-game-risovach__pen-width-option"
+            [class.app-game-risovach__pen-width-option--active]="lw === currentLineWeight"
+            *ngFor="let lw of lineWeights; let i = index"
             (click)="onLineWeightClick(lw)"
         >
             <div
-                class="inner-circle"
+                class="app-game-risovach__pen-width-circle"
                 [style.height.px]="lw"
                 [style.width.px]="lw"
-                [style.background-color]="colors[strokeColorCode]"
+                [style.background-color]="currentColor"
             ></div>
         </div>
     </div>
-</div>
 
-<div class="controls-container">
-    <span *ngFor="let color of colors; let i = index">
+    <div class="col app-game-risovach__pen-color">
+        <div
+            class="app-game-risovach__pen-color-option"
+            [class.app-game-risovach__pen-color-option--active]="i === currentColorIndex"
+            *ngFor="let color of colors; let i = index"
+            (click)="onPenColorClick(i)"
+        >
+            <div
+                class="app-game-risovach__pen-color-circle"
+                [style.background-color]="color"
+            ></div>
+        </div>
+    </div>
+
+    <div class="col app-game-risovach__erase">
         <button
-            class="pen-color"
-            (click)="onStrokeColorClick(i)"
-            [style.background-color]="color"
-        ></button>
-    </span>
-    <span
-        class="fas fa-erase"
-        (click)="onClearClick()"
-    >erase</span>
+            class="btn btn-danger"
+            (click)="onClearClick()"
+            translate
+        >GAME_RISOVACH.ERASE</button>
+    </div>
 </div>

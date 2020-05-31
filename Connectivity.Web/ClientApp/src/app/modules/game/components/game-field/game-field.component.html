@@ -25,7 +25,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col app-game-field__center-col-dice">
-                        <app-game-dice [value]="diceValue$ | async"></app-game-dice>
+                        <app-game-dice></app-game-dice>
                     </div>
                     <div class="col">
                         <app-game-timer></app-game-timer>
@@ -49,12 +49,7 @@
 
             </div>
 
-            <app-game-actions
-                class="col-auto app-game-field__center-col-actions"
-                [isCurrentPlayerTurn]="isCurrentPlayerTurn$ | async"
-                [playerTurnState]="playerTurnState$ | async"
-                [isProcessing]="isProcessing$ | async"
-            ></app-game-actions>
+            <app-game-actions class="col-auto app-game-field__center-col-actions"></app-game-actions>
         </div>
     </div>
 

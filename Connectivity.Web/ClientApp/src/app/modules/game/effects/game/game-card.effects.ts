@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isReadingCard } from '@modules/game/models';
+import { isCardReadingInProgress, isCardReadingStarted, isCardTaskStarted } from '@modules/game/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { leftTimeDelay } from '@shared/utils/date.utils';
@@ -8,12 +8,14 @@ import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
     cardReadingFinishGameSysAction,
     cardReadingFinishPlayerAction,
-    cardReadingStartPlayerAction,
+    cardReadingStartGameSysAction,
     CloseCardPlayerAction,
     closeCardPlayerAction,
     finishProcessingLobbyStateAction,
     initLobbyAction,
     restoreLobbyAction,
+    startCardTaskGameSysAction,
+    startCardTaskPlayerAction,
     startProcessingLobbyStateAction,
     TakeAnotherCardPlayerAction,
     takeAnotherCardPlayerAction,
@@ -53,11 +55,11 @@ export class GameCardEffects {
         ofType(
             initLobbyAction,
             restoreLobbyAction,
-            cardReadingStartPlayerAction
+            cardReadingStartGameSysAction
         ),
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([_, playerTurnState]) => isReadingCard(playerTurnState)),
+        filter(([_, playerTurnState]) => isCardReadingStarted(playerTurnState)),
         tap(([_, playerTurnState]) => {
             this.gameCardService.startTimer(playerTurnState.gameCard.type, playerTurnState.cardReadingStartedAt, CARD_READING_TIME);
         })
@@ -66,8 +68,8 @@ export class GameCardEffects {
 
     public gameCardHide$ = createEffect(() => this.actions$.pipe(
         ofType(
-            cardReadingFinishPlayerAction,
-            cardReadingFinishGameSysAction
+            startCardTaskPlayerAction,
+            startCardTaskGameSysAction
         ),
 
         tap(() => {
@@ -88,7 +90,7 @@ export class GameCardEffects {
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
         tap(([_, playerTurnState]) => {
-            if (playerTurnState && isReadingCard(playerTurnState)) {
+            if (isCardReadingStarted(playerTurnState) && !isCardTaskStarted(playerTurnState)) {
                 this.gameCardService.makeVisible(playerTurnState.gameCard);
             } else {
                 this.gameCardService.makeVisible(null);
@@ -101,11 +103,11 @@ export class GameCardEffects {
         ofType(
             initLobbyAction,
             restoreLobbyAction,
-            cardReadingStartPlayerAction
+            cardReadingStartGameSysAction
         ),
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([action, playerTurnState]) => isReadingCard(playerTurnState)),
+        filter(([action, playerTurnState]) => isCardReadingInProgress(playerTurnState)),
 
         switchMap(([action, playerTurnState]) => leftTimeDelay(playerTurnState.cardReadingStartedAt, CARD_READING_TIME)
             .takeUntilActions(this.actions$, cardReadingFinishPlayerAction, cardReadingFinishGameSysAction)),

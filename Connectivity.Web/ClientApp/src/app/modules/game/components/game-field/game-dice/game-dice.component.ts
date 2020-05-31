@@ -1,5 +1,5 @@
 import { AnimationEvent } from '@angular/animations';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { GameDiceService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { takeUntil } from 'rxjs/operators';
@@ -17,50 +17,62 @@ import { rollDiceAnimation } from './game-dice.animations';
 })
 export class GameDiceComponent extends DestroyableComponent implements OnInit {
     public rollTo = null;
-    public rollDiceAnimationState = 'roll-start';
-
-    @Input() public value: number = null;
+    public rollDiceAnimationState = 'undefined';
 
     constructor(
+        private readonly cdr: ChangeDetectorRef,
         private readonly gameDiceService: GameDiceService
     ) {
         super();
     }
 
     public ngOnInit(): void {
-        if (this.value > 0) {
-            this.rollDiceAnimationState = `roll-to-${this.value}`;
-        }
-
         this.gameDiceService.rollDice$
             .pipe(
                 takeUntil(this.onDestroy)
             )
             .subscribe(value => {
                 this.rollTo = value;
-                this.rollDiceAnimationState = 'roll-pre-end';
+                this.setDiceRolledState();
+                this.cdr.markForCheck();
+            });
+
+        this.gameDiceService.diceValueRestoring$
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(diceValue => {
+                this.resetRollDiceState();
+                this.cdr.markForCheck();
+
+                setTimeout(() => {
+                    this.setDiceState(diceValue);
+                    this.cdr.markForCheck();
+                });
             });
     }
 
     public onRollDiceAnimationDone(event: AnimationEvent): void {
-        switch (event.toState) {
-            case 'roll-pre-end':
-                this.rollDiceAnimationState = `roll-to-${this.rollTo}`;
+        if (event.toState === 'dice-rolled') {
+            this.setDiceState(this.rollTo);
 
-                return;
-
-            case 'roll-to-1':
-            case 'roll-to-2':
-            case 'roll-to-3':
-            case 'roll-to-4':
-            case 'roll-to-5':
-            case 'roll-to-6':
-                this.gameDiceService.rollDiceFinish();
-
-                return;
-
-            default:
-                return;
+            return;
         }
+
+        if (event.toState.startsWith('dice-value-') && event.fromState === 'dice-rolled') {
+            this.gameDiceService.rollDiceFinish();
+
+            return;
+        }
+    }
+
+    private setDiceRolledState(): void {
+        this.rollDiceAnimationState = 'dice-rolled';
+    }
+
+    private setDiceState(value: number): void {
+        this.rollDiceAnimationState = `dice-value-${value || 1}`;
+    }
+
+    private resetRollDiceState(): void {
+        this.rollDiceAnimationState = 'undefined';
     }
 }

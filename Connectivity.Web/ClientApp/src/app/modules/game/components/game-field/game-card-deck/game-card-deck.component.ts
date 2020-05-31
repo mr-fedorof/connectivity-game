@@ -10,16 +10,13 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { cardReadingStartPlayerAction } from '@modules/game/actions';
+import { cardReadingStartGameSysAction } from '@modules/game/actions';
 import { GameCardType } from '@modules/game/enums';
-import { GameCard, isReadingCard } from '@modules/game/models';
-import { playerTurnStateSelector } from '@modules/game/selectors/game.selectors';
-import { ActionService, GameCardService } from '@modules/game/services';
-import { Store } from '@ngrx/store';
+import { GameCard } from '@modules/game/models';
+import { ActionService, GameCardService, GameService } from '@modules/game/services';
 import { fadeInOutAnimation } from '@shared/animations';
 import { DestroyableComponent } from '@shared/destroyable';
 import { range } from 'lodash';
-import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 
 import { gameCardAnimation, gameCardBackdropAnimation, gameCardDeckAnimation } from './game-card-deck.animations';
@@ -38,8 +35,6 @@ import { gameCardAnimation, gameCardBackdropAnimation, gameCardDeckAnimation } f
     ],
 })
 export class GameCardDeckComponent extends DestroyableComponent implements OnInit {
-    public gameCardStateVisibility$: Observable<boolean>;
-
     public coverCards: number[] = range(8);
 
     public activeGameCard: GameCard;
@@ -57,28 +52,16 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
     public gameCardState = 'undefined';
     public gameCardTaskContentState = 'undefined';
 
-    public get isGameCardOnDeck(): boolean {
-        return this.gameCardState === 'on-deck';
-    }
-
     constructor(
         private readonly cdr: ChangeDetectorRef,
-        private readonly store: Store,
         private readonly actionService: ActionService,
+        private readonly gameService: GameService,
         private readonly gameCardService: GameCardService
     ) {
         super();
     }
 
     public ngOnInit(): void {
-        this.gameCardStateVisibility$ = this.store.select(playerTurnStateSelector)
-            .pipe(
-                takeUntil(this.onDestroy),
-                map(playerTurnState =>
-                    playerTurnState?.gameCard?.id === this.activeGameCard?.id && isReadingCard(playerTurnState)),
-                distinctUntilChanged()
-            );
-
         this.gameCardService.showCard$
             .pipe(
                 takeUntil(this.onDestroy),
@@ -147,7 +130,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         if (event.toState === 'show-card') {
             this.gameCardService.showCardFinish(this.type);
 
-            this.actionService.applyAction(cardReadingStartPlayerAction());
+            this.actionService.applyAction(cardReadingStartGameSysAction());
         }
 
         if (event.toState === 'hide-card') {
@@ -166,7 +149,7 @@ export class GameCardDeckComponent extends DestroyableComponent implements OnIni
         if (event.fromState === 'hidden' && event.toState === 'visible') {
             this.gameCardService.showAnotherCardFinish(this.type);
 
-            this.actionService.applyAction(cardReadingStartPlayerAction());
+            this.actionService.applyAction(cardReadingStartGameSysAction());
         }
     }
 

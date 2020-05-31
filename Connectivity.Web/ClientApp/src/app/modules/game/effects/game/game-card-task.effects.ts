@@ -9,9 +9,10 @@ import {
     nextPlayerGameSysAction,
     restoreLobbyAction,
     startCardTaskGameSysAction,
+    startCardTaskPlayerAction,
 } from '@modules/game/actions';
 import { currentPlayerTurnFilter } from '@modules/game/helpers/pipe.helpers';
-import { isCardTaskActive, isCardTaskFinished, isCardTaskResulted } from '@modules/game/models';
+import { isCardTaskFinished, isCardTaskInProgress, isCardTaskResulted, isCardTaskStartManual } from '@modules/game/models';
 import { nextPlayerTurnIdSelector, playerTurnStateSelector } from '@modules/game/selectors/game.selectors';
 import { ActionService, GameDialogService, GameTimerService } from '@modules/game/services';
 import { DialogAction } from '@modules/modal/models';
@@ -28,6 +29,9 @@ export class GameCardTaskEffects {
             cardReadingFinishGameSysAction
         ),
 
+        withLatestFrom(this.store.select(playerTurnStateSelector)),
+        filter(([action, playerTurnState]) => !isCardTaskStartManual(playerTurnState)),
+
         tap(() => {
             this.actionService.applyAction(startCardTaskGameSysAction());
         })
@@ -38,11 +42,12 @@ export class GameCardTaskEffects {
         ofType(
             initLobbyAction,
             restoreLobbyAction,
+            startCardTaskPlayerAction,
             startCardTaskGameSysAction
         ),
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([action, playerTurnState]) => isCardTaskActive(playerTurnState)),
+        filter(([action, playerTurnState]) => isCardTaskInProgress(playerTurnState)),
 
         tap(([action, playerTurnState]) => {
             this.gameTimerService.startTimer(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan * 60);
@@ -54,11 +59,12 @@ export class GameCardTaskEffects {
         ofType(
             initLobbyAction,
             restoreLobbyAction,
+            startCardTaskPlayerAction,
             startCardTaskGameSysAction
         ),
 
         withLatestFrom(this.store.select(playerTurnStateSelector)),
-        filter(([action, playerTurnState]) => isCardTaskActive(playerTurnState)),
+        filter(([action, playerTurnState]) => isCardTaskInProgress(playerTurnState)),
 
         switchMap(([action, playerTurnState]) => leftTimeDelay(playerTurnState.cardTaskStartedAt, playerTurnState.gameCard.timespan * 60)
             .takeUntilActions(this.actions$, finishCardTaskGameSysAction)),

@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { IActionGuard } from '../action-guarding';
-import { cardReadingStartPlayerAction } from '../actions';
+import { cardReadingStartGameSysAction } from '../actions';
 import { playerTurnStateSelector } from '../selectors/game.selectors';
 
 @Injectable()
 export class CardReadingStartPlayerActionGuard implements IActionGuard {
-    public actionType = cardReadingStartPlayerAction.type;
+    public actionType = cardReadingStartGameSysAction.type;
 
     constructor(
         private readonly store: Store

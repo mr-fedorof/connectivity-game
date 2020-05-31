@@ -10,4 +10,4 @@ export * from './player-turn-state.model';
 export * from './game-card.model';
 export * from './game-card-task.model';
 export * from './game-message.model';
-export * from './draw-payload.model';
+export * from './draw-action.model';
