@@ -26,8 +26,8 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
     private lobbyId: string = null;
     private isDrawing = false;
 
-    public readonly canvasWidth = 1100;
-    public readonly canvasheight = 500;
+    public readonly canvasWidth = 640;
+    public readonly canvasheight = 360;
 
     public readonly lineWeights = [
         8,
@@ -85,10 +85,10 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
     }
 
     public ngAfterViewInit(): void {
-        this.initCanvas(this.canvasEl.nativeElement);
-
         this.canvas = this.canvasEl.nativeElement;
         this.canvasContext = this.canvasEl.nativeElement.getContext('2d');
+
+        this.initCanvas();
     }
 
     public onLineWeightClick(lineWeight): void {
@@ -126,36 +126,34 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             });
     }
 
-    public initCanvas(canvas: HTMLCanvasElement): void {
-        canvas.width = this.canvasWidth;
-        canvas.height = this.canvasheight;
+    public initCanvas(): void {
+        this.canvas.width = this.canvasWidth;
+        this.canvas.height = this.canvasheight;
 
-        const canvasContext = canvas.getContext('2d');
+        this.canvasContext.lineCap = 'round';
+        this.canvasContext.lineJoin = 'round';
+        this.canvasContext.strokeStyle = this.currentColor;
+        this.canvasContext.lineWidth = this.currentLineWeight;
 
-        canvasContext.lineCap = 'round';
-        canvasContext.lineJoin = 'round';
-        canvasContext.strokeStyle = this.currentColor;
-        canvasContext.lineWidth = this.currentLineWeight;
-
-        fromEvent(canvas, 'mousedown')
+        fromEvent(this.canvas, 'mousedown')
             .pipe(takeUntil(this.onDestroy))
             .subscribe((e: MouseEvent) => {
                 this.onCanvasMousedown(e);
             });
 
-        fromEvent(canvas, 'mousemove')
+        fromEvent(this.canvas, 'mousemove')
             .pipe(takeUntil(this.onDestroy))
             .subscribe((e: MouseEvent) => {
                 this.onCanvaseMousemove(e);
             });
 
-        fromEvent(canvas, 'touchstart')
+        fromEvent(this.canvas, 'touchstart')
             .pipe(takeUntil(this.onDestroy))
             .subscribe((e: TouchEvent) => {
                 this.onCanvasTouchstart(e);
             });
 
-        fromEvent(canvas, 'touchmove')
+        fromEvent(this.canvas, 'touchmove')
             .pipe(takeUntil(this.onDestroy))
             .subscribe((e: TouchEvent) => {
                 this.onCanvasTouchMove(e);
@@ -171,14 +169,13 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
     public onCanvasMousedown(e: MouseEvent): void {
         this.isDrawing = true;
 
-        this.currentX = e.offsetX;
-        this.currentY = e.offsetY;
+        const canvasPos = this.getCanvasPosition(this.canvas, e);
 
         const drawAction = new DrawAction(
-            this.currentX,
-            this.currentY,
-            this.currentX - 1,
-            this.currentY - 1,
+            canvasPos.x,
+            canvasPos.y,
+            canvasPos.x,
+            canvasPos.y,
             this.currentColorIndex,
             this.currentLineWeight);
 
@@ -192,37 +189,32 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
             return;
         }
 
-        const x: number = e.offsetX;
-        const y: number = e.offsetY;
+        const canvasPos = this.getCanvasPosition(this.canvas, e);
 
         const drawAction = new DrawAction(
             this.currentX,
             this.currentY,
-            x,
-            y,
+            canvasPos.x,
+            canvasPos.y,
             this.currentColorIndex,
             this.currentLineWeight);
 
         this.drawCanvas(drawAction);
 
         this.gameHubService.sendDrawAction(this.lobbyId, drawAction);
-
-        this.currentX = x;
-        this.currentY = y;
     }
 
     public onCanvasTouchstart(e: TouchEvent): void {
-        const touchEvent = (e as any).originalEvent.changedTouches[0];
         e.preventDefault();
 
-        this.currentX = touchEvent.clientX - touchEvent.target.offsetLeft;
-        this.currentY = touchEvent.clientY - touchEvent.target.offsetTop;
+        const touch = e.changedTouches[0];
+        const canvasPos = this.getCanvasPosition(this.canvas, touch);
 
         const drawAction = new DrawAction(
-            this.currentX,
-            this.currentY,
-            this.currentX - 1,
-            this.currentY - 1,
+            canvasPos.x,
+            canvasPos.y,
+            canvasPos.x,
+            canvasPos.y,
             this.currentColorIndex,
             this.currentLineWeight);
 
@@ -232,26 +224,22 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
     }
 
     public onCanvasTouchMove(e: TouchEvent): void {
-        const touchEvent = (e as any).originalEvent.changedTouches[0];
         e.preventDefault();
 
-        const x = touchEvent.clientX - touchEvent.target.offsetLeft;
-        const y = touchEvent.clientY - touchEvent.target.offsetTop;
+        const touch = e.changedTouches[0];
+        const canvasPos = this.getCanvasPosition(this.canvas, touch);
 
         const drawAction = new DrawAction(
             this.currentX,
             this.currentY,
-            x,
-            y,
+            canvasPos.x,
+            canvasPos.y,
             this.currentColorIndex,
             this.currentLineWeight);
 
         this.drawCanvas(drawAction);
 
         this.gameHubService.sendDrawAction(this.lobbyId, drawAction);
-
-        this.currentX = x;
-        this.currentY = y;
     }
 
     public onDocumentMouseup(e: MouseEvent): void {
@@ -271,9 +259,24 @@ export class GameRisovachComponent extends DestroyableComponent implements OnIni
         this.canvasContext.lineWidth = drawAction.lineWidth;
         this.canvasContext.strokeStyle = this.colors[drawAction.strokeStyle];
         this.canvasContext.stroke();
+
+        this.currentX = drawAction.toX;
+        this.currentY = drawAction.toY;
     }
 
     private eraseCanvas(): void {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    private getCanvasPosition(canvas: HTMLCanvasElement, e: MouseEvent | Touch): { x: number, y: number } {
+        const rect = canvas.getBoundingClientRect();
+
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        return {
+            x: Math.round((e.clientX - rect.left) * scaleX),
+            y: Math.round((e.clientY - rect.top) * scaleY),
+        };
     }
 }

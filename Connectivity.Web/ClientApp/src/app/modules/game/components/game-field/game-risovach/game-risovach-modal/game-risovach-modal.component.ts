@@ -5,7 +5,7 @@ import { ModalService } from '@modules/modal/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-game-risovach-modal',
@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameRisovachModalComponent extends DestroyableComponent implements OnInit {
-    public timeleft$: Observable<number>;
+    public timeleft$: Observable<{ timeleft: number, timeleftInPerc: number }>;
 
     constructor(
         private readonly modalRef: BsModalRef,
@@ -34,7 +34,11 @@ export class GameRisovachModalComponent extends DestroyableComponent implements 
         this.timeleft$ = this.gameTimerService.timer$
             .pipe(
                 takeUntil(this.onDestroy),
-                timeLeftPipe()
+                timeLeftPipe(),
+                map(([startedAt, timespan, timeleft]) => ({
+                    timeleft,
+                    timeleftInPerc: timeleft / timespan * 100,
+                }))
             );
     }
 }

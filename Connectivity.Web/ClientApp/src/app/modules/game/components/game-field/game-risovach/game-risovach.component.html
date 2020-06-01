@@ -1,10 +1,22 @@
-<canvas
-    #canvas
-    class="app-game-risovach__canvas"
-></canvas>
+<div class="app-game-risovach__canvas-container">
+    <canvas
+        #canvas
+        class="app-game-risovach__canvas"
+    ></canvas>
+
+
+
+    <button
+        class="app-game-risovach__erase-btn"
+        (click)="onClearClick()"
+        translate
+    >
+        <i class="app-game-risovach__erase-btn-icon"></i>
+    </button>
+</div>
 
 <div class="row app-game-risovach__tool-bar">
-    <div class="col app-game-risovach__pen-width">
+    <div class="col-auto app-game-risovach__tool-bar-option app-game-risovach__pen-width">
         <div
             class="app-game-risovach__pen-width-option"
             [class.app-game-risovach__pen-width-option--active]="lw === currentLineWeight"
@@ -20,7 +32,7 @@
         </div>
     </div>
 
-    <div class="col app-game-risovach__pen-color">
+    <div class="col-auto app-game-risovach__tool-bar-option app-game-risovach__pen-color">
         <div
             class="app-game-risovach__pen-color-option"
             [class.app-game-risovach__pen-color-option--active]="i === currentColorIndex"
@@ -32,13 +44,5 @@
                 [style.background-color]="color"
             ></div>
         </div>
-    </div>
-
-    <div class="col app-game-risovach__erase">
-        <button
-            class="btn btn-danger"
-            (click)="onClearClick()"
-            translate
-        >GAME_RISOVACH.ERASE</button>
     </div>
 </div>

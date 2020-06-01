@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { notReadyPlayerAction } from '@modules/game/actions';
-import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
+import { timeLeftOnlySecondsPipe } from '@modules/game/helpers/pipe.helpers';
 import { ActionService, GameService } from '@modules/game/services';
 import { ModalService } from '@modules/modal/services';
 import { DestroyableComponent } from '@shared/destroyable';
@@ -46,7 +46,7 @@ export class GameStartingModalComponent extends DestroyableComponent implements 
         this.timeleft$ = this.gameService.readyToStartTimer$
             .pipe(
                 takeUntil(this.onDestroy),
-                timeLeftPipe()
+                timeLeftOnlySecondsPipe()
             );
     }
 

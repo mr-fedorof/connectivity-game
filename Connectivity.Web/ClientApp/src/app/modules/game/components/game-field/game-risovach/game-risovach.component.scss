@@ -7,8 +7,20 @@
 .app-game-risovach {
     display: block;
 
+    &__canvas-container {
+        display: block;
+        height: 0;
+	    position: relative;
+        padding-top: 56.25%;
+    }
+
     &__canvas {
         display: block;
+        position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+        height: 100%;
         background: $white;
         padding: 0;
         cursor: crosshair;
@@ -18,7 +30,10 @@
     &__tool-bar {
         display: flex;
         justify-content: space-between;
-        margin-top: $spacer-32;
+        
+        &-option {
+            margin-top: $spacer-32;
+        }
     }
 
     &__pen-width {
@@ -55,7 +70,6 @@
 
     &__pen-color {
         display: flex;
-        justify-content: center;
 
         &-option {
             display: flex;
@@ -88,8 +102,20 @@
         }
     }
 
-    &__erase {
-        display: flex;
-        justify-content: flex-end;
+    &__erase-btn {
+        @include btn-icon;
+
+        position: absolute;
+        right: $spacer-8;
+        top: $spacer-8;
+        color: $red;
+        font-size: 24px;
+        line-height: 1;
+        height: 24px;
+        width: 24px;
+
+        &-icon {
+            @include app-icon($fa-var-eraser);
+        }
     }
 }

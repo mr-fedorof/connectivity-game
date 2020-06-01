@@ -23,7 +23,28 @@ export function currentPlayerTurnFilter(store: Store): UnaryFunction<Observable<
     );
 }
 
-export function timeLeftPipe(): UnaryFunction<Observable<[string, number]>, Observable<number>> {
+export function timeLeftPipe(): UnaryFunction<Observable<[string, number]>, Observable<[string, number, number]>> {
+    return pipe(
+        filter(([startedAt, timespan]) => !!startedAt && timespan > 0),
+        switchMap(([startedAt, timespan]: [string, number]) => {
+            const startedDiff = diffInSec(new Date(), startedAt);
+
+            if (startedDiff > timespan) {
+                return of([startedAt, timespan, 0]);
+            }
+
+            return timer(0, 1000)
+                .pipe(
+                    map(i => startedDiff + i),
+                    map(diff => timespan - diff),
+                    takeWhile(timeleft => timeleft >= 0),
+                    map(timeleft => ([startedAt, timespan, timeleft]) as any)
+                );
+        })
+    );
+}
+
+export function timeLeftOnlySecondsPipe(): UnaryFunction<Observable<[string, number]>, Observable<number>> {
     return pipe(
         filter(([startedAt, timespan]) => !!startedAt && timespan > 0),
         switchMap(([startedAt, timespan]: [string, number]) => {

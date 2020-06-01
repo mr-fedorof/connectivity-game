@@ -7,7 +7,7 @@ import {
     takeAnotherCardPlayerAction,
 } from '@modules/game/actions';
 import { GameCardType } from '@modules/game/enums';
-import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
+import { timeLeftOnlySecondsPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameCard, isCardReadingInProgress, Player, PlayerTurnState } from '@modules/game/models';
 import { ActionService, GameCardService } from '@modules/game/services';
 import { LocalizationService } from '@modules/localization';
@@ -58,7 +58,7 @@ export class GameCardTaskComponent extends DestroyableComponent implements OnIni
                 takeUntil(this.onDestroy),
                 filter(([type, startedAt, timespan]) => type === this.gameCard.type),
                 map(([type, startedAt, timespan]) => [startedAt, timespan]),
-                timeLeftPipe()
+                timeLeftOnlySecondsPipe()
             );
     }
 

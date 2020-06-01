@@ -12,8 +12,20 @@
         justify-content: center;
     }
 
-    &__timer {
-        font-size: $font-size-24;
-        font-weight: $font-weight-bold;
+    &__progress-bar {
+        width: 100%;
+        position: relative;
+
+        &-timer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: $white;
+        }
     }
 }

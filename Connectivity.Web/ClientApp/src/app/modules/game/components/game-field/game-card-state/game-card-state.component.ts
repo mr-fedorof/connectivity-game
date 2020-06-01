@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { GameCardTaskType, GameCardType } from '@modules/game/enums';
-import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
+import { timeLeftOnlySecondsPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameCard, getCardName, getCardTaskName, Player } from '@modules/game/models';
 import { activePlayerSelector } from '@modules/game/selectors/game.selectors';
 import { GameCardService } from '@modules/game/services';
@@ -36,7 +36,7 @@ export class GameCardStateComponent extends DestroyableComponent implements OnIn
                 takeUntil(this.onDestroy),
                 filter(([type, startedAt, timespan]) => type === this.gameCard.type),
                 map(([type, startedAt, timespan]) => [startedAt, timespan]),
-                timeLeftPipe()
+                timeLeftOnlySecondsPipe()
             );
     }
 

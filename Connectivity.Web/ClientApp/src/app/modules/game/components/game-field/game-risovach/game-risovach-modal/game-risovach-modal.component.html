@@ -10,7 +10,18 @@
 </div>
 
 <div class="modal-footer game-risovach-modal__footer">
-    <div class="game-risovach-modal__timer">
-        {{ timeleft$ | async }}
+    <div
+        *ngIf="timeleft$ | async as timeleftState"
+        class="progress game-risovach-modal__progress-bar"
+    >
+        <div class="game-risovach-modal__progress-bar-timer">{{ timeleftState.timeleft }}</div>
+        <div
+            class="progress-bar bg-success"
+            [style.width.%]="timeleftState.timeleftInPerc"
+        ></div>
+        <div
+            class="progress-bar bg-danger"
+            [style.width.%]="100 - timeleftState.timeleftInPerc"
+        ></div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { timeLeftPipe } from '@modules/game/helpers/pipe.helpers';
+import { timeLeftOnlySecondsPipe } from '@modules/game/helpers/pipe.helpers';
 import { GameTimerService } from '@modules/game/services';
 import { DestroyableComponent } from '@shared/destroyable';
 import { Observable } from 'rxjs';
@@ -24,7 +24,7 @@ export class GameTimerComponent extends DestroyableComponent implements OnInit {
         this.timeleft$ = this.gameTimerService.timer$
             .pipe(
                 takeUntil(this.onDestroy),
-                timeLeftPipe()
+                timeLeftOnlySecondsPipe()
             );
     }
 }
